@@ -40,6 +40,10 @@
 - Implemented simple baselines: `src/baselines/linear_interp.py` and `src/baselines/locf.py`.
 - Added `src/tests/test_baselines.py`.
 - Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests/test_baselines.py src/tests/test_ecbit.py src/tests/test_block_missing.py` -> 14 passed.
+- Checked PyPOTS availability: local `darts` environment is missing `pypots`.
+- Implemented lazy PyPOTS wrappers for SAITS and BRITS plus ECBIT-to-PyPOTS dataset conversion.
+- Added `src/tests/test_pypots_wrappers.py`.
+- Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests/test_pypots_wrappers.py src/tests/test_baselines.py src/tests/test_ecbit.py src/tests/test_block_missing.py` -> 17 passed.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |
@@ -47,3 +51,4 @@
 | 2026-05-18 | Full AntAWS station-level ERA5 alignment not yet confirmed | resolved | Downloaded and validated ERA5 3h files for all 32 selected AntAWS stations |
 | 2026-05-18 | `python` missing from PATH; system `python3` lacks NumPy | resolved | Use `/home/horeb/miniconda3/bin/conda run -n darts python` for local data scripts |
 | 2026-05-18 | `src` not importable during pytest collection | resolved | Added `src/__init__.py`, `src/utils/__init__.py`, and `src/tests/__init__.py` |
+| 2026-05-18 | PyPOTS missing from local `darts` environment | open | Wrappers use lazy import; verify/install dependency before remote SAITS/BRITS jobs |

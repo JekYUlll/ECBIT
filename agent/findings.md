@@ -123,3 +123,11 @@ Important correction: an initial selection with only mean core completeness reta
 - Implemented `src/baselines/locf.py`.
 - Both baselines preserve observed values exactly and handle leading/trailing missing segments.
 - Test suite passed for block-missing utilities, ECBIT model, and simple baselines: 14 tests passed.
+
+## PyPOTS Baseline Wrappers (2026-05-18)
+
+- Local `darts` environment does not currently include PyPOTS.
+- Implemented lazy wrappers for SAITS and BRITS in `src/baselines/saits_wrapper.py` and `src/baselines/brits_wrapper.py`.
+- Added `src/baselines/pypots_common.py` to convert ECBIT filled arrays plus `obs_mask` into PyPOTS `{X: ...}` arrays with NaNs restored at missing positions.
+- Tests validate conversion and lazy wrapper construction without requiring PyPOTS import.
+- Full SAITS/BRITS training acceptance still requires PyPOTS installation in the remote training environment before those jobs are submitted.

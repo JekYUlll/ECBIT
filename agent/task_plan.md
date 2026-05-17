@@ -22,7 +22,7 @@ Last Updated: 2026-05-18
 ## Phase 2 · Model Implementation
 - [x] Implement ECBIT model
 - [x] Implement interpolation and carry-forward baselines
-- [ ] Implement PyPOTS SAITS and BRITS wrappers
+- [x] Implement PyPOTS SAITS and BRITS wrappers
 - [ ] Implement iTransformer imputation baseline
 - [ ] Implement ERA5 direct substitution baseline
 - [ ] Implement unified remote training entrypoint
@@ -51,6 +51,7 @@ Last Updated: 2026-05-18
 | Issue | Status | Action |
 |-------|--------|--------|
 | Full-station AntAWS ERA5 alignment not yet available | resolved | Downloaded/aligned ERA5 point time series for all 32 selected stations |
+| PyPOTS not installed in local `darts` environment | open | Wrappers implemented with lazy import; verify/install PyPOTS before SAITS/BRITS remote jobs |
 
 ## Completion Criteria
 Paper submitted to IEEE TGRS or Remote Sensing.
