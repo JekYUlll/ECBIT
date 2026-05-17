@@ -61,6 +61,9 @@
 - Used parallel paper-writing time to create `paper/main.tex`, section files, and `paper/references.bib`.
 - Verified core citations via public sources before adding BibTeX entries.
 - Compile result: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeds and produces a 3-page PDF with only underfull-box warnings.
+- Implemented `scripts/plot_missing_patterns.py` and generated `paper/figures/fig_missing_patterns.pdf/.png`.
+- Added Fig. missing-patterns to the Experiments section.
+- First compile attempt after plotting failed because `latexmk` was run from the repository root and could not find `main.tex`; reran from `paper/` and compilation succeeded.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |
@@ -70,3 +73,4 @@
 | 2026-05-18 | `src` not importable during pytest collection | resolved | Added `src/__init__.py`, `src/utils/__init__.py`, and `src/tests/__init__.py` |
 | 2026-05-18 | PyPOTS missing from local `darts` environment | open | Wrappers use lazy import; verify/install dependency before remote SAITS/BRITS jobs |
 | 2026-05-18 | Remote SSH authentication unavailable | open | Ping succeeds; SSH requires credentials and `SSHPASS` is not set. Continue local paper/analysis while blocked |
+| 2026-05-18 | `latexmk` run from wrong directory after figure generation | resolved | Reran `latexmk` from `paper/`; compile succeeded |

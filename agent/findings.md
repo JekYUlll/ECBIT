@@ -172,3 +172,10 @@ Important correction: an initial selection with only mean core completeness reta
 - Verified citations through public sources before adding BibTeX entries for AntAWS, ERA5, BRITS, SAITS, and iTransformer.
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeds and produces a 3-page PDF.
 - The Experiments and Conclusion sections are intentionally provisional until remote GPU results are available.
+
+## Missing Pattern Figure (2026-05-18)
+
+- Implemented `scripts/plot_missing_patterns.py`.
+- Generated `paper/figures/fig_missing_patterns.pdf` and `.png`.
+- Added the figure to `paper/sections/experiments.tex`.
+- Recompiled the paper successfully after adding the figure.
