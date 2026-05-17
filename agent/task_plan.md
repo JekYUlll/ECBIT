@@ -1,6 +1,6 @@
 # ECBIT Task Plan
 Goal: Submit ERA5-Conditioned Block Imputation paper to IEEE TGRS or Remote Sensing.
-Current Phase: Phase 0 — Initialization
+Current Phase: Phase 1 — Data Engineering
 Last Updated: 2026-05-18
 
 ## Phase 0 · Initialization
@@ -13,7 +13,7 @@ Last Updated: 2026-05-18
 - [x] Audit available AntAWS and ERA5 data assets
 
 ## Phase 1 · Data Engineering
-- [ ] Implement AntAWS station selection script
+- [x] Implement AntAWS station selection script
 - [ ] Resample ERA5 2h data to AntAWS 3h resolution
 - [ ] Analyze real missing block patterns
 - [ ] Implement AntAWS preprocessing for imputation

@@ -11,6 +11,12 @@
 - Verified remote GPU connectivity: server reachable, `darts` environment active, 6 x RTX 4090 available.
 - Next task: implement station metadata/completeness audit for AntAWS and decide selected station set before ERA5 alignment.
 
+### Phase 1 · Data Engineering
+- Implemented `scripts/select_antaws_stations.py` with CSV encoding fallback, metadata merge, completeness/record-length statistics, and deterministic geographic held-out selection.
+- Generated `data/station_meta_ecbit.csv`: 267 scanned station files, 36 eligible, 31 main, 5 held-out.
+- Acceptance check passed: selected station count is within 30-45 and held-out stations are clearly labeled.
+- Next task: determine whether ERA5 exists for these selected AntAWS stations or whether ERA5 download/alignment must be implemented before 3h resampling.
+
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |
 |-----------|-------|--------|--------|

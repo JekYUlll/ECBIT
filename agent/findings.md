@@ -34,3 +34,18 @@ Block-wise imputation is a better fit than forecasting for ERA5 conditioning:
 - Repaired ECAFT ERA5 files exist only for 9 IMAU stations in `/home/horeb/_code/ECAFT/data/processed/`.
 - Full AntAWS station-level ERA5 alignment is not yet confirmed; station selection must happen before ERA5 download/alignment scope is fixed.
 - Remote GPU server is reachable; `darts` environment has Python 3.12.12 and 6 x RTX 4090.
+
+## AntAWS Station Selection (2026-05-18)
+
+- Implemented `scripts/select_antaws_stations.py`.
+- Input: `/home/horeb/_code/microclimate_demo/data/AntAWS/3_hourly/`.
+- Output: `data/station_meta_ecbit.csv`.
+- Scanned 267 station CSV files.
+- Eligibility criteria: record length >= 10 years, temperature completeness >= 70%, core mean completeness >= 50%, valid lat/lon metadata.
+- Eligible stations: 36.
+- Selected split: 31 main + 5 held-out + 231 excluded.
+- Minimum selected record length: 10.09 years.
+- Minimum selected temperature completeness: 0.712.
+- Held-out stations selected by geographic farthest-point sampling: Clean Air, LGB35, Sabrina, Vito, Zhongshan.
+
+Important caveat: some selected stations have low completeness in non-temperature variables, especially wind/RH. This is acceptable for the first imputation benchmark because the task targets sparse/block-missing behavior, but preprocessing must later extract complete target windows carefully.
