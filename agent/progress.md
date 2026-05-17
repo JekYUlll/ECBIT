@@ -44,6 +44,9 @@
 - Implemented lazy PyPOTS wrappers for SAITS and BRITS plus ECBIT-to-PyPOTS dataset conversion.
 - Added `src/tests/test_pypots_wrappers.py`.
 - Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests/test_pypots_wrappers.py src/tests/test_baselines.py src/tests/test_ecbit.py src/tests/test_block_missing.py` -> 17 passed.
+- Implemented `src/baselines/itransformer_impute.py` and `masked_mse_loss()`.
+- Added `src/tests/test_itransformer_impute.py`.
+- Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 20 passed.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |

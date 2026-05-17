@@ -131,3 +131,10 @@ Important correction: an initial selection with only mean core completeness reta
 - Added `src/baselines/pypots_common.py` to convert ECBIT filled arrays plus `obs_mask` into PyPOTS `{X: ...}` arrays with NaNs restored at missing positions.
 - Tests validate conversion and lazy wrapper construction without requiring PyPOTS import.
 - Full SAITS/BRITS training acceptance still requires PyPOTS installation in the remote training environment before those jobs are submitted.
+
+## iTransformer Imputation Baseline (2026-05-18)
+
+- Implemented `src/baselines/itransformer_impute.py`.
+- The baseline uses the same variate-token observation stream as ECBIT but removes ERA5 conditioning entirely.
+- Added `masked_mse_loss()` to compute loss only on artificially hidden observed positions.
+- Full local test suite passed: 20 tests passed.

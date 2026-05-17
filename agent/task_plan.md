@@ -23,7 +23,7 @@ Last Updated: 2026-05-18
 - [x] Implement ECBIT model
 - [x] Implement interpolation and carry-forward baselines
 - [x] Implement PyPOTS SAITS and BRITS wrappers
-- [ ] Implement iTransformer imputation baseline
+- [x] Implement iTransformer imputation baseline
 - [ ] Implement ERA5 direct substitution baseline
 - [ ] Implement unified remote training entrypoint
 - [ ] Generate experiment configs
