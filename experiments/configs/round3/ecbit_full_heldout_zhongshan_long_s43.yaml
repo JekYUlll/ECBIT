@@ -1,0 +1,44 @@
+seed: 43
+device: cuda
+data:
+  manifest_csv: data/antaws_impute_manifest.csv
+  train_station_groups:
+  - main
+  val_station_groups:
+  - main
+  test_station_groups:
+  - heldout
+  test_station_ids:
+  - zhongshan
+training:
+  epochs: 50
+  batch_size: 32
+  num_workers: 4
+  lr: 0.0001
+  weight_decay: 0.0001
+  patience: 10
+eval:
+  batch_size: 64
+  num_workers: 4
+output_dir: experiments/results/metrics/round3/ecbit_full_heldout_zhongshan_long_s43
+runner: train
+model:
+  name: ecbit
+  variant: full
+  seq_len: 168
+  n_vars: 5
+  n_time: 4
+  d_model: 128
+  n_heads: 8
+  n_layers: 3
+  d_ff: 256
+  dropout: 0.1
+  use_era5: true
+  use_cross: true
+missing:
+  pattern: long
+  rate: 0.4
+  min_block: 72
+  max_block: 240
+  variable_wise: true
+run_name: ecbit_full_heldout_zhongshan_long_s43

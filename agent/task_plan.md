@@ -26,7 +26,7 @@ Last Updated: 2026-05-18
 - [x] Implement iTransformer imputation baseline
 - [x] Implement ERA5 direct substitution baseline
 - [x] Implement unified remote training entrypoint
-- [ ] Generate experiment configs
+- [x] Generate experiment configs
 
 ## Phase 3 · Experiments
 - [ ] Run baseline experiments

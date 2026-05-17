@@ -15,9 +15,11 @@ from torch.utils.data import DataLoader
 from src.baselines.era5_direct import ERA5DirectImputer
 from src.baselines.linear_interp import linear_interpolate
 from src.baselines.locf import locf_impute
+from src.baselines.brits_wrapper import BRITSImputer
+from src.baselines.saits_wrapper import SAITSImputer
 from src.data.impute_dataset import ImputationWindowDataset
 from src.metrics import masked_mae_rmse
-from src.train_impute import artificial_mask_batch, build_model
+from src.train_impute import artificial_mask_batch, build_model, station_ids_for_split
 from src.utils.block_missing import apply_mask
 
 
@@ -34,7 +36,7 @@ def make_loader(config: dict[str, Any], split: str) -> DataLoader:
         data_cfg.get("manifest_csv", "data/antaws_impute_manifest.csv"),
         station_groups=groups,
         window_splits=[split],
-        station_ids=data_cfg.get("station_ids"),
+        station_ids=station_ids_for_split(data_cfg, split),
     )
     return DataLoader(ds, batch_size=int(config.get("eval", {}).get("batch_size", 64)), shuffle=False, num_workers=int(config.get("eval", {}).get("num_workers", 2)))
 
@@ -75,14 +77,28 @@ def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
     seed = int(config.get("seed", 42))
     name = config["model"]["name"]
     era5_imputer = ERA5DirectImputer() if name == "era5_direct" else None
-    if era5_imputer is not None:
+    pypots_imputer = None
+    if name in {"saits", "brits"}:
+        model_cls = SAITSImputer if name == "saits" else BRITSImputer
+        model_cfg = config.get("model", {})
+        pypots_imputer = model_cls(
+            n_steps=int(model_cfg.get("seq_len", 168)),
+            n_features=int(model_cfg.get("n_vars", 5)),
+            **model_cfg.get("model_kwargs", {}),
+        )
+    if era5_imputer is not None or pypots_imputer is not None:
         train_loader = make_loader(config, "train")
         xs, es, ms = [], [], []
         for batch in train_loader:
             xs.append(batch["x"])
             es.append(batch["era5"])
             ms.append(batch["obs_mask"])
-        era5_imputer.fit(torch.cat(xs), torch.cat(es), torch.cat(ms))
+        train_x = torch.cat(xs)
+        train_mask = torch.cat(ms)
+        if era5_imputer is not None:
+            era5_imputer.fit(train_x, torch.cat(es), train_mask)
+        if pypots_imputer is not None:
+            pypots_imputer.fit(train_x.numpy(), train_mask.numpy())
 
     preds, targets, masks = [], [], []
     for step, batch in enumerate(loader):
@@ -98,6 +114,9 @@ def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
         elif name == "era5_direct":
             assert era5_imputer is not None
             pred = era5_imputer.impute(x_obs, batch["era5"], model_obs)
+        elif name in {"saits", "brits"}:
+            assert pypots_imputer is not None
+            pred = torch.from_numpy(pypots_imputer.impute(x_obs.numpy(), model_obs.numpy()))
         else:
             raise ValueError(f"Unsupported stateless baseline: {name}")
         preds.append(pred.cpu())
@@ -108,7 +127,7 @@ def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
 
 def evaluate(config: dict[str, Any], split: str, checkpoint: Path | None = None) -> dict[str, float]:
     name = config["model"]["name"]
-    if name in {"linear_interp", "locf", "era5_direct"}:
+    if name in {"linear_interp", "locf", "era5_direct", "saits", "brits"}:
         return evaluate_stateless(config, split)
     if checkpoint is None:
         checkpoint = Path(config.get("checkpoint", "experiments/results/metrics/best.pt"))

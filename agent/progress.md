@@ -53,6 +53,10 @@
 - Implemented training/evaluation framework: `src/data/impute_dataset.py`, `src/metrics.py`, `src/train_impute.py`, and `src/evaluate_impute.py`.
 - Added `src/tests/test_training_framework.py`.
 - Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 27 passed.
+- Implemented `scripts/generate_experiment_configs.py` and `src/tests/test_generate_configs.py`.
+- Fixed held-out generalization filtering by adding split-specific station IDs (`train_station_ids`, `val_station_ids`, `test_station_ids`) to the data-loading path.
+- Generated experiment configs: Round 1 = 162, Round 2 = 108, Round 3 = 45.
+- Test result after config generation: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 29 passed.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |

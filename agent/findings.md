@@ -154,3 +154,13 @@ Important correction: an initial selection with only mean core completeness reta
 - Implemented `src/evaluate_impute.py` for neural checkpoints and stateless baselines.
 - Local tests validate dataset filtering, artificial masks, metrics, and model config construction.
 - Full local test suite passed: 27 tests passed.
+
+## Experiment Configs (2026-05-18)
+
+- Implemented `scripts/generate_experiment_configs.py`.
+- Generated Round 1 baseline configs: 162 YAML files.
+- Generated Round 2 ECBIT ablation configs: 108 YAML files.
+- Generated Round 3 held-out generalization configs: 45 YAML files.
+- Added `runner` metadata so stateless/PyPOTS baselines can be routed to evaluation-style jobs and neural models to training jobs.
+- Corrected held-out configuration semantics: `test_station_ids` filters only the test dataset, while training/validation remain on main stations.
+- Full local test suite passed after config generation: 29 tests passed.

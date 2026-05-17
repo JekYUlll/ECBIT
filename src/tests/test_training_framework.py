@@ -6,7 +6,7 @@ import torch
 
 from src.data.impute_dataset import ImputationWindowDataset
 from src.metrics import masked_mae_rmse
-from src.train_impute import artificial_mask_batch, build_model
+from src.train_impute import artificial_mask_batch, build_model, station_ids_for_split
 
 
 def make_tiny_dataset(tmp_path):
@@ -84,3 +84,9 @@ def test_build_model_from_config() -> None:
         }
     )
     assert model.seq_len == 8
+
+
+def test_station_ids_for_split_prefers_split_specific_ids() -> None:
+    data_cfg = {"station_ids": ["all"], "test_station_ids": ["heldout"]}
+    assert station_ids_for_split(data_cfg, "train") == ["all"]
+    assert station_ids_for_split(data_cfg, "test") == ["heldout"]

@@ -58,6 +58,10 @@ def build_model(config: dict[str, Any]) -> torch.nn.Module:
     raise ValueError(f"Unsupported neural model: {name}")
 
 
+def station_ids_for_split(data_cfg: dict[str, Any], split: str) -> list[str] | None:
+    return data_cfg.get(f"{split}_station_ids", data_cfg.get("station_ids"))
+
+
 def artificial_mask_batch(obs_mask: torch.Tensor, missing_cfg: dict[str, Any], seed: int) -> torch.Tensor:
     pattern = str(missing_cfg.get("pattern", "medium"))
     missing_rate = float(missing_cfg.get("rate", 0.4))
@@ -118,13 +122,13 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
         data_cfg.get("manifest_csv", "data/antaws_impute_manifest.csv"),
         station_groups=data_cfg.get("train_station_groups", ["main"]),
         window_splits=["train"],
-        station_ids=data_cfg.get("station_ids"),
+        station_ids=station_ids_for_split(data_cfg, "train"),
     )
     val_ds = ImputationWindowDataset(
         data_cfg.get("manifest_csv", "data/antaws_impute_manifest.csv"),
         station_groups=data_cfg.get("val_station_groups", ["main"]),
         window_splits=["val"],
-        station_ids=data_cfg.get("station_ids"),
+        station_ids=station_ids_for_split(data_cfg, "val"),
     )
     train_loader = DataLoader(train_ds, batch_size=int(config["training"].get("batch_size", 32)), shuffle=True, num_workers=int(config["training"].get("num_workers", 2)))
     val_loader = DataLoader(val_ds, batch_size=int(config["training"].get("batch_size", 32)), shuffle=False, num_workers=int(config["training"].get("num_workers", 2)))
