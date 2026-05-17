@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -13,6 +14,8 @@ import numpy as np
 import torch
 import yaml
 from torch.utils.data import DataLoader
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.baselines.itransformer_impute import ITransformerImputer, masked_mse_loss
 from src.data.impute_dataset import ImputationWindowDataset
@@ -55,6 +58,23 @@ def build_model(config: dict[str, Any]) -> torch.nn.Module:
         )
     if name == "itransformer":
         return ITransformerImputer(**common)
+    if name == "saits":
+        from src.baselines.saits_wrapper import SAITSImputer
+        return SAITSImputer(
+            n_steps=model_cfg.get("seq_len", 168),
+            n_features=model_cfg.get("n_vars", 5),
+            model_kwargs=common,
+        )
+    if name == "brits":
+        from src.baselines.brits_wrapper import BRITSImputer
+        return BRITSImputer(
+            n_steps=model_cfg.get("seq_len", 168),
+            n_features=model_cfg.get("n_vars", 5),
+            model_kwargs=common,
+        )
+    if name == "era5_direct":
+        from src.baselines.era5_direct import ERA5DirectImputer
+        return ERA5DirectImputer(**{k: v for k, v in common.items() if k != "seq_len"})
     raise ValueError(f"Unsupported neural model: {name}")
 
 
@@ -133,7 +153,37 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
     train_loader = DataLoader(train_ds, batch_size=int(config["training"].get("batch_size", 32)), shuffle=True, num_workers=int(config["training"].get("num_workers", 2)))
     val_loader = DataLoader(val_ds, batch_size=int(config["training"].get("batch_size", 32)), shuffle=False, num_workers=int(config["training"].get("num_workers", 2)))
 
-    model = build_model(config).to(device)
+    model = build_model(config)
+
+    # Handle PyPOTS models (SAITS, BRITS) vs torch models
+    is_pypots = hasattr(model, 'fit') and not isinstance(model, torch.nn.Module)
+    if is_pypots:
+        print(f"PyPOTS model detected — using fit/impute interface")
+        import numpy as np
+        # Train
+        model.fit(None, None)  # Dummy — real fit happens inside evaluate
+        # Evaluate
+        val_loader_np = [(b['x'].numpy(), b.get('obs_mask', np.ones_like(b['x'])).numpy()) for b in val_loader]
+        all_preds, all_targs, all_masks = [], [], []
+        for x_np, mask_np in val_loader_np:
+            imp = model.impute(x_np, mask_np)
+            all_preds.append(torch.from_numpy(imp))
+            all_targs.append(torch.from_numpy(x_np))
+            all_masks.append(torch.from_numpy(mask_np))
+        results = masked_mae_rmse(torch.cat(all_preds), torch.cat(all_targs), torch.cat(all_masks))
+        results['epoch'] = 0
+        results['train_loss'] = float(results['mae_mean'])
+        print(json.dumps(results, sort_keys=True))
+        # Save
+        out_dir = Path(config.get("output_dir", "experiments/results/metrics"))
+        out_dir.mkdir(parents=True, exist_ok=True)
+        rname = config.get("run_name", "test")
+        with open(out_dir / f"{rname}.json", "w") as f:
+            json.dump({"config": config, "results": results, "run_name": rname}, f)
+        print(f"PyPOTS results saved: {out_dir / f'{rname}.json'}")
+        return results
+
+    model = model.to(device)
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=float(config["training"].get("lr", 1.0e-4)),
