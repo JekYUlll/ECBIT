@@ -30,9 +30,14 @@
 - Preprocessing output: 41,388 retained windows at `seq_len=168`, including 34,962 main-station windows and 6,426 held-out-station windows.
 - Validation passed under the local `darts` conda environment: shape checks, finite normalized `X/E_3h/T_enc`, binary `obs_mask`, and nonzero train/val/test windows for every station.
 - Local environment note: plain `python` is not on PATH and system `python3` lacks NumPy; use `/home/horeb/miniconda3/bin/conda run -n darts python` for local data commands.
+- Implemented `src/utils/block_missing.py` with block masks constrained to real observed positions, MCAR ablation masks, apply-mask helper, artificial-label loss mask, and variable-level gate helper.
+- Added package markers and `src/tests/test_block_missing.py`.
+- Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests/test_block_missing.py` -> 5 passed.
+- Phase 1 data engineering is complete; next phase is model implementation.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |
 |-----------|-------|--------|--------|
 | 2026-05-18 | Full AntAWS station-level ERA5 alignment not yet confirmed | resolved | Downloaded and validated ERA5 3h files for all 32 selected AntAWS stations |
 | 2026-05-18 | `python` missing from PATH; system `python3` lacks NumPy | resolved | Use `/home/horeb/miniconda3/bin/conda run -n darts python` for local data scripts |
+| 2026-05-18 | `src` not importable during pytest collection | resolved | Added `src/__init__.py`, `src/utils/__init__.py`, and `src/tests/__init__.py` |

@@ -100,3 +100,11 @@ Important correction: an initial selection with only mean core completeness reta
 - Held-out stations: 5 stations, 6,426 windows, mean observed fraction 0.813.
 - Temporal split is assigned by chronological order after sparse-window filtering, so every selected station retains nonzero train/val/test windows without shuffling.
 - Validation passed: sample NPZ files have `X/E_3h/obs_mask` shape `(N,168,5)`, `T_enc` shape `(N,168,4)`, finite normalized inputs, and binary observation masks.
+
+## Block Missing Simulator (2026-05-18)
+
+- Implemented `src/utils/block_missing.py`.
+- `simulate_block_missing()` supports variable-wise blocks and all-variable outage blocks.
+- Artificial missing labels are constrained by `obs_mask`, preventing loss from being computed on real missing values.
+- Added `simulate_mcar_missing()` for point-missing ablations, `apply_mask()`, `artificial_label_mask()`, and `missing_variables()`.
+- Unit tests passed: `pytest -q src/tests/test_block_missing.py` reports 5 passed.
