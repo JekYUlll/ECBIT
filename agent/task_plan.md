@@ -20,7 +20,7 @@ Last Updated: 2026-05-18
 - [x] Implement block missing simulator and unit tests
 
 ## Phase 2 · Model Implementation
-- [ ] Implement ECBIT model
+- [x] Implement ECBIT model
 - [ ] Implement interpolation and carry-forward baselines
 - [ ] Implement PyPOTS SAITS and BRITS wrappers
 - [ ] Implement iTransformer imputation baseline

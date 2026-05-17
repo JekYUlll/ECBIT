@@ -108,3 +108,11 @@ Important correction: an initial selection with only mean core completeness reta
 - Artificial missing labels are constrained by `obs_mask`, preventing loss from being computed on real missing values.
 - Added `simulate_mcar_missing()` for point-missing ablations, `apply_mask()`, `artificial_label_mask()`, and `missing_variables()`.
 - Unit tests passed: `pytest -q src/tests/test_block_missing.py` reports 5 passed.
+
+## ECBIT Model Smoke Test (2026-05-18)
+
+- Implemented `src/models/ecbit.py` with variate-token AWS encoder, variate-token ERA5 encoder, conditional cross-attention, and per-variable reconstruction head.
+- The cross-attention gate is variable-level: variables without missing positions are independent of ERA5 changes after fusion.
+- Added `src/tests/test_ecbit.py`.
+- Unit tests plus block-missing tests passed: 10 tests passed.
+- Real preprocessed-data forward smoke test passed with `B=4`, `T=168`, `C=5`; output shape is `(4,168,5)` and all values are finite.
