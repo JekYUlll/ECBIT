@@ -20,6 +20,9 @@
 - Implemented `src/resample_era5.py` to download CDS ERA5 point time series and interpolate to AntAWS 3h timestamps.
 - Smoke tested `aws06`; generated finite `data/era5_3h/aws06_era5_3h.npz` with shape `(35064, 5)`.
 - Added `.gitignore` rules so generated ERA5 NetCDF/NPZ files stay out of version control.
+- Ran full ERA5 alignment for all 36 selected stations; CDS time-series requests completed successfully.
+- Added `scripts/validate_era5_3h.py` and generated `data/era5_3h_manifest.csv`.
+- ERA5 validation passed: 36/36 selected stations, no non-finite values, all shapes match AntAWS observed steps.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |

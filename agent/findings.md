@@ -61,3 +61,6 @@ Important caveat: some selected stations have low completeness in non-temperatur
 - Smoke tested `aws06`: output shape `(35064, 5)`, timestamps shape `(35064,)`, all finite.
 - Generated ERA5 NetCDF and aligned NPZ are ignored by Git; they are reproducible data artifacts.
 - Next gate: run the same script for all 36 selected stations and verify every selected station has a finite 3h ERA5 file.
+- Full selected-station ERA5 alignment completed: 36/36 selected stations have `data/era5_3h/<station_id>_era5_3h.npz`.
+- Validation passed with `scripts/validate_era5_3h.py`: each file has shape `(observed_steps, 5)`, timestamp length matches AntAWS, and `nan_count=0`.
+- Validation manifest written to `data/era5_3h_manifest.csv`.

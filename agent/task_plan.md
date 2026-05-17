@@ -14,7 +14,7 @@ Last Updated: 2026-05-18
 
 ## Phase 1 · Data Engineering
 - [x] Implement AntAWS station selection script
-- [ ] Resample ERA5 2h data to AntAWS 3h resolution
+- [x] Resample ERA5 2h data to AntAWS 3h resolution
 - [ ] Analyze real missing block patterns
 - [ ] Implement AntAWS preprocessing for imputation
 - [ ] Implement block missing simulator and unit tests
@@ -50,7 +50,7 @@ Last Updated: 2026-05-18
 ## Blocked Issues
 | Issue | Status | Action |
 |-------|--------|--------|
-| Full-station AntAWS ERA5 alignment not yet available | open | First data task must select stations, then verify/download ERA5 for those coordinates |
+| Full-station AntAWS ERA5 alignment not yet available | resolved | Downloaded/aligned ERA5 point time series for 36 selected stations |
 
 ## Completion Criteria
 Paper submitted to IEEE TGRS or Remote Sensing.
