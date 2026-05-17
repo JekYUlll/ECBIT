@@ -48,6 +48,11 @@ def normalize_name(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", name.lower())
 
 
+def station_id(name: str) -> str:
+    sid = re.sub(r"[^A-Za-z0-9]+", "_", name.strip()).strip("_").lower()
+    return sid or "station"
+
+
 def load_station_metadata(raw_dir: Path) -> pd.DataFrame:
     meta_path = raw_dir / META_FILE
     meta = read_csv_with_fallback(meta_path)
@@ -125,6 +130,7 @@ def summarize_station(path: Path) -> dict[str, object] | None:
 
     stats: dict[str, object] = {
         "station": station,
+        "station_id": station_id(station),
         "station_key": normalize_name(station),
         "file": str(path),
         "start": start.isoformat(),
@@ -238,6 +244,7 @@ def build_selection(
 
     ordered_cols = [
         "station",
+        "station_id",
         "split",
         "eligible",
         "selection_score",

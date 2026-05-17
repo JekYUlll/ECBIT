@@ -49,3 +49,15 @@ Block-wise imputation is a better fit than forecasting for ERA5 conditioning:
 - Held-out stations selected by geographic farthest-point sampling: Clean Air, LGB35, Sabrina, Vito, Zhongshan.
 
 Important caveat: some selected stations have low completeness in non-temperature variables, especially wind/RH. This is acceptable for the first imputation benchmark because the task targets sparse/block-missing behavior, but preprocessing must later extract complete target windows carefully.
+
+## ERA5 AntAWS Alignment Smoke Test (2026-05-18)
+
+- Implemented `src/resample_era5.py`.
+- Because full AntAWS ERA5 files were not available, the script handles both download and 3h alignment:
+  1. download station point ERA5 from `reanalysis-era5-single-levels-timeseries`;
+  2. derive `[T, RH, wspd, P, q]`;
+  3. interpolate to exact AntAWS 3h timestamps;
+  4. save `data/era5_3h/<station_id>_era5_3h.npz`.
+- Smoke tested `aws06`: output shape `(35064, 5)`, timestamps shape `(35064,)`, all finite.
+- Generated ERA5 NetCDF and aligned NPZ are ignored by Git; they are reproducible data artifacts.
+- Next gate: run the same script for all 36 selected stations and verify every selected station has a finite 3h ERA5 file.

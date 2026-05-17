@@ -216,3 +216,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ECBIT generated data artifacts
+data/antaws/raw/*
+data/antaws/processed/*
+data/era5/*
+data/era5_3h/*
+data/imau/*
+!data/antaws/raw/.gitkeep
+!data/antaws/processed/.gitkeep
+!data/era5/.gitkeep
+!data/era5_3h/.gitkeep
+!data/imau/.gitkeep

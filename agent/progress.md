@@ -16,6 +16,10 @@
 - Generated `data/station_meta_ecbit.csv`: 267 scanned station files, 36 eligible, 31 main, 5 held-out.
 - Acceptance check passed: selected station count is within 30-45 and held-out stations are clearly labeled.
 - Next task: determine whether ERA5 exists for these selected AntAWS stations or whether ERA5 download/alignment must be implemented before 3h resampling.
+- Confirmed selected AntAWS stations do not have pre-existing ECBIT ERA5 files; ECAFT repaired ERA5 only covers 9 IMAU stations and cannot satisfy ECBIT.
+- Implemented `src/resample_era5.py` to download CDS ERA5 point time series and interpolate to AntAWS 3h timestamps.
+- Smoke tested `aws06`; generated finite `data/era5_3h/aws06_era5_3h.npz` with shape `(35064, 5)`.
+- Added `.gitignore` rules so generated ERA5 NetCDF/NPZ files stay out of version control.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |
