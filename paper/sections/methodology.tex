@@ -1,0 +1,28 @@
+\section{Methodology}
+
+\subsection{Problem Formulation}
+Let $X \in \mathbb{R}^{T \times C}$ be a normalized AWS window with $T=168$ 3-hourly steps and $C=5$ variables: temperature, relative humidity, wind speed, pressure, and specific humidity. Let $O \in \{0,1\}^{T \times C}$ denote the real observation mask, where $O_{t,c}=1$ means the station value is observed. ERA5 provides an aligned dense sequence $E \in \mathbb{R}^{T \times C}$. During training and evaluation, we sample an artificial missing mask $A$ only from positions where $O=1$. The model input mask is
+\begin{equation}
+M = (1 - O) \lor A,
+\end{equation}
+and the supervised loss is computed only on $A$:
+\begin{equation}
+\mathcal{L} = \frac{\sum_{t,c} A_{t,c}(\hat{X}_{t,c}-X_{t,c})^2}{\sum_{t,c} A_{t,c}}.
+\end{equation}
+This avoids treating real unobserved values as ground truth.
+
+\subsection{Block Missing Simulation}
+Real AntAWS missingness is block-structured. We therefore sample contiguous outage blocks with three regimes: short gaps of 6--24 steps, medium gaps of 24--72 steps, and long gaps of 72--240 steps. Missing rates are set to 20\%, 40\%, and 60\%. A point-wise MCAR mask is used only for the no-blockmask ablation.
+
+\subsection{ECBIT Architecture}
+ECBIT uses two variate-token encoders. For each variable $c$, the observation token is formed from its full time series, the observation mask, and shared time encodings. ERA5 tokens are formed from the aligned ERA5 variable and the same time encodings. Transformer encoders produce $Z^{aws}, Z^{era5} \in \mathbb{R}^{C \times d}$.
+
+Conditional fusion applies cross-attention with AWS as query and ERA5 as key/value:
+\begin{equation}
+H = \mathrm{MHA}(Q=Z^{aws}, K=Z^{era5}, V=Z^{era5}).
+\end{equation}
+A variable-level gate $g_c=\mathbb{1}[\sum_t M_{t,c}>0]$ controls whether ERA5 can alter the AWS representation:
+\begin{equation}
+Z_c = \mathrm{LayerNorm}(Z^{aws}_c + g_c H_c).
+\end{equation}
+The reconstruction head maps each variable token back to a length-$T$ sequence. If a variable has no missing positions, its output is independent of ERA5 after fusion.

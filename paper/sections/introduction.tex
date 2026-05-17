@@ -1,0 +1,16 @@
+\section{Introduction}
+
+Continuous near-surface meteorological observations are central to Antarctic climate analysis, model evaluation, and field operations. Automatic weather stations (AWSs) extend coverage beyond staffed stations, but the same remoteness that makes them valuable also makes their records incomplete. The AntAWS compilation aggregates Antarctic AWS observations at 3-hourly, daily, and monthly resolutions and documents the role of AWS networks in resolving remote Antarctic conditions \cite{wang2023antaws}. In the selected 3-hourly stations used in this work, missingness is not well described by independent random points: wind speed and relative humidity contain long contiguous gaps, and several stations exhibit outage blocks lasting days to weeks.
+
+This paper studies imputation rather than forecasting. In imputation, the model must reconstruct missing station observations inside a window while preserving the available observations. ERA5 reanalysis provides a physically coherent meteorological background \cite{hersbach2020era5}, but using it naively can be counterproductive: when AWS observations are present, ERA5 often duplicates already available temperature and pressure information; when relative humidity is biased, always-on fusion can inject error. We therefore use ERA5 as a conditional prior that is activated by missingness.
+
+We propose ERA5-Conditioned Block Imputation Transformer (ECBIT), a dual-stream variate-token transformer for sparse Antarctic AWS time series. The observation stream encodes normalized AWS values, observation masks, and time features. The ERA5 stream encodes aligned ERA5 variables. A conditional cross-attention layer uses AWS tokens as queries and ERA5 tokens as keys/values, but a variable-level gate allows ERA5 information to modify only variables that contain missing positions. Loss is evaluated only on artificially hidden positions that were truly observed in the raw record.
+
+The current benchmark contains 32 selected AntAWS stations with at least 10 years of record and sufficient multi-variable completeness. Five geographically diverse stations are reserved for held-out generalization. ERA5 point time series are downloaded and aligned to the exact AntAWS 3-hourly timestamps, producing 41,388 sparse 168-step windows. The experimental matrix covers interpolation, last-observation-carried-forward, ERA5 direct substitution, BRITS \cite{cao2018brits}, SAITS \cite{du2023saits}, an iTransformer-style imputation baseline \cite{liu2024itransformer}, and ECBIT ablations.
+
+The contributions are:
+\begin{itemize}
+  \item a realistic Antarctic AWS block-imputation benchmark with real observation masks, ERA5 alignment, and held-out station splits;
+  \item a conditional ERA5 fusion architecture that gates reanalysis influence at the variable level;
+  \item an experimental protocol that separates interpolation skill, reanalysis direct substitution, transformer imputation capacity, and ERA5-conditioned gains under short, medium, and long outage regimes.
+\end{itemize}

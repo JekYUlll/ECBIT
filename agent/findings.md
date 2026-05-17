@@ -164,3 +164,11 @@ Important correction: an initial selection with only mean core completeness reta
 - Added `runner` metadata so stateless/PyPOTS baselines can be routed to evaluation-style jobs and neural models to training jobs.
 - Corrected held-out configuration semantics: `test_station_ids` filters only the test dataset, while training/validation remain on main stations.
 - Full local test suite passed after config generation: 29 tests passed.
+
+## Paper Draft Scaffold (2026-05-18)
+
+- Created IEEE-style LaTeX scaffold under `paper/`.
+- Drafted abstract, Introduction, Related Work, Methodology, experiment protocol, and conclusion placeholder.
+- Verified citations through public sources before adding BibTeX entries for AntAWS, ERA5, BRITS, SAITS, and iTransformer.
+- `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeds and produces a 3-page PDF.
+- The Experiments and Conclusion sections are intentionally provisional until remote GPU results are available.

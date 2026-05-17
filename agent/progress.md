@@ -57,6 +57,10 @@
 - Fixed held-out generalization filtering by adding split-specific station IDs (`train_station_ids`, `val_station_ids`, `test_station_ids`) to the data-loading path.
 - Generated experiment configs: Round 1 = 162, Round 2 = 108, Round 3 = 45.
 - Test result after config generation: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 29 passed.
+- Remote check: server `192.168.10.47` responds to ping, but SSH BatchMode fails with `Permission denied (publickey,password)` and local `SSHPASS` is not set, so remote smoke submission is blocked by authentication rather than server availability.
+- Used parallel paper-writing time to create `paper/main.tex`, section files, and `paper/references.bib`.
+- Verified core citations via public sources before adding BibTeX entries.
+- Compile result: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeds and produces a 3-page PDF with only underfull-box warnings.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |
@@ -65,3 +69,4 @@
 | 2026-05-18 | `python` missing from PATH; system `python3` lacks NumPy | resolved | Use `/home/horeb/miniconda3/bin/conda run -n darts python` for local data scripts |
 | 2026-05-18 | `src` not importable during pytest collection | resolved | Added `src/__init__.py`, `src/utils/__init__.py`, and `src/tests/__init__.py` |
 | 2026-05-18 | PyPOTS missing from local `darts` environment | open | Wrappers use lazy import; verify/install dependency before remote SAITS/BRITS jobs |
+| 2026-05-18 | Remote SSH authentication unavailable | open | Ping succeeds; SSH requires credentials and `SSHPASS` is not set. Continue local paper/analysis while blocked |

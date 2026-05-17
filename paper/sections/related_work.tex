@@ -1,0 +1,10 @@
+\section{Related Work}
+
+\subsection{Antarctic AWS and Reanalysis Data}
+Antarctic AWS records are indispensable for evaluating surface meteorology in regions where staffed stations are sparse. The AntAWS dataset compiles quality-controlled AWS observations across Antarctica and provides 3-hourly meteorological variables including air temperature, pressure, relative humidity, and wind \cite{wang2023antaws}. ERA5 provides a global reanalysis background with hourly atmospheric variables \cite{hersbach2020era5}. ECBIT uses ERA5 not as a replacement for station observations, but as a conditional source of information during observed station outages.
+
+\subsection{Time-Series Imputation}
+Classical imputation baselines such as linear interpolation and last-observation-carried-forward are strong sanity checks for short gaps but do not model cross-variable structure. BRITS learns missing values inside a bidirectional recurrent computation graph \cite{cao2018brits}. SAITS uses self-attention and missingness-aware weighting for multivariate time-series imputation \cite{du2023saits}. These models motivate neural baselines for ECBIT, but the Antarctic setting differs from common benchmark datasets because missingness is block-structured and an external physical prior is available.
+
+\subsection{Variate-Token Transformers}
+iTransformer inverts the standard time-token representation and treats each variable's full lookback sequence as a token, allowing attention to model multivariate correlations \cite{liu2024itransformer}. ECBIT adopts this variate-token view for imputation, where each AWS variable and each ERA5 variable is represented over the full 168-step window. Unlike forecasting-only iTransformer, ECBIT includes observation masks, reconstructs the full window, and gates external ERA5 conditioning by missing variables.

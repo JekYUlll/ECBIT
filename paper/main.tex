@@ -1,0 +1,33 @@
+\documentclass[journal]{IEEEtran}
+
+\usepackage{amsmath,amsfonts}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{xcolor}
+
+\title{ERA5-Conditioned Block Imputation for Sparse Antarctic Weather Station Time Series}
+
+\author{Anonymous Authors}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Antarctic automatic weather stations provide essential in situ meteorological observations, but their time series are often sparse because of sensor icing, power interruptions, and winter maintenance gaps. We study block-wise imputation for 3-hourly Antarctic station records using ERA5 as an external physical prior. The proposed ERA5-Conditioned Block Imputation Transformer (ECBIT) treats each meteorological variable as a variate token, encodes sparse station observations and ERA5 sequences in separate streams, and applies variable-level gated cross-attention only for variables with missing positions. This design is motivated by the observation that reanalysis variables can be redundant with available station observations, while still providing useful constraints during outages. We build an AntAWS-derived benchmark with 32 selected stations, aligned ERA5 time series, realistic block-missing simulation, and held-out station generalization splits. Experiments will compare ECBIT against interpolation, last-observation-carried-forward, ERA5 direct substitution, BRITS, SAITS, and an iTransformer imputation baseline.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Antarctica, automatic weather station, ERA5, imputation, transformers, missing data.
+\end{IEEEkeywords}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methodology}
+\input{sections/experiments}
+\input{sections/conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

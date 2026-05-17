@@ -1,6 +1,6 @@
 # ECBIT Task Plan
 Goal: Submit ERA5-Conditioned Block Imputation paper to IEEE TGRS or Remote Sensing.
-Current Phase: Phase 2 — Model Implementation
+Current Phase: Phase 3 — Experiments / Phase 5 — Paper Writing
 Last Updated: 2026-05-18
 
 ## Phase 0 · Initialization
@@ -41,8 +41,8 @@ Last Updated: 2026-05-18
 - [ ] Imputation curve visualization
 
 ## Phase 5 · Paper Writing
-- [ ] Introduction and Related Work
-- [ ] Methodology
+- [x] Introduction and Related Work
+- [x] Methodology
 - [ ] Experiments
 - [ ] Conclusion
 - [ ] Format and submission checks
@@ -52,6 +52,7 @@ Last Updated: 2026-05-18
 |-------|--------|--------|
 | Full-station AntAWS ERA5 alignment not yet available | resolved | Downloaded/aligned ERA5 point time series for all 32 selected stations |
 | PyPOTS not installed in local `darts` environment | open | Wrappers implemented with lazy import; verify/install PyPOTS before SAITS/BRITS remote jobs |
+| Remote SSH authentication unavailable | open | Server is reachable by ping, but SSH requires credentials; continue local paper/analysis until credentials are available |
 
 ## Completion Criteria
 Paper submitted to IEEE TGRS or Remote Sensing.
