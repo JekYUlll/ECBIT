@@ -116,3 +116,10 @@ Important correction: an initial selection with only mean core completeness reta
 - Added `src/tests/test_ecbit.py`.
 - Unit tests plus block-missing tests passed: 10 tests passed.
 - Real preprocessed-data forward smoke test passed with `B=4`, `T=168`, `C=5`; output shape is `(4,168,5)` and all values are finite.
+
+## Simple Baselines (2026-05-18)
+
+- Implemented `src/baselines/linear_interp.py`.
+- Implemented `src/baselines/locf.py`.
+- Both baselines preserve observed values exactly and handle leading/trailing missing segments.
+- Test suite passed for block-missing utilities, ECBIT model, and simple baselines: 14 tests passed.

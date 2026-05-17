@@ -21,7 +21,7 @@ Last Updated: 2026-05-18
 
 ## Phase 2 · Model Implementation
 - [x] Implement ECBIT model
-- [ ] Implement interpolation and carry-forward baselines
+- [x] Implement interpolation and carry-forward baselines
 - [ ] Implement PyPOTS SAITS and BRITS wrappers
 - [ ] Implement iTransformer imputation baseline
 - [ ] Implement ERA5 direct substitution baseline

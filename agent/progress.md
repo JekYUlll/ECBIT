@@ -37,6 +37,9 @@
 - Implemented `src/models/ecbit.py` and `src/tests/test_ecbit.py`.
 - Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests/test_ecbit.py src/tests/test_block_missing.py` -> 10 passed.
 - Real-data CPU forward smoke test passed using `data/antaws/processed/aws06_impute.npz`: `B=4`, `T=168`, `C=5`, finite `(4,168,5)` output.
+- Implemented simple baselines: `src/baselines/linear_interp.py` and `src/baselines/locf.py`.
+- Added `src/tests/test_baselines.py`.
+- Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests/test_baselines.py src/tests/test_ecbit.py src/tests/test_block_missing.py` -> 14 passed.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |
