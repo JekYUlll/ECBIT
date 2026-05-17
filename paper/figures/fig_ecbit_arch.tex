@@ -1,0 +1,25 @@
+\begin{tikzpicture}[
+  font=\footnotesize,
+  box/.style={draw=#1!70!black, fill=#1!10, rounded corners=2pt, minimum height=0.62cm, align=center, inner xsep=5pt},
+  arrow/.style={-{Latex[length=2mm]}, line width=0.45pt, draw=black!70},
+  gate/.style={draw=orange!80!black, fill=orange!12, rounded corners=2pt, align=center, inner xsep=5pt, minimum height=0.62cm}
+]
+\node[box=blue, minimum width=2.3cm] (x) {Sparse AWS\\$X_{\mathrm{obs}}, M, T_{\mathrm{enc}}$};
+\node[box=blue, right=0.65cm of x, minimum width=2.25cm] (awsenc) {AWS variate-token\\Transformer};
+\node[box=green, below=0.65cm of x, minimum width=2.3cm] (e) {Aligned ERA5\\$E, T_{\mathrm{enc}}$};
+\node[box=green, right=0.65cm of e, minimum width=2.25cm] (eraenc) {ERA5 variate-token\\Transformer};
+\node[box=purple, right=0.85cm of awsenc, yshift=-0.34cm, minimum width=2.2cm] (cross) {Cross-attention\\$Q=Z^{aws}$\\$K,V=Z^{era5}$};
+\node[gate, right=0.65cm of cross, minimum width=2.0cm] (gate) {Variable gate\\$g_c=\mathbb{1}[\sum_t M_{t,c}>0]$};
+\node[box=red, right=0.65cm of gate, minimum width=1.85cm] (head) {Reconstruction\\head};
+\node[box=red, right=0.55cm of head, minimum width=1.35cm] (out) {$\hat{X}$};
+
+\draw[arrow] (x) -- (awsenc);
+\draw[arrow] (e) -- (eraenc);
+\draw[arrow] (awsenc) -- (cross);
+\draw[arrow] (eraenc) -- (cross);
+\draw[arrow] (cross) -- (gate);
+\draw[arrow] (gate) -- (head);
+\draw[arrow] (head) -- (out);
+\draw[arrow, dashed, draw=orange!80!black] ($(x.south east)+(0,-0.08)$) to[bend right=18] node[below, align=center, font=\scriptsize] {missing\\variables} (gate.south);
+\draw[arrow, dashed, draw=gray!70] (awsenc.north east) to[bend left=18] node[above, font=\scriptsize] {skip for observed vars} (gate.north west);
+\end{tikzpicture}

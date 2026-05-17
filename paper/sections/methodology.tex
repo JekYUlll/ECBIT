@@ -17,6 +17,13 @@ Real AntAWS missingness is block-structured. We therefore sample contiguous outa
 \subsection{ECBIT Architecture}
 ECBIT uses two variate-token encoders. For each variable $c$, the observation token is formed from its full time series, the observation mask, and shared time encodings. ERA5 tokens are formed from the aligned ERA5 variable and the same time encodings. Transformer encoders produce $Z^{aws}, Z^{era5} \in \mathbb{R}^{C \times d}$.
 
+\begin{figure*}[t]
+  \centering
+  \input{figures/fig_ecbit_arch}
+  \caption{ECBIT architecture. Sparse AWS observations and aligned ERA5 sequences are encoded as variate tokens in separate streams. ERA5 information enters through cross-attention, but the variable-level gate suppresses ERA5 influence for variables without missing positions.}
+  \label{fig:ecbit-arch}
+\end{figure*}
+
 Conditional fusion applies cross-attention with AWS as query and ERA5 as key/value:
 \begin{equation}
 H = \mathrm{MHA}(Q=Z^{aws}, K=Z^{era5}, V=Z^{era5}).

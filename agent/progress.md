@@ -64,6 +64,9 @@
 - Implemented `scripts/plot_missing_patterns.py` and generated `paper/figures/fig_missing_patterns.pdf/.png`.
 - Added Fig. missing-patterns to the Experiments section.
 - First compile attempt after plotting failed because `latexmk` was run from the repository root and could not find `main.tex`; reran from `paper/` and compilation succeeded.
+- Added TikZ ECBIT architecture figure at `paper/figures/fig_ecbit_arch.tex`.
+- Integrated the architecture figure into `paper/sections/methodology.tex`.
+- Compile result after architecture figure: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeds.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |

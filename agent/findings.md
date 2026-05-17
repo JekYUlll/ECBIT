@@ -179,3 +179,9 @@ Important correction: an initial selection with only mean core completeness reta
 - Generated `paper/figures/fig_missing_patterns.pdf` and `.png`.
 - Added the figure to `paper/sections/experiments.tex`.
 - Recompiled the paper successfully after adding the figure.
+
+## ECBIT Architecture Figure (2026-05-18)
+
+- Added TikZ architecture figure at `paper/figures/fig_ecbit_arch.tex`.
+- Integrated the figure into the Methodology section as Fig. `ecbit-arch`.
+- Recompiled the paper successfully after adding TikZ dependencies and the figure.
