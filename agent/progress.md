@@ -50,6 +50,9 @@
 - Implemented `src/baselines/era5_direct.py` with train-set bias correction.
 - Added `src/tests/test_era5_direct.py`.
 - Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 23 passed.
+- Implemented training/evaluation framework: `src/data/impute_dataset.py`, `src/metrics.py`, `src/train_impute.py`, and `src/evaluate_impute.py`.
+- Added `src/tests/test_training_framework.py`.
+- Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 27 passed.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |

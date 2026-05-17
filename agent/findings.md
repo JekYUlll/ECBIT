@@ -145,3 +145,12 @@ Important correction: an initial selection with only mean core completeness reta
 - The baseline estimates per-variable train-set AWS-ERA5 bias on observed positions.
 - Missing positions are filled with bias-corrected ERA5; observed AWS values are preserved exactly.
 - Full local test suite passed: 23 tests passed.
+
+## Training Framework (2026-05-18)
+
+- Implemented `src/data/impute_dataset.py` for manifest-driven station/window filtering.
+- Implemented `src/metrics.py` for per-variable and mean MAE/RMSE on artificial label masks.
+- Implemented `src/train_impute.py` for remote neural training with YAML configs, artificial block/MCAR masks, early stopping, checkpoint, and result JSON output.
+- Implemented `src/evaluate_impute.py` for neural checkpoints and stateless baselines.
+- Local tests validate dataset filtering, artificial masks, metrics, and model config construction.
+- Full local test suite passed: 27 tests passed.

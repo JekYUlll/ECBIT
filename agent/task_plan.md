@@ -25,7 +25,7 @@ Last Updated: 2026-05-18
 - [x] Implement PyPOTS SAITS and BRITS wrappers
 - [x] Implement iTransformer imputation baseline
 - [x] Implement ERA5 direct substitution baseline
-- [ ] Implement unified remote training entrypoint
+- [x] Implement unified remote training entrypoint
 - [ ] Generate experiment configs
 
 ## Phase 3 · Experiments

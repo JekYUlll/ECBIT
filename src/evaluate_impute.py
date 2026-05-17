@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""Evaluate trained neural models or stateless baselines on ECBIT windows."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+import torch
+import yaml
+from torch.utils.data import DataLoader
+
+from src.baselines.era5_direct import ERA5DirectImputer
+from src.baselines.linear_interp import linear_interpolate
+from src.baselines.locf import locf_impute
+from src.data.impute_dataset import ImputationWindowDataset
+from src.metrics import masked_mae_rmse
+from src.train_impute import artificial_mask_batch, build_model
+from src.utils.block_missing import apply_mask
+
+
+def load_config(path: str | Path) -> dict[str, Any]:
+    with open(path, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+
+def make_loader(config: dict[str, Any], split: str) -> DataLoader:
+    data_cfg = config["data"]
+    groups_key = f"{split}_station_groups"
+    groups = data_cfg.get(groups_key, ["heldout"] if split == "test" else ["main"])
+    ds = ImputationWindowDataset(
+        data_cfg.get("manifest_csv", "data/antaws_impute_manifest.csv"),
+        station_groups=groups,
+        window_splits=[split],
+        station_ids=data_cfg.get("station_ids"),
+    )
+    return DataLoader(ds, batch_size=int(config.get("eval", {}).get("batch_size", 64)), shuffle=False, num_workers=int(config.get("eval", {}).get("num_workers", 2)))
+
+
+@torch.no_grad()
+def evaluate_neural(config: dict[str, Any], checkpoint: Path, split: str) -> dict[str, float]:
+    device = torch.device(config.get("device", "cuda" if torch.cuda.is_available() else "cpu"))
+    model = build_model(config).to(device)
+    state = torch.load(checkpoint, map_location=device)
+    model.load_state_dict(state["model"])
+    model.eval()
+    loader = make_loader(config, split)
+    missing_cfg = config.get("missing", {})
+    seed = int(config.get("seed", 42))
+    preds, targets, masks = [], [], []
+    for step, batch in enumerate(loader):
+        x = batch["x"].to(device)
+        obs_mask = batch["obs_mask"].to(device)
+        era5 = batch["era5"].to(device)
+        time_enc = batch["time_enc"].to(device)
+        artificial = artificial_mask_batch(obs_mask, missing_cfg, seed + step * 100_000).to(device)
+        model_missing = torch.clamp((1.0 - obs_mask) + artificial, 0.0, 1.0)
+        x_obs = apply_mask(x, model_missing)
+        if config["model"]["name"] == "ecbit":
+            pred = model(x_obs, model_missing, era5, time_enc)
+        else:
+            pred = model(x_obs, model_missing, time_enc)
+        preds.append(pred.cpu())
+        targets.append(x.cpu())
+        masks.append(artificial.cpu())
+    return masked_mae_rmse(torch.cat(preds), torch.cat(targets), torch.cat(masks))
+
+
+@torch.no_grad()
+def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
+    loader = make_loader(config, split)
+    missing_cfg = config.get("missing", {})
+    seed = int(config.get("seed", 42))
+    name = config["model"]["name"]
+    era5_imputer = ERA5DirectImputer() if name == "era5_direct" else None
+    if era5_imputer is not None:
+        train_loader = make_loader(config, "train")
+        xs, es, ms = [], [], []
+        for batch in train_loader:
+            xs.append(batch["x"])
+            es.append(batch["era5"])
+            ms.append(batch["obs_mask"])
+        era5_imputer.fit(torch.cat(xs), torch.cat(es), torch.cat(ms))
+
+    preds, targets, masks = [], [], []
+    for step, batch in enumerate(loader):
+        x = batch["x"]
+        obs_mask = batch["obs_mask"]
+        artificial = artificial_mask_batch(obs_mask, missing_cfg, seed + step * 100_000)
+        model_obs = torch.clamp(obs_mask - artificial, 0.0, 1.0)
+        x_obs = apply_mask(x, 1.0 - model_obs)
+        if name == "linear_interp":
+            pred = linear_interpolate(x_obs, model_obs)
+        elif name == "locf":
+            pred = locf_impute(x_obs, model_obs)
+        elif name == "era5_direct":
+            assert era5_imputer is not None
+            pred = era5_imputer.impute(x_obs, batch["era5"], model_obs)
+        else:
+            raise ValueError(f"Unsupported stateless baseline: {name}")
+        preds.append(pred.cpu())
+        targets.append(x.cpu())
+        masks.append(artificial.cpu())
+    return masked_mae_rmse(torch.cat(preds), torch.cat(targets), torch.cat(masks))
+
+
+def evaluate(config: dict[str, Any], split: str, checkpoint: Path | None = None) -> dict[str, float]:
+    name = config["model"]["name"]
+    if name in {"linear_interp", "locf", "era5_direct"}:
+        return evaluate_stateless(config, split)
+    if checkpoint is None:
+        checkpoint = Path(config.get("checkpoint", "experiments/results/metrics/best.pt"))
+    return evaluate_neural(config, checkpoint, split)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--split", choices=["train", "val", "test"], default="test")
+    parser.add_argument("--checkpoint", type=Path)
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    result = evaluate(load_config(args.config), args.split, args.checkpoint)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        with open(args.output, "w", encoding="utf-8") as f:
+            json.dump(result, f, indent=2)
+
+
+if __name__ == "__main__":
+    main()
