@@ -25,8 +25,14 @@
 - ERA5 validation passed: 32/32 selected stations, no non-finite values, all shapes match AntAWS observed steps.
 - Implemented `scripts/analyze_missing_patterns.py` and generated missing-pattern CSVs under `results/missing_analysis/`.
 - Real missingness is strongly block-structured; wind and RH have the largest missing burden, supporting ECBIT's block-imputation framing.
+- Quantified complete-window feasibility and found that strict 168-step all-variable complete windows are unusable (35 total windows). Decided to implement sparse-window preprocessing with observation masks and artificial missing labels sampled only from observed positions.
+- Implemented `src/preprocess_antaws_impute.py` and generated sparse imputation windows for all 32 selected stations.
+- Preprocessing output: 41,388 retained windows at `seq_len=168`, including 34,962 main-station windows and 6,426 held-out-station windows.
+- Validation passed under the local `darts` conda environment: shape checks, finite normalized `X/E_3h/T_enc`, binary `obs_mask`, and nonzero train/val/test windows for every station.
+- Local environment note: plain `python` is not on PATH and system `python3` lacks NumPy; use `/home/horeb/miniconda3/bin/conda run -n darts python` for local data commands.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |
 |-----------|-------|--------|--------|
-| 2026-05-18 | Full AntAWS station-level ERA5 alignment not yet confirmed | open | Select stations first, then verify/download ERA5 for those coordinates |
+| 2026-05-18 | Full AntAWS station-level ERA5 alignment not yet confirmed | resolved | Downloaded and validated ERA5 3h files for all 32 selected AntAWS stations |
+| 2026-05-18 | `python` missing from PATH; system `python3` lacks NumPy | resolved | Use `/home/horeb/miniconda3/bin/conda run -n darts python` for local data scripts |

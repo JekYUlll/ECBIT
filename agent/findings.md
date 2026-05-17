@@ -76,3 +76,27 @@ Important correction: an initial selection with only mean core completeness reta
 - RH also has high missingness and extreme long blocks: main-station mean missing rate 0.301, max block 75,792 steps.
 - Temperature has many short blocks: main-station mean block length 4.27 steps, but occasional long outages still occur.
 - These findings support the ECBIT design choice of block missing simulation with long-block regimes.
+
+## Preprocessing Design Correction (2026-05-18)
+
+- A strict "all variables complete for a 168-step window" requirement is infeasible on AntAWS.
+- With 32 selected stations and stride `seq_len/4`, all-variable complete windows are:
+  - seq=24: 15,008 windows
+  - seq=56: 1,710 windows
+  - seq=84: 519 windows
+  - seq=168: 35 windows
+- Therefore, ECBIT preprocessing must keep sparse windows with observation masks rather than only `X_full` windows.
+- Training/evaluation should simulate artificial block missing only on positions where real ground truth is observed, and compute loss only on those artificially hidden observed positions.
+- This is a correction to the initial PLAN wording, but it better matches the paper title: sparse Antarctic station time series.
+
+## AntAWS Imputation Preprocessing (2026-05-18)
+
+- Implemented sparse-window preprocessing in `src/preprocess_antaws_impute.py`.
+- Output manifest: `data/antaws_impute_manifest.csv`.
+- Generated station NPZ files under `data/antaws/processed/` with fields `X`, `obs_mask`, `E_3h`, `T_enc`, `timestamps`, `window_split`, and normalization metadata.
+- Windowing configuration: `seq_len=168`, `stride=42`, `min_obs_fraction=0.25`, `min_obs_steps_per_var=12`, `min_targetable_vars=3`.
+- Total retained windows: 41,388.
+- Main stations: 27 stations, 34,962 windows, mean observed fraction 0.799.
+- Held-out stations: 5 stations, 6,426 windows, mean observed fraction 0.813.
+- Temporal split is assigned by chronological order after sparse-window filtering, so every selected station retains nonzero train/val/test windows without shuffling.
+- Validation passed: sample NPZ files have `X/E_3h/obs_mask` shape `(N,168,5)`, `T_enc` shape `(N,168,4)`, finite normalized inputs, and binary observation masks.
