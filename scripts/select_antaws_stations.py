@@ -182,6 +182,7 @@ def build_selection(
     min_years: float,
     min_t_completeness: float,
     min_core_mean: float,
+    min_core_min: float,
     target_total: int,
     n_heldout: int,
 ) -> pd.DataFrame:
@@ -217,6 +218,7 @@ def build_selection(
         & (df["record_years"] >= min_years)
         & (df["temperature_completeness"] >= min_t_completeness)
         & (df["core_mean_completeness"] >= min_core_mean)
+        & (df["core_min_completeness"] >= min_core_min)
         & df["lat"].notna()
         & df["lon"].notna()
     )
@@ -283,6 +285,7 @@ def main() -> None:
     parser.add_argument("--min-years", type=float, default=10.0)
     parser.add_argument("--min-t-completeness", type=float, default=0.70)
     parser.add_argument("--min-core-mean", type=float, default=0.50)
+    parser.add_argument("--min-core-min", type=float, default=0.20)
     parser.add_argument("--target-total", type=int, default=40)
     parser.add_argument("--heldout", type=int, default=5)
     args = parser.parse_args()
@@ -293,6 +296,7 @@ def main() -> None:
         min_years=args.min_years,
         min_t_completeness=args.min_t_completeness,
         min_core_mean=args.min_core_mean,
+        min_core_min=args.min_core_min,
         target_total=args.target_total,
         n_heldout=args.heldout,
     )

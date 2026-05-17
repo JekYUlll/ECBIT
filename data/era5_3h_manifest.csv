@@ -1,28 +1,24 @@
 station,station_id,split,expected_steps,path,exists,shape,finite,nan_count
 Theresa,theresa,main,79384,data/era5_3h/theresa_era5_3h.npz,True,79384x5,True,0
-Nico,nico,main,84736,data/era5_3h/nico_era5_3h.npz,True,84736x5,True,0
 Laurie II,laurie_ii,main,64040,data/era5_3h/laurie_ii_era5_3h.npz,True,64040x5,True,0
 aws05,aws05,main,49672,data/era5_3h/aws05_era5_3h.npz,True,49672x5,True,0
 Alessandra,alessandra,main,101824,data/era5_3h/alessandra_era5_3h.npz,True,101824x5,True,0
 Eneide,eneide,main,101808,data/era5_3h/eneide_era5_3h.npz,True,101808x5,True,0
+Vito,vito,main,52352,data/era5_3h/vito_era5_3h.npz,True,52352x5,True,0
 Howard Nunatak,howard_nunatak,main,34952,data/era5_3h/howard_nunatak_era5_3h.npz,True,34952x5,True,0
 Cape Bird,cape_bird,main,67208,data/era5_3h/cape_bird_era5_3h.npz,True,67208x5,True,0
 Margaret,margaret,main,38472,data/era5_3h/margaret_era5_3h.npz,True,38472x5,True,0
-Rita ,rita,main,84536,data/era5_3h/rita_era5_3h.npz,True,84536x5,True,0
 Arelis,arelis,main,93272,data/era5_3h/arelis_era5_3h.npz,True,93272x5,True,0
 Henry,henry,main,84736,data/era5_3h/henry_era5_3h.npz,True,84736x5,True,0
+Clean Air,clean_air,main,55768,data/era5_3h/clean_air_era5_3h.npz,True,55768x5,True,0
 Marble Point II,marble_point_ii,main,29472,data/era5_3h/marble_point_ii_era5_3h.npz,True,29472x5,True,0
 aws06,aws06,main,35064,data/era5_3h/aws06_era5_3h.npz,True,35064x5,True,0
-Marble Point,marble_point,main,122480,data/era5_3h/marble_point_era5_3h.npz,True,122480x5,True,0
 Lola,lola,main,93384,data/era5_3h/lola_era5_3h.npz,True,93384x5,True,0
 Harry,harry,main,79384,data/era5_3h/harry_era5_3h.npz,True,79384x5,True,0
-Butcher Ridge,butcher_ridge,main,38168,data/era5_3h/butcher_ridge_era5_3h.npz,True,38168x5,True,0
-Mount Sidley,mount_sidley,main,32032,data/era5_3h/mount_sidley_era5_3h.npz,True,32032x5,True,0
 Silvia,silvia,main,93048,data/era5_3h/silvia_era5_3h.npz,True,93048x5,True,0
 Sofia,sofia,main,46752,data/era5_3h/sofia_era5_3h.npz,True,46752x5,True,0
 Thurston Island,thurston_island,main,32144,data/era5_3h/thurston_island_era5_3h.npz,True,32144x5,True,0
 Manuela,manuela,main,111040,data/era5_3h/manuela_era5_3h.npz,True,111040x5,True,0
-Butler Island,butler_island,main,75496,data/era5_3h/butler_island_era5_3h.npz,True,75496x5,True,0
 aws11 ,aws11,main,35304,data/era5_3h/aws11_era5_3h.npz,True,35304x5,True,0
 Minna Bluff,minna_bluff,main,86688,data/era5_3h/minna_bluff_era5_3h.npz,True,86688x5,True,0
 Gill,gill,main,108112,data/era5_3h/gill_era5_3h.npz,True,108112x5,True,0
@@ -30,8 +26,8 @@ Lower Thwaites Glacier,lower_thwaites_glacier,main,32840,data/era5_3h/lower_thwa
 Up Thwaites Glacier,up_thwaites_glacier,main,30128,data/era5_3h/up_thwaites_glacier_era5_3h.npz,True,30128x5,True,0
 Erin,erin,main,79384,data/era5_3h/erin_era5_3h.npz,True,79384x5,True,0
 Bear Peninsula,bear_peninsula,main,32144,data/era5_3h/bear_peninsula_era5_3h.npz,True,32144x5,True,0
-Vito,vito,heldout,52352,data/era5_3h/vito_era5_3h.npz,True,52352x5,True,0
+Nico,nico,heldout,84736,data/era5_3h/nico_era5_3h.npz,True,84736x5,True,0
 Sabrina,sabrina,heldout,37736,data/era5_3h/sabrina_era5_3h.npz,True,37736x5,True,0
-Clean Air,clean_air,heldout,55768,data/era5_3h/clean_air_era5_3h.npz,True,55768x5,True,0
 Zhongshan,zhongshan,heldout,93032,data/era5_3h/zhongshan_era5_3h.npz,True,93032x5,True,0
-LGB35,lgb35,heldout,42456,data/era5_3h/lgb35_era5_3h.npz,True,42456x5,True,0
+Butcher Ridge,butcher_ridge,heldout,38168,data/era5_3h/butcher_ridge_era5_3h.npz,True,38168x5,True,0
+Mount Sidley,mount_sidley,heldout,32032,data/era5_3h/mount_sidley_era5_3h.npz,True,32032x5,True,0
