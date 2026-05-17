@@ -8,9 +8,9 @@ Last Updated: 2026-05-18
 - [x] Create project directory structure
 - [x] Write `AGENTS.md`, `CLAUDE.md`, and `README.md`
 - [x] Initialize `agent/task_plan.md`, `agent/findings.md`, and `agent/progress.md`
-- [ ] Verify skill/tool availability for ECBIT workflow
-- [ ] Test microclimate-experiment-server connectivity
-- [ ] Audit available AntAWS and ERA5 data assets
+- [x] Verify skill/tool availability for ECBIT workflow
+- [x] Test microclimate-experiment-server connectivity
+- [x] Audit available AntAWS and ERA5 data assets
 
 ## Phase 1 · Data Engineering
 - [ ] Implement AntAWS station selection script
@@ -50,7 +50,7 @@ Last Updated: 2026-05-18
 ## Blocked Issues
 | Issue | Status | Action |
 |-------|--------|--------|
-| Data asset locations not yet audited in ECBIT tree | open | Check local ECAFT data and available AntAWS/ERA5 paths before preprocessing |
+| Full-station AntAWS ERA5 alignment not yet available | open | First data task must select stations, then verify/download ERA5 for those coordinates |
 
 ## Completion Criteria
 Paper submitted to IEEE TGRS or Remote Sensing.
