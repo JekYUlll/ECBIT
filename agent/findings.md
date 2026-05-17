@@ -138,3 +138,10 @@ Important correction: an initial selection with only mean core completeness reta
 - The baseline uses the same variate-token observation stream as ECBIT but removes ERA5 conditioning entirely.
 - Added `masked_mse_loss()` to compute loss only on artificially hidden observed positions.
 - Full local test suite passed: 20 tests passed.
+
+## ERA5 Direct Baseline (2026-05-18)
+
+- Implemented `src/baselines/era5_direct.py`.
+- The baseline estimates per-variable train-set AWS-ERA5 bias on observed positions.
+- Missing positions are filled with bias-corrected ERA5; observed AWS values are preserved exactly.
+- Full local test suite passed: 23 tests passed.

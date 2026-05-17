@@ -47,6 +47,9 @@
 - Implemented `src/baselines/itransformer_impute.py` and `masked_mse_loss()`.
 - Added `src/tests/test_itransformer_impute.py`.
 - Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 20 passed.
+- Implemented `src/baselines/era5_direct.py` with train-set bias correction.
+- Added `src/tests/test_era5_direct.py`.
+- Test result: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 23 passed.
 
 ## Blocked Issues
 | Timestamp | Issue | Status | Action |
