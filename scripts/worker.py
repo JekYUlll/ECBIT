@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """ECBIT worker script for multi-GPU experiment dispatch.
 
-Routes stateless/PyPOTS models to evaluate_impute.py and neural models to train_impute.py.
+Routes stateless/PyPOTS models to evaluate_impute.py and neural models to
+train_impute.py. Per-run lock files make duplicate worker launches harmless.
 """
-import subprocess, os, sys, yaml
+import os
+import subprocess
+import sys
+import yaml
 from pathlib import Path
 
 ROOT = Path.home() / "ecbit"
@@ -52,6 +56,35 @@ def result_path(config, name):
         return ROOT / out_dir / "result.json"
     return METRICS / name / "result.json"
 
+def process_alive(pid):
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+def acquire_lock(lock_path):
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        fd = os.open(str(lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        try:
+            pid = int(lock_path.read_text().strip())
+        except (OSError, ValueError):
+            pid = -1
+        if pid > 0 and process_alive(pid):
+            return False
+        try:
+            lock_path.unlink()
+        except FileNotFoundError:
+            pass
+        fd = os.open(str(lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    with os.fdopen(fd, "w") as f:
+        f.write(str(os.getpid()))
+    return True
+
 def main():
     gpu_id = int(sys.argv[1])
     round_dir = sys.argv[2] if len(sys.argv) > 2 else "experiments/configs/round1"
@@ -68,16 +101,13 @@ def main():
 
     my_configs = remaining[gpu_id::5]
 
-    print(f"GPU {gpu_id}: {len(my_configs)} configs")
+    print(f"GPU {gpu_id}: {len(my_configs)} configs", flush=True)
     if not my_configs:
         return
 
     env = os.environ.copy()
     env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
 
-    # Reduce DataLoader workers to avoid "Too many open files"
-    # 5 GPU workers × 2 num_workers = 10 DataLoader workers total — safe within 1024 fd limit
-    NUM_WORKERS_SAFE = 2
     ok = fail = skipped = 0
     for i, cp in enumerate(my_configs):
         name = Path(cp).stem
@@ -85,39 +115,56 @@ def main():
         runner = get_runner(config)
         model_name = config.get("model", {}).get("name", "")
 
-        print(f"[{i+1}/{len(my_configs)}] {name} ({model_name}, {runner})")
+        out_json = result_path(config, name)
+        lock_path = out_json.parent / ".lock"
+        if out_json.exists():
+            skipped += 1
+            continue
+        if not acquire_lock(lock_path):
+            print(f"[{i+1}/{len(my_configs)}] SKIP locked {name}", flush=True)
+            skipped += 1
+            continue
 
-        if runner == "evaluate":
-            out_json = result_path(config, name)
-            out_json.parent.mkdir(parents=True, exist_ok=True)
-            # Route to evaluate_impute.py — stateless, no GPU needed for simple baselines
-            cmd = [
-                "python", "src/evaluate_impute.py",
-                "--config", cp,
-                "--split", "test",
-                "--output", str(out_json),
-            ]
-        else:
-            # Neural model — train on GPU
-            out_dir = METRICS / name
-            out_dir.mkdir(parents=True, exist_ok=True)
-            cmd = [
-                "python", "src/train_impute.py",
-                "--config", cp,
-            ]
+        print(f"[{i+1}/{len(my_configs)}] {name} ({model_name}, {runner})", flush=True)
 
-        with open(LOGS / f"{name}.log", 'w') as log_f:
-            rc = subprocess.run(
-                cmd,
-                cwd=str(ROOT), env=env, stdout=log_f, stderr=subprocess.STDOUT
-            ).returncode
+        try:
+            if runner == "evaluate":
+                out_json.parent.mkdir(parents=True, exist_ok=True)
+                cmd = [
+                    "python", "src/evaluate_impute.py",
+                    "--config", cp,
+                    "--split", "test",
+                    "--output", str(out_json),
+                ]
+            else:
+                cmd = [
+                    "python", "src/train_impute.py",
+                    "--config", cp,
+                ]
 
-        if rc == 0:
+            with open(LOGS / f"{name}.log", "w") as log_f:
+                rc = subprocess.run(
+                    cmd,
+                    cwd=str(ROOT), env=env, stdout=log_f, stderr=subprocess.STDOUT
+                ).returncode
+        except Exception as exc:
+            rc = 1
+            with open(LOGS / f"{name}.log", "a") as log_f:
+                print(f"WORKER_EXCEPTION: {type(exc).__name__}: {exc}", file=log_f)
+        finally:
+            if not out_json.exists():
+                try:
+                    lock_path.unlink()
+                except FileNotFoundError:
+                    pass
+
+        if rc == 0 and out_json.exists():
             ok += 1
         else:
             fail += 1
+        print(f"[{i+1}/{len(my_configs)}] {name} rc={rc} ok={ok} fail={fail} skipped={skipped}", flush=True)
 
-    print(f"GPU {gpu_id} DONE: ok={ok} fail={fail}")
+    print(f"GPU {gpu_id} DONE: ok={ok} fail={fail} skipped={skipped}", flush=True)
 
 if __name__ == "__main__":
     main()

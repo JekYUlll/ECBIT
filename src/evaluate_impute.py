@@ -86,7 +86,9 @@ def evaluate_neural(config: dict[str, Any], checkpoint: Path, split: str) -> dic
 
 @torch.no_grad()
 def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
-    loader = make_loader(config, split)
+    # Stateless baselines materialize full batches on CPU and are commonly run
+    # in parallel. Single-process loading avoids file descriptor exhaustion.
+    loader = make_loader(config, split, force_num_workers=0)
     missing_cfg = config.get("missing", {})
     seed = int(config.get("seed", 42))
     name = config["model"]["name"]

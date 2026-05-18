@@ -142,8 +142,19 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
         window_splits=["val"],
         station_ids=station_ids_for_split(data_cfg, "val"),
     )
-    train_loader = DataLoader(train_ds, batch_size=int(config["training"].get("batch_size", 32)), shuffle=True, num_workers=int(config["training"].get("num_workers", 2)))
-    val_loader = DataLoader(val_ds, batch_size=int(config["training"].get("batch_size", 32)), shuffle=False, num_workers=int(config["training"].get("num_workers", 2)))
+    num_workers = min(int(config["training"].get("num_workers", 2)), 2)
+    train_loader = DataLoader(
+        train_ds,
+        batch_size=int(config["training"].get("batch_size", 32)),
+        shuffle=True,
+        num_workers=num_workers,
+    )
+    val_loader = DataLoader(
+        val_ds,
+        batch_size=int(config["training"].get("batch_size", 32)),
+        shuffle=False,
+        num_workers=num_workers,
+    )
 
     model = build_model(config)
 
