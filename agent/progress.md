@@ -90,3 +90,7 @@
 - Partial Round1 signal: ERA5 direct is competitive for long gaps, linear interpolation is strongest for short gaps, and iTransformer is still incomplete so no final neural-baseline conclusion yet.
 - Started Round2 ECBIT ablation worker on idle GPU5 in tmux session `ecbit_round2_gpu5`.
 - Updated `scripts/worker.py` to support configurable `--world-size` and `--cuda-id` for cleaner future single-GPU or non-5-way batches.
+- Checked remote after Round1 core completion: 108/108 core results are present.
+- Synced complete Round1 core metrics locally and generated `experiments/results/tables/round1_core_runs.csv` and `round1_core_summary.csv`.
+- Complete Round1 baseline ranking by mean MAE: iTransformer 0.353, ERA5 direct 0.381, linear interpolation 0.395, LOCF 0.444.
+- Launched four additional Round2 workers on GPU1-GPU4 while avoiding GPU0, which is occupied by another user. Round2 now uses GPU1-GPU5.

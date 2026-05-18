@@ -1,0 +1,67 @@
+{
+  "best": {
+    "mae_T": 0.3013531267642975,
+    "rmse_T": 0.40484294295310974,
+    "mae_RH": 0.5572018623352051,
+    "rmse_RH": 0.7108358144760132,
+    "mae_wspd": 0.6055122017860413,
+    "rmse_wspd": 0.9237546920776367,
+    "mae_P": 0.11265745013952255,
+    "rmse_P": 0.16594918072223663,
+    "mae_q": 0.33777499198913574,
+    "rmse_q": 0.4896673858165741,
+    "mae_mean": 0.3828999400138855,
+    "rmse_mean": 0.5390099883079529,
+    "train_loss": 0.3023595193242715,
+    "epoch": 49
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round1/itransformer_long_r60_s43",
+    "runner": "train",
+    "model": {
+      "name": "itransformer",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1
+    },
+    "missing": {
+      "pattern": "long",
+      "rate": 0.6,
+      "min_block": 72,
+      "max_block": 240,
+      "variable_wise": true
+    },
+    "run_name": "itransformer_long_r60_s43"
+  }
+}
