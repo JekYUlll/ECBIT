@@ -106,3 +106,6 @@
 - Continued monitoring: Round2 advanced to 58/108 completed runs with no active-log failures.
 - Synced and regenerated `round2_partial` tables for 58 runs.
 - Current block-missing ablation signal: `full` mean MAE 0.255 over 26 runs, `no_cross` 0.256 over 8 runs, `no_era5` 0.347 over 3 runs. Full vs no-cross remains too close to call, but no-ERA5 is clearly worse in the completed subset.
+- Added `scripts/plot_round1_baselines.py` and generated `paper/figures/fig_round1_baselines.pdf/.png`.
+- Inserted the Round1 baseline comparison figure into `paper/sections/experiments.tex`.
+- Recompiled the paper successfully; output is currently 4 pages.
