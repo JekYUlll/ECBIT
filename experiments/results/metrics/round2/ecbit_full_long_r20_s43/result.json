@@ -1,0 +1,70 @@
+{
+  "best": {
+    "mae_T": 0.16805347800254822,
+    "rmse_T": 0.22116291522979736,
+    "mae_RH": 0.4486309289932251,
+    "rmse_RH": 0.5898212790489197,
+    "mae_wspd": 0.4290139079093933,
+    "rmse_wspd": 0.6640388369560242,
+    "mae_P": 0.06330462545156479,
+    "rmse_P": 0.08412554860115051,
+    "mae_q": 0.21670328080654144,
+    "rmse_q": 0.318141907453537,
+    "mae_mean": 0.26514124870300293,
+    "rmse_mean": 0.37545809149742126,
+    "train_loss": 0.1721560936348111,
+    "epoch": 41
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round2/ecbit_full_long_r20_s43",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "full",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true
+    },
+    "missing": {
+      "pattern": "long",
+      "rate": 0.2,
+      "min_block": 72,
+      "max_block": 240,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_full_long_r20_s43"
+  }
+}
