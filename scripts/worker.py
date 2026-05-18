@@ -5,8 +5,8 @@ Routes stateless/PyPOTS models to evaluate_impute.py and neural models to
 train_impute.py. Per-run lock files make duplicate worker launches harmless.
 """
 import os
+import argparse
 import subprocess
-import sys
 import yaml
 from pathlib import Path
 
@@ -86,8 +86,15 @@ def acquire_lock(lock_path):
     return True
 
 def main():
-    gpu_id = int(sys.argv[1])
-    round_dir = sys.argv[2] if len(sys.argv) > 2 else "experiments/configs/round1"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("worker_id", type=int)
+    parser.add_argument("round_dir", nargs="?", default="experiments/configs/round1")
+    parser.add_argument("--world-size", type=int, default=5)
+    parser.add_argument("--cuda-id", type=int, default=None)
+    args = parser.parse_args()
+    worker_id = args.worker_id
+    cuda_id = args.cuda_id if args.cuda_id is not None else worker_id
+    round_dir = args.round_dir
     configs = sorted((ROOT / round_dir).glob("*.yaml"), key=config_sort_key)
 
     # Skip configs that already have result.json
@@ -99,14 +106,17 @@ def main():
             continue
         remaining.append(str(cp))
 
-    my_configs = remaining[gpu_id::5]
+    my_configs = remaining[worker_id::args.world_size]
 
-    print(f"GPU {gpu_id}: {len(my_configs)} configs", flush=True)
+    print(
+        f"worker {worker_id}/{args.world_size} on cuda {cuda_id}: {len(my_configs)} configs",
+        flush=True,
+    )
     if not my_configs:
         return
 
     env = os.environ.copy()
-    env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
+    env["CUDA_VISIBLE_DEVICES"] = str(cuda_id)
 
     ok = fail = skipped = 0
     for i, cp in enumerate(my_configs):
