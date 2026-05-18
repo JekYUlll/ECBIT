@@ -86,3 +86,7 @@
 - Added `scripts/recover_partial.py`; recovered 2 completed iTransformer results from `best.pt`.
 - Test result after local scheduler fixes: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 29 passed.
 - Relaunched Round1 core on the remote server in tmux session `ecbit_round1_core` with 5 locked workers.
+- Synced 85 completed Round1 core metrics back locally and generated `experiments/results/tables/round1_partial_runs.csv` plus `round1_partial_summary.csv`.
+- Partial Round1 signal: ERA5 direct is competitive for long gaps, linear interpolation is strongest for short gaps, and iTransformer is still incomplete so no final neural-baseline conclusion yet.
+- Started Round2 ECBIT ablation worker on idle GPU5 in tmux session `ecbit_round2_gpu5`.
+- Updated `scripts/worker.py` to support configurable `--world-size` and `--cuda-id` for cleaner future single-GPU or non-5-way batches.

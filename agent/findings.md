@@ -195,3 +195,5 @@ Important correction: an initial selection with only mean core completeness reta
 - The fix is operational: stateless evaluation now uses single-process DataLoader workers, neural training caps DataLoader workers at 2, and `scripts/worker.py` uses per-run `.lock` files so duplicate launches skip already-running configs.
 - `scripts/recover_partial.py` recovered 2 iTransformer `result.json` files from completed `best.pt` checkpoints after interrupted workers.
 - Round1 core was relaunched in a `tmux` session named `ecbit_round1_core`.
+- Partial Round1 core aggregation over 85 completed runs shows ERA5 direct mean MAE 0.381, linear interpolation 0.395, LOCF 0.444, and incomplete iTransformer 0.402 over 4 runs. The model ranking is not final because iTransformer has only 4/27 completed runs.
+- The pattern-level trade-off is already informative: linear interpolation is best on short gaps, while ERA5 direct is substantially better than interpolation/LOCF on long gaps. This supports ECBIT's conditional-use framing for ERA5.
