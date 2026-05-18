@@ -31,7 +31,7 @@ def load_config(path: str | Path) -> dict[str, Any]:
         return yaml.safe_load(f)
 
 
-def make_loader(config: dict[str, Any], split: str) -> DataLoader:
+def make_loader(config: dict[str, Any], split: str, force_num_workers: int | None = None) -> DataLoader:
     data_cfg = config["data"]
     groups_key = f"{split}_station_groups"
     groups = data_cfg.get(groups_key, ["heldout"] if split == "test" else ["main"])
@@ -41,7 +41,15 @@ def make_loader(config: dict[str, Any], split: str) -> DataLoader:
         window_splits=[split],
         station_ids=station_ids_for_split(data_cfg, split),
     )
-    return DataLoader(ds, batch_size=int(config.get("eval", {}).get("batch_size", 64)), shuffle=False, num_workers=int(config.get("eval", {}).get("num_workers", 2)))
+    num_workers = int(config.get("eval", {}).get("num_workers", 2))
+    if force_num_workers is not None:
+        num_workers = force_num_workers
+    return DataLoader(
+        ds,
+        batch_size=int(config.get("eval", {}).get("batch_size", 64)),
+        shuffle=False,
+        num_workers=num_workers,
+    )
 
 
 @torch.no_grad()
@@ -51,7 +59,10 @@ def evaluate_neural(config: dict[str, Any], checkpoint: Path, split: str) -> dic
     state = torch.load(checkpoint, map_location=device)
     model.load_state_dict(state["model"])
     model.eval()
-    loader = make_loader(config, split)
+    # Stateless and PyPOTS baselines repeatedly materialize full train/test
+    # arrays. Keep loading single-process to avoid file-descriptor exhaustion
+    # when multiple remote workers run concurrently.
+    loader = make_loader(config, split, force_num_workers=0)
     missing_cfg = config.get("missing", {})
     seed = int(config.get("seed", 42))
     preds, targets, masks = [], [], []
@@ -90,7 +101,7 @@ def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
             **model_cfg.get("model_kwargs", {}),
         )
     if era5_imputer is not None or pypots_imputer is not None:
-        train_loader = make_loader(config, "train")
+        train_loader = make_loader(config, "train", force_num_workers=0)
         xs, es, ms = [], [], []
         for batch in train_loader:
             xs.append(batch["x"])

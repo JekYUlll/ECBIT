@@ -12,6 +12,15 @@ LOGS = ROOT / "experiments/logs"
 
 STATELESS_MODELS = {"linear_interp", "locf", "era5_direct", "saits", "brits"}
 NEURAL_MODELS = {"itransformer", "ecbit"}
+MODEL_PRIORITY = {
+    "linear_interp": 0,
+    "locf": 1,
+    "era5_direct": 2,
+    "itransformer": 3,
+    "ecbit": 4,
+    "saits": 8,
+    "brits": 9,
+}
 
 def load_config(path):
     with open(path, "r") as f:
@@ -32,10 +41,15 @@ def get_runner(config):
 def get_run_name(config_path):
     return Path(config_path).stem
 
+def config_sort_key(path):
+    config = load_config(path)
+    model_name = str(config.get("model", {}).get("name", ""))
+    return (MODEL_PRIORITY.get(model_name, 99), Path(path).name)
+
 def main():
     gpu_id = int(sys.argv[1])
     round_dir = sys.argv[2] if len(sys.argv) > 2 else "experiments/configs/round1"
-    configs = sorted((ROOT / round_dir).glob("*.yaml"))
+    configs = sorted((ROOT / round_dir).glob("*.yaml"), key=config_sort_key)
 
     # Skip configs that already have result.json
     remaining = []
