@@ -204,3 +204,5 @@ Important correction: an initial selection with only mean core completeness reta
 - Over 26 completed runs, `full` has mean MAE 0.258 over 16 block-missing runs and `no_cross` has mean MAE 0.256 over 5 block-missing runs.
 - `no_blockmask` has lower mean MAE over 5 runs, but those runs use MCAR masks and should not be compared directly against block-missing `full/no_cross` runs.
 - Active Round2 logs show continued convergence and no new runtime failures.
+- Updated 58-run snapshot: `full` mean MAE 0.255 over 26 block-missing runs, `no_cross` 0.256 over 8 block-missing runs, and `no_era5` 0.347 over 3 block-missing runs.
+- Current interpretation: ERA5 conditioning appears useful relative to no-ERA5, but the cross-attention mechanism has not yet separated from the no-cross fusion ablation. Wait for the full 108-run Round2 matrix before final claims.

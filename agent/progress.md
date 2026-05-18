@@ -103,3 +103,6 @@
 - Synced 26 completed Round2 metrics locally and generated `experiments/results/tables/round2_partial_runs.csv` plus `round2_partial_summary.csv`.
 - Partial Round2 status: `full` 16 runs, `no_cross` 5 runs, `no_blockmask` 5 runs. `no_blockmask` uses MCAR masks, so it is not directly comparable to block-missing `full/no_cross` results.
 - No new remote Traceback, OOM, or RuntimeError found in active Round2 logs.
+- Continued monitoring: Round2 advanced to 58/108 completed runs with no active-log failures.
+- Synced and regenerated `round2_partial` tables for 58 runs.
+- Current block-missing ablation signal: `full` mean MAE 0.255 over 26 runs, `no_cross` 0.256 over 8 runs, `no_era5` 0.347 over 3 runs. Full vs no-cross remains too close to call, but no-ERA5 is clearly worse in the completed subset.
