@@ -94,3 +94,12 @@
 - Synced complete Round1 core metrics locally and generated `experiments/results/tables/round1_core_runs.csv` and `round1_core_summary.csv`.
 - Complete Round1 baseline ranking by mean MAE: iTransformer 0.353, ERA5 direct 0.381, linear interpolation 0.395, LOCF 0.444.
 - Launched four additional Round2 workers on GPU1-GPU4 while avoiding GPU0, which is occupied by another user. Round2 now uses GPU1-GPU5.
+
+## Session: 2026-05-19
+
+### Phase 3 · Experiments
+- Checked remote experiment status: Round1 core remains complete at 108/108.
+- Round2 ablations are actively running on GPU1-GPU5; GPU0 is occupied by another user's process and is intentionally avoided.
+- Synced 26 completed Round2 metrics locally and generated `experiments/results/tables/round2_partial_runs.csv` plus `round2_partial_summary.csv`.
+- Partial Round2 status: `full` 16 runs, `no_cross` 5 runs, `no_blockmask` 5 runs. `no_blockmask` uses MCAR masks, so it is not directly comparable to block-missing `full/no_cross` results.
+- No new remote Traceback, OOM, or RuntimeError found in active Round2 logs.

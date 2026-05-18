@@ -197,3 +197,10 @@ Important correction: an initial selection with only mean core completeness reta
 - Round1 core was relaunched in a `tmux` session named `ecbit_round1_core`.
 - Complete Round1 core aggregation over 108 runs shows iTransformer mean MAE 0.353, ERA5 direct 0.381, linear interpolation 0.395, and LOCF 0.444.
 - The pattern-level trade-off remains informative: linear interpolation is best among stateless methods on short gaps, while ERA5 direct is substantially better than interpolation/LOCF on long gaps. iTransformer is strongest overall but still worse than ERA5 direct on the easiest long-gap low-rate setting. This supports ECBIT's conditional-use framing for ERA5.
+
+## Round2 Partial Ablation Snapshot (2026-05-19)
+
+- Round2 is still incomplete, so these are monitoring signals rather than final conclusions.
+- Over 26 completed runs, `full` has mean MAE 0.258 over 16 block-missing runs and `no_cross` has mean MAE 0.256 over 5 block-missing runs.
+- `no_blockmask` has lower mean MAE over 5 runs, but those runs use MCAR masks and should not be compared directly against block-missing `full/no_cross` runs.
+- Active Round2 logs show continued convergence and no new runtime failures.
