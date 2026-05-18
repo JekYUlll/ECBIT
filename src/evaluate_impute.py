@@ -5,12 +5,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 import torch
 import yaml
 from torch.utils.data import DataLoader
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.baselines.era5_direct import ERA5DirectImputer
 from src.baselines.linear_interp import linear_interpolate
