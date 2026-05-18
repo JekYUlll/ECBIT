@@ -50,6 +50,15 @@ def build_model(config: dict[str, Any]) -> torch.nn.Module:
         "dropout": float(model_cfg.get("dropout", 0.1)),
     }
     name = str(model_cfg["name"])
+
+    # Stateless / non-trainable baselines — must be evaluated, not trained
+    STATELESS = {"linear_interp", "locf", "era5_direct", "saits", "brits"}
+    if name in STATELESS:
+        raise RuntimeError(
+            f"Model '{name}' is a stateless/non-trainable baseline. "
+            f"Use 'python src/evaluate_impute.py --config <config> --split test' instead of train_impute.py."
+        )
+
     if name == "ecbit":
         return ECBIT(
             **common,
@@ -58,23 +67,6 @@ def build_model(config: dict[str, Any]) -> torch.nn.Module:
         )
     if name == "itransformer":
         return ITransformerImputer(**common)
-    if name == "saits":
-        from src.baselines.saits_wrapper import SAITSImputer
-        return SAITSImputer(
-            n_steps=model_cfg.get("seq_len", 168),
-            n_features=model_cfg.get("n_vars", 5),
-            model_kwargs=common,
-        )
-    if name == "brits":
-        from src.baselines.brits_wrapper import BRITSImputer
-        return BRITSImputer(
-            n_steps=model_cfg.get("seq_len", 168),
-            n_features=model_cfg.get("n_vars", 5),
-            model_kwargs=common,
-        )
-    if name == "era5_direct":
-        from src.baselines.era5_direct import ERA5DirectImputer
-        return ERA5DirectImputer(**{k: v for k, v in common.items() if k != "seq_len"})
     raise ValueError(f"Unsupported neural model: {name}")
 
 
@@ -155,33 +147,15 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
 
     model = build_model(config)
 
-    # Handle PyPOTS models (SAITS, BRITS) vs torch models
+    # Handle PyPOTS models (SAITS, BRITS) — these are dispatched via evaluate_impute.py
+    # NOTE: PyPOTS models should be evaluated with evaluate_impute.py, not train_impute.py.
+    # This path is retained for backward compatibility but will raise an error.
     is_pypots = hasattr(model, 'fit') and not isinstance(model, torch.nn.Module)
     if is_pypots:
-        print(f"PyPOTS model detected — using fit/impute interface")
-        import numpy as np
-        # Train
-        model.fit(None, None)  # Dummy — real fit happens inside evaluate
-        # Evaluate
-        val_loader_np = [(b['x'].numpy(), b.get('obs_mask', np.ones_like(b['x'])).numpy()) for b in val_loader]
-        all_preds, all_targs, all_masks = [], [], []
-        for x_np, mask_np in val_loader_np:
-            imp = model.impute(x_np, mask_np)
-            all_preds.append(torch.from_numpy(imp))
-            all_targs.append(torch.from_numpy(x_np))
-            all_masks.append(torch.from_numpy(mask_np))
-        results = masked_mae_rmse(torch.cat(all_preds), torch.cat(all_targs), torch.cat(all_masks))
-        results['epoch'] = 0
-        results['train_loss'] = float(results['mae_mean'])
-        print(json.dumps(results, sort_keys=True))
-        # Save
-        out_dir = Path(config.get("output_dir", "experiments/results/metrics"))
-        out_dir.mkdir(parents=True, exist_ok=True)
-        rname = config.get("run_name", "test")
-        with open(out_dir / f"{rname}.json", "w") as f:
-            json.dump({"config": config, "results": results, "run_name": rname}, f)
-        print(f"PyPOTS results saved: {out_dir / f'{rname}.json'}")
-        return results
+        raise RuntimeError(
+            "PyPOTS models (SAITS/BRITS) should be evaluated using evaluate_impute.py, not train_impute.py. "
+            "Install PyPOTS first: pip install pypots"
+        )
 
     model = model.to(device)
     optimizer = torch.optim.AdamW(
