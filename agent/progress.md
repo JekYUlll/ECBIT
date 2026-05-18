@@ -109,3 +109,5 @@
 - Added `scripts/plot_round1_baselines.py` and generated `paper/figures/fig_round1_baselines.pdf/.png`.
 - Inserted the Round1 baseline comparison figure into `paper/sections/experiments.tex`.
 - Recompiled the paper successfully; output is currently 4 pages.
+- Added `scripts/make_round1_table.py` and generated `paper/tables/tab_round1_baselines.tex`.
+- Inserted the Round1 core baseline table into the Experiments section and recompiled successfully.

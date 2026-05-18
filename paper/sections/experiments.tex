@@ -20,5 +20,7 @@ Round 1 compares six baselines: linear interpolation, last-observation-carried-f
   \label{fig:round1-baselines}
 \end{figure*}
 
+\input{tables/tab_round1_baselines}
+
 \subsection{Implementation Status}
 The data pipeline, model implementations, training/evaluation entrypoints, and 315 YAML experiment configurations have been implemented. Round 1 core baselines are complete for interpolation, last-observation-carried-forward, ERA5 direct substitution, and iTransformer. SAITS and BRITS are scheduled as heavier PyPOTS baselines after the core neural ablations finish. Round 2 ECBIT ablations are currently running on the remote GPU server. Completed Round 1 results show a consistent trade-off: ERA5 direct substitution is competitive for long block gaps, while linear interpolation is strongest among stateless methods for short gaps. This supports the central ECBIT hypothesis that ERA5 is useful primarily as a conditional prior during outages rather than as an unconditional replacement for station observations.

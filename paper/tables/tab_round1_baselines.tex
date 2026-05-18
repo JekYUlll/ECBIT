@@ -1,0 +1,15 @@
+\begin{table}[t]
+  \centering
+  \caption{Round 1 core baseline results averaged over block-missing patterns, missing rates, and seeds. Lower is better.}
+  \label{tab:round1-baselines}
+  \begin{tabular}{lcc}
+    \toprule
+    Method & MAE & RMSE \\
+    \midrule
+    Linear interpolation & 0.395 $\pm$ 0.077 & 0.596 $\pm$ 0.104 \\
+    LOCF & 0.444 $\pm$ 0.049 & 0.665 $\pm$ 0.062 \\
+    ERA5 direct & 0.381 $\pm$ 0.001 & 0.548 $\pm$ 0.001 \\
+    iTransformer & \textbf{0.353 $\pm$ 0.036} & \textbf{0.498 $\pm$ 0.046} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
