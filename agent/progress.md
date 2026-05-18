@@ -75,5 +75,14 @@
 | 2026-05-18 | `python` missing from PATH; system `python3` lacks NumPy | resolved | Use `/home/horeb/miniconda3/bin/conda run -n darts python` for local data scripts |
 | 2026-05-18 | `src` not importable during pytest collection | resolved | Added `src/__init__.py`, `src/utils/__init__.py`, and `src/tests/__init__.py` |
 | 2026-05-18 | PyPOTS missing from local `darts` environment | open | Wrappers use lazy import; verify/install dependency before remote SAITS/BRITS jobs |
-| 2026-05-18 | Remote SSH authentication unavailable | open | Ping succeeds; SSH requires credentials and `SSHPASS` is not set. Continue local paper/analysis while blocked |
+| 2026-05-18 | Remote SSH authentication unavailable | resolved | Verified skill credential fallback; server login, GPUs, conda `darts`, and PyPOTS import work |
 | 2026-05-18 | `latexmk` run from wrong directory after figure generation | resolved | Reran `latexmk` from `paper/`; compile succeeded |
+
+### Remote Round1 Recovery
+- Verified that `.claude/skills/microclimate-experiment-server` can use the server normally when its credential fallback is followed.
+- Diagnosed the apparent server problem as an SSH probing issue plus duplicated remote worker launches, not a GPU-server outage.
+- Stopped 56 duplicate remote worker/evaluation processes that were repeatedly launching the same LOCF configs.
+- Added per-run lock files to `scripts/worker.py` and capped DataLoader workers to prevent file descriptor exhaustion.
+- Added `scripts/recover_partial.py`; recovered 2 completed iTransformer results from `best.pt`.
+- Test result after local scheduler fixes: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 29 passed.
+- Relaunched Round1 core on the remote server in tmux session `ecbit_round1_core` with 5 locked workers.

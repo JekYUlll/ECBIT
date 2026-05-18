@@ -185,3 +185,13 @@ Important correction: an initial selection with only mean core completeness reta
 - Added TikZ architecture figure at `paper/figures/fig_ecbit_arch.tex`.
 - Integrated the figure into the Methodology section as Fig. `ecbit-arch`.
 - Recompiled the paper successfully after adding TikZ dependencies and the figure.
+
+## Remote Experiment Diagnosis (2026-05-18)
+
+- The GPU server is usable via the `microclimate-experiment-server` credential fallback. The earlier SSH failure was caused by password authentication being disabled by BatchMode-style probing, not by a server or VPN outage.
+- Remote `darts` sees 6 RTX 4090 GPUs and imports PyPOTS successfully.
+- Initial Round1 failures were implementation/routing issues rather than scientific failures: stateless baselines were sent through the neural trainer, PyPOTS/BRITS code paths were mixed with training logic, and result paths were inconsistent.
+- A later Round1 run exposed a scheduling issue: duplicate worker batches launched concurrently and repeatedly started the same LOCF configs, creating many evaluation processes.
+- The fix is operational: stateless evaluation now uses single-process DataLoader workers, neural training caps DataLoader workers at 2, and `scripts/worker.py` uses per-run `.lock` files so duplicate launches skip already-running configs.
+- `scripts/recover_partial.py` recovered 2 iTransformer `result.json` files from completed `best.pt` checkpoints after interrupted workers.
+- Round1 core was relaunched in a `tmux` session named `ecbit_round1_core`.

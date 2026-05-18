@@ -52,7 +52,8 @@ Last Updated: 2026-05-18
 |-------|--------|--------|
 | Full-station AntAWS ERA5 alignment not yet available | resolved | Downloaded/aligned ERA5 point time series for all 32 selected stations |
 | PyPOTS not installed in local `darts` environment | open | Wrappers implemented with lazy import; verify/install PyPOTS before SAITS/BRITS remote jobs |
-| Remote SSH authentication unavailable | open | Server is reachable by ping, but SSH requires credentials; continue local paper/analysis until credentials are available |
+| Remote SSH authentication unavailable | resolved | microclimate-experiment-server credential fallback works; server login, conda `darts`, PyPOTS import, and GPU visibility verified |
+| Duplicate Round1 worker launches caused repeated LOCF jobs | resolved | Stopped duplicate remote processes, added per-run lock files to `scripts/worker.py`, and relaunched Round1 core in tmux |
 
 ## Completion Criteria
 Paper submitted to IEEE TGRS or Remote Sensing.
