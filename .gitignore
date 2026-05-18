@@ -229,6 +229,10 @@ data/imau/*
 !data/era5_3h/.gitkeep
 !data/imau/.gitkeep
 
+# Experiment runtime artifacts
+experiments/results/metrics/**/*.pt
+experiments/results/metrics/**/.lock
+
 # LaTeX build artifacts
 paper/*.aux
 paper/*.bbl
