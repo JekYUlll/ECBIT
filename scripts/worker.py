@@ -46,6 +46,12 @@ def config_sort_key(path):
     model_name = str(config.get("model", {}).get("name", ""))
     return (MODEL_PRIORITY.get(model_name, 99), Path(path).name)
 
+def result_path(config, name):
+    out_dir = config.get("output_dir")
+    if out_dir:
+        return ROOT / out_dir / "result.json"
+    return METRICS / name / "result.json"
+
 def main():
     gpu_id = int(sys.argv[1])
     round_dir = sys.argv[2] if len(sys.argv) > 2 else "experiments/configs/round1"
@@ -55,9 +61,8 @@ def main():
     remaining = []
     for cp in configs:
         name = Path(cp).stem
-        result_json = METRICS / name / "result.json"
-        flat_json = METRICS / f"{name}.json"
-        if result_json.exists() or flat_json.exists():
+        config = load_config(cp)
+        if result_path(config, name).exists():
             continue
         remaining.append(str(cp))
 
@@ -69,6 +74,10 @@ def main():
 
     env = os.environ.copy()
     env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
+
+    # Reduce DataLoader workers to avoid "Too many open files"
+    # 5 GPU workers × 2 num_workers = 10 DataLoader workers total — safe within 1024 fd limit
+    NUM_WORKERS_SAFE = 2
     ok = fail = skipped = 0
     for i, cp in enumerate(my_configs):
         name = Path(cp).stem
@@ -79,12 +88,14 @@ def main():
         print(f"[{i+1}/{len(my_configs)}] {name} ({model_name}, {runner})")
 
         if runner == "evaluate":
+            out_json = result_path(config, name)
+            out_json.parent.mkdir(parents=True, exist_ok=True)
             # Route to evaluate_impute.py — stateless, no GPU needed for simple baselines
             cmd = [
                 "python", "src/evaluate_impute.py",
                 "--config", cp,
                 "--split", "test",
-                "--output", f"experiments/results/metrics/{name}.json",
+                "--output", str(out_json),
             ]
         else:
             # Neural model — train on GPU
