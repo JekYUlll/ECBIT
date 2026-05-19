@@ -1,0 +1,87 @@
+{
+  "best": {
+    "mae_T": 0.1676321029663086,
+    "rmse_T": 0.22045336663722992,
+    "mae_RH": 0.4467126429080963,
+    "rmse_RH": 0.586829423904419,
+    "mae_wspd": 0.41901177167892456,
+    "rmse_wspd": 0.6487252712249756,
+    "mae_P": 0.058562271296978,
+    "rmse_P": 0.07669064402580261,
+    "mae_q": 0.21136683225631714,
+    "rmse_q": 0.30903902649879456,
+    "mae_mean": 0.2606571316719055,
+    "rmse_mean": 0.36834755539894104,
+    "train_loss": 0.164664931702458,
+    "epoch": 45
+  },
+  "test": {
+    "mae_T": 0.1774931102991104,
+    "rmse_T": 0.23158180713653564,
+    "mae_RH": 0.48482468724250793,
+    "rmse_RH": 0.5460348725318909,
+    "mae_wspd": 0.2191656231880188,
+    "rmse_wspd": 0.27884671092033386,
+    "mae_P": 0.07571389526128769,
+    "rmse_P": 0.09216681122779846,
+    "mae_q": 0.05522328242659569,
+    "rmse_q": 0.07415677607059479,
+    "mae_mean": 0.202484130859375,
+    "rmse_mean": 0.24455738067626953
+  },
+  "config": {
+    "seed": 43,
+    "device": "cpu",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "test_station_ids": [
+        "nico"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round3/ecbit_full_heldout_nico_long_s43",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "full",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true
+    },
+    "missing": {
+      "pattern": "long",
+      "rate": 0.4,
+      "min_block": 72,
+      "max_block": 240,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_full_heldout_nico_long_s43"
+  }
+}

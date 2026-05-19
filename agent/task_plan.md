@@ -1,7 +1,7 @@
 # ECBIT Task Plan
 Goal: Submit ERA5-Conditioned Block Imputation paper to IEEE TGRS or Remote Sensing.
 Current Phase: Phase 3 — Experiments / Phase 5 — Paper Writing
-Last Updated: 2026-05-19
+Last Updated: 2026-05-20
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository

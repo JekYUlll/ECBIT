@@ -1,36 +1,36 @@
 {
   "best": {
-    "mae_T": 0.15667355060577393,
-    "rmse_T": 0.20708614587783813,
-    "mae_RH": 0.41557222604751587,
-    "rmse_RH": 0.5509764552116394,
-    "mae_wspd": 0.40605056285858154,
-    "rmse_wspd": 0.6301683187484741,
-    "mae_P": 0.05091295391321182,
-    "rmse_P": 0.0686129555106163,
-    "mae_q": 0.20055647194385529,
-    "rmse_q": 0.2928936183452606,
-    "mae_mean": 0.24595315754413605,
-    "rmse_mean": 0.3499475121498108,
-    "train_loss": 0.14761234516996183,
+    "mae_T": 0.1579393893480301,
+    "rmse_T": 0.20841717720031738,
+    "mae_RH": 0.41533249616622925,
+    "rmse_RH": 0.5523508787155151,
+    "mae_wspd": 0.41129812598228455,
+    "rmse_wspd": 0.6417582631111145,
+    "mae_P": 0.05423114076256752,
+    "rmse_P": 0.07976678758859634,
+    "mae_q": 0.20313800871372223,
+    "rmse_q": 0.29748252034187317,
+    "mae_mean": 0.24838784337043762,
+    "rmse_mean": 0.3559551239013672,
+    "train_loss": 0.14854736710880317,
     "epoch": 49
   },
   "test": {
-    "mae_T": 0.21098795533180237,
-    "rmse_T": 0.2706686556339264,
-    "mae_RH": 0.5697706341743469,
-    "rmse_RH": 0.7039340138435364,
-    "mae_wspd": 0.5194419622421265,
-    "rmse_wspd": 0.7804551720619202,
-    "mae_P": 0.08645590394735336,
-    "rmse_P": 0.1075531616806984,
-    "mae_q": 0.21692664921283722,
-    "rmse_q": 0.3070923089981079,
-    "mae_mean": 0.32071664929389954,
-    "rmse_mean": 0.4339406490325928
+    "mae_T": 0.21463066339492798,
+    "rmse_T": 0.2719389498233795,
+    "mae_RH": 0.553538978099823,
+    "rmse_RH": 0.679114043712616,
+    "mae_wspd": 0.5106809735298157,
+    "rmse_wspd": 0.7842407822608948,
+    "mae_P": 0.06988400220870972,
+    "rmse_P": 0.0887974202632904,
+    "mae_q": 0.22858762741088867,
+    "rmse_q": 0.3191699981689453,
+    "mae_mean": 0.31546443700790405,
+    "rmse_mean": 0.42865219712257385
   },
   "config": {
-    "seed": 42,
+    "seed": 44,
     "device": "cpu",
     "data": {
       "manifest_csv": "data/antaws_impute_manifest.csv",
@@ -59,7 +59,7 @@
       "batch_size": 64,
       "num_workers": 4
     },
-    "output_dir": "experiments/results/metrics/round3/ecbit_full_heldout_mount_sidley_short_s42",
+    "output_dir": "experiments/results/metrics/round3/ecbit_full_heldout_mount_sidley_short_s44",
     "runner": "train",
     "model": {
       "name": "ecbit",
@@ -82,6 +82,6 @@
       "max_block": 24,
       "variable_wise": true
     },
-    "run_name": "ecbit_full_heldout_mount_sidley_short_s42"
+    "run_name": "ecbit_full_heldout_mount_sidley_short_s44"
   }
 }

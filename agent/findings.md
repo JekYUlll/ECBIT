@@ -237,3 +237,9 @@ Important correction: an initial selection with only mean core completeness reta
 - The project direction remains viable because the ERA5 information signal is large: no-ERA5 is far worse than either ERA5-conditioned variant.
 - Architectural response: introduce gated feature injection as the new primary ECBIT fusion path. It projects ERA5 tokens into the AWS token space and uses a learned vector gate multiplied by the missing-variable mask, so observed variables remain independent of ERA5 while missing variables can draw on reanalysis context.
 - New experiment matrix `round2_gated` will test whether gated feature injection improves over concat no-cross. If it does not, the paper claim should shift to: lightweight ERA5 conditioning is sufficient; the value lies in the ERA5 information and block-missing setup rather than a complex fusion mechanism.
+
+## Gated Ablation Monitoring (2026-05-20)
+
+- `round2_gated` has started successfully on the remote server and has produced 5/108 completed runs.
+- The first 5 completed runs are all `full` long-gap configurations. Mean MAE is 0.2673; matched against old no-cross rows, the early delta is +0.0015 MAE. This is only a smoke signal, not enough for a conclusion.
+- Round3 partial held-out test metrics now cover 23/45 runs after re-running checkpoint recovery on newly completed jobs. Station difficulty is heterogeneous: Nico is easiest so far (0.1936), Butcher Ridge intermediate (0.2893), Mount Sidley hardest (0.3500).

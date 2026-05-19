@@ -137,3 +137,13 @@
 - Local verification after gated injection implementation: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 31 passed.
 - Synced gated-injection code/configs to the remote server and verified remote targeted tests pass: 7 passed.
 - Launched remote tmux session `ecbit_round2_gated_gpus1_5` on GPU1-GPU5 for the 108-run gated ablation matrix. Initial status: all five workers entered their first `ecbit_full_*` configs with no immediate Traceback/OOM/Killed errors.
+
+## Session: 2026-05-20
+
+### Phase 3 · Experiments
+- Checked remote experiments: `round2_gated` is running in tmux session `ecbit_round2_gated_gpus1_5`; Round3 continues in `ecbit_round3_gpu5` and `ecbit_round3_gpus1_4`.
+- Remote status at check: `round2_gated` 5/108 complete, Round3 23/45 complete, no Traceback/OOM/Killed entries in active logs.
+- Synced 5 gated-injection results and generated `experiments/results/tables/round2_gated_partial_runs.csv` plus `round2_gated_partial_summary.csv`.
+- Smoke signal for gated injection is too early to conclude: first 5 long-gap full runs have mean MAE 0.2673, about +0.0015 versus matched old no-cross rows.
+- Detected that 4 newly completed Round3 results did not yet contain `test` metrics because some workers were started before the metric-semantics patch. Ran remote `recover_partial.py --metrics-dir experiments/results/metrics/round3 --overwrite --completed-only --device cpu`; Round3 now has 23/23 completed result files with `test` metrics.
+- Re-synced and regenerated `round3_partial` tables. Current held-out station mean MAE: Butcher Ridge 0.2893 over 9 runs, Mount Sidley 0.3500 over 9 runs, Nico 0.1936 over 5 runs.
