@@ -131,3 +131,7 @@
 - Regenerated Round1 and Round2 aggregate CSVs, tables, and figures using test metrics.
 - Corrected Round1 test ranking: iTransformer 0.3599, ERA5 direct 0.3811, linear interpolation 0.3955, LOCF 0.4443.
 - Corrected Round2 block-missing test MAE: `no_cross` 0.2581, `full` 0.2596, `no_era5` 0.3462. The prior qualitative conclusion still holds: ERA5 helps; cross-attention is tied with no-cross.
+- Reframed the architecture response to the Round2 result: keep ERA5 conditioning as the core contribution, but replace the new primary ECBIT fusion path with gated feature injection for the next ablation round.
+- Implemented `GatedFeatureInjection` in `src/models/ecbit.py` with missing-variable gating, retained `cross_attn` for backward-compatible old configurations, and kept `concat` as the explicit no-cross lightweight fusion baseline.
+- Added `fusion_type` support to `train_impute.py` and generated a new `experiments/configs/round2_gated/` matrix with 108 runs targeting `experiments/results/metrics/round2_gated/`.
+- Local verification after gated injection implementation: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 31 passed.

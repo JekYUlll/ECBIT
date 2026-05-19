@@ -64,6 +64,7 @@ def build_model(config: dict[str, Any]) -> torch.nn.Module:
             **common,
             use_era5=bool(model_cfg.get("use_era5", True)),
             use_cross=bool(model_cfg.get("use_cross", True)),
+            fusion_type=model_cfg.get("fusion_type"),
         )
     if name == "itransformer":
         return ITransformerImputer(**common)

@@ -78,6 +78,27 @@ class ConditionalCrossAttention(nn.Module):
         return self.norm(z_obs + gate * self.dropout(cross_out))
 
 
+class GatedFeatureInjection(nn.Module):
+    """Inject ERA5 tokens through a missing-variable gated feature blend."""
+
+    def __init__(self, d_model: int, dropout: float = 0.1) -> None:
+        super().__init__()
+        self.era5_proj = nn.Linear(d_model, d_model)
+        self.gate = nn.Sequential(nn.Linear(d_model * 2, d_model), nn.Sigmoid())
+        self.dropout = nn.Dropout(dropout)
+        self.norm = nn.LayerNorm(d_model)
+
+    def forward(self, z_obs: torch.Tensor, z_era5: torch.Tensor, missing_vars: torch.Tensor) -> torch.Tensor:
+        if z_obs.shape != z_era5.shape:
+            raise ValueError(f"z_obs shape {tuple(z_obs.shape)} != z_era5 shape {tuple(z_era5.shape)}")
+        if missing_vars.shape != z_obs.shape[:2]:
+            raise ValueError(f"missing_vars shape {tuple(missing_vars.shape)} incompatible with {tuple(z_obs.shape)}")
+        era5_delta = self.era5_proj(z_era5)
+        soft_gate = self.gate(torch.cat([z_obs, z_era5], dim=-1))
+        missing_gate = missing_vars.to(dtype=z_obs.dtype).unsqueeze(-1)
+        return self.norm(z_obs + missing_gate * self.dropout(soft_gate * era5_delta))
+
+
 class ECBIT(nn.Module):
     """ERA5-conditioned variate-token transformer for sparse block imputation."""
 
@@ -93,6 +114,7 @@ class ECBIT(nn.Module):
         dropout: float = 0.1,
         use_era5: bool = True,
         use_cross: bool = True,
+        fusion_type: str | None = None,
     ) -> None:
         super().__init__()
         self.seq_len = seq_len
@@ -100,6 +122,13 @@ class ECBIT(nn.Module):
         self.n_time = n_time
         self.use_era5 = use_era5
         self.use_cross = use_cross
+        if fusion_type is None:
+            fusion_type = "cross_attn" if use_cross else "concat"
+        if not use_era5:
+            fusion_type = "none"
+        if fusion_type not in {"cross_attn", "gated", "concat", "none"}:
+            raise ValueError(f"Unsupported fusion_type: {fusion_type}")
+        self.fusion_type = fusion_type
 
         self.obs_encoder = VariateTokenEncoder(
             seq_len=seq_len,
@@ -122,9 +151,11 @@ class ECBIT(nn.Module):
                 d_ff=d_ff,
                 dropout=dropout,
             )
-            if use_cross:
+            if fusion_type == "cross_attn":
                 self.cond_attn = ConditionalCrossAttention(d_model=d_model, n_heads=n_heads, dropout=dropout)
-            else:
+            elif fusion_type == "gated":
+                self.gated_inject = GatedFeatureInjection(d_model=d_model, dropout=dropout)
+            elif fusion_type == "concat":
                 self.fuse = nn.Sequential(nn.Linear(d_model * 2, d_model), nn.LayerNorm(d_model))
 
         self.out_norm = nn.LayerNorm(d_model)
@@ -179,11 +210,15 @@ class ECBIT(nn.Module):
         if self.use_era5:
             assert era5 is not None
             z_era5 = self.era5_encoder(self._era5_tokens(era5, time_enc))
-            if self.use_cross:
-                missing_vars = (missing_mask.bool().sum(dim=1) > 0).float()
+            missing_vars = (missing_mask.bool().sum(dim=1) > 0).float()
+            if self.fusion_type == "cross_attn":
                 z = self.cond_attn(z_obs, z_era5, missing_vars)
-            else:
+            elif self.fusion_type == "gated":
+                z = self.gated_inject(z_obs, z_era5, missing_vars)
+            elif self.fusion_type == "concat":
                 z = self.fuse(torch.cat([z_obs, z_era5], dim=-1))
+            else:
+                z = z_obs
         else:
             z = z_obs
 

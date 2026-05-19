@@ -40,7 +40,7 @@ def base_config(seed: int, output_dir: str) -> dict:
     }
 
 
-def model_config(model_name: str, variant: str | None = None) -> dict:
+def model_config(model_name: str, variant: str | None = None, fusion_type: str | None = None) -> dict:
     common = {
         "seq_len": 168,
         "n_vars": 5,
@@ -54,11 +54,13 @@ def model_config(model_name: str, variant: str | None = None) -> dict:
     if model_name == "ecbit":
         variant = variant or "full"
         settings = {
-            "full": {"use_era5": True, "use_cross": True},
-            "no_cross": {"use_era5": True, "use_cross": False},
+            "full": {"use_era5": True, "use_cross": fusion_type != "concat"},
+            "no_cross": {"use_era5": True, "use_cross": False, "fusion_type": "concat"},
             "no_era5": {"use_era5": False, "use_cross": False},
-            "no_blockmask": {"use_era5": True, "use_cross": True},
+            "no_blockmask": {"use_era5": True, "use_cross": fusion_type != "concat"},
         }[variant]
+        if fusion_type and variant in {"full", "no_blockmask"}:
+            settings["fusion_type"] = fusion_type
         return {"name": "ecbit", "variant": variant, **common, **settings}
     if model_name == "itransformer":
         return {"name": "itransformer", **common}
@@ -117,6 +119,24 @@ def generate_round2(out_root: Path) -> int:
     return count
 
 
+def generate_round2_gated(out_root: Path) -> int:
+    variants = ["full", "no_cross", "no_era5", "no_blockmask"]
+    count = 0
+    for variant in variants:
+        for pattern in PATTERNS:
+            for rate in RATES:
+                for seed in SEEDS:
+                    run_name = f"ecbit_{variant}_{pattern}_r{int(rate*100)}_s{seed}"
+                    cfg = base_config(seed, f"experiments/results/metrics/round2_gated/{run_name}")
+                    cfg["runner"] = "train"
+                    cfg["model"] = model_config("ecbit", variant, fusion_type="gated")
+                    cfg["missing"] = missing_config(pattern, rate, force_mcar=(variant == "no_blockmask"))
+                    cfg["run_name"] = run_name
+                    write_yaml(out_root / "round2_gated" / f"{run_name}.yaml", cfg)
+                    count += 1
+    return count
+
+
 def generate_round3(out_root: Path, meta_csv: Path) -> int:
     meta = pd.read_csv(meta_csv)
     heldout = meta.loc[meta["split"].eq("heldout"), "station_id"].astype(str).tolist()
@@ -145,6 +165,7 @@ def main() -> None:
     counts = {
         "round1": generate_round1(args.out_root),
         "round2": generate_round2(args.out_root),
+        "round2_gated": generate_round2_gated(args.out_root),
         "round3": generate_round3(args.out_root, args.meta_csv),
     }
     print(counts)

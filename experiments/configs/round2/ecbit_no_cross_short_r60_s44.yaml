@@ -33,6 +33,7 @@ model:
   dropout: 0.1
   use_era5: true
   use_cross: false
+  fusion_type: concat
 missing:
   pattern: short
   rate: 0.6

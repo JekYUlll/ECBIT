@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import torch
 
-from src.models.ecbit import ConditionalCrossAttention, ECBIT, VariateTokenEncoder
+from src.models.ecbit import ConditionalCrossAttention, ECBIT, GatedFeatureInjection, VariateTokenEncoder
 
 
 def test_variate_token_encoder_shape() -> None:
@@ -34,8 +34,31 @@ def test_conditional_cross_attention_zero_gate_independent_of_era5() -> None:
     assert torch.allclose(y_a, y_b, atol=1e-6)
 
 
+def test_gated_feature_injection_zero_missing_independent_of_era5() -> None:
+    layer = GatedFeatureInjection(d_model=16, dropout=0.0)
+    layer.eval()
+    z_obs = torch.randn(2, 5, 16)
+    z_era5_a = torch.randn(2, 5, 16)
+    z_era5_b = torch.randn(2, 5, 16) * 10.0
+    missing_vars = torch.zeros(2, 5)
+
+    y_a = layer(z_obs, z_era5_a, missing_vars)
+    y_b = layer(z_obs, z_era5_b, missing_vars)
+    assert torch.allclose(y_a, y_b, atol=1e-6)
+
+
 def test_ecbit_forward_shape() -> None:
-    model = ECBIT(seq_len=24, n_vars=5, n_time=4, d_model=32, n_heads=4, n_layers=1, d_ff=64, dropout=0.0)
+    model = ECBIT(
+        seq_len=24,
+        n_vars=5,
+        n_time=4,
+        d_model=32,
+        n_heads=4,
+        n_layers=1,
+        d_ff=64,
+        dropout=0.0,
+        fusion_type="gated",
+    )
     x = torch.randn(4, 24, 5)
     missing = torch.zeros(4, 24, 5)
     missing[:, 3:8, 2] = 1.0
@@ -49,7 +72,17 @@ def test_ecbit_forward_shape() -> None:
 
 def test_ecbit_observable_variable_output_independent_of_era5() -> None:
     torch.manual_seed(13)
-    model = ECBIT(seq_len=16, n_vars=3, n_time=4, d_model=24, n_heads=4, n_layers=1, d_ff=48, dropout=0.0)
+    model = ECBIT(
+        seq_len=16,
+        n_vars=3,
+        n_time=4,
+        d_model=24,
+        n_heads=4,
+        n_layers=1,
+        d_ff=48,
+        dropout=0.0,
+        fusion_type="gated",
+    )
     model.eval()
     x = torch.randn(2, 16, 3)
     missing = torch.zeros(2, 16, 3)

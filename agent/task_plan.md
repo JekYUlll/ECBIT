@@ -31,6 +31,7 @@ Last Updated: 2026-05-19
 ## Phase 3 · Experiments
 - [ ] Run baseline experiments
 - [x] Run ECBIT ablations
+- [ ] Run gated-injection ECBIT ablations
 - [ ] Run held-out station generalization experiments
 - [ ] Aggregate results
 

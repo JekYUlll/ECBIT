@@ -230,3 +230,10 @@ Important correction: an initial selection with only mean core completeness reta
 - Recovery completed for Round1 and Round2. Corrected Round1 test ranking: iTransformer 0.3599, ERA5 direct 0.3811, linear interpolation 0.3955, LOCF 0.4443.
 - Corrected Round2 test ablation result: `no_cross` 0.2581 +/- 0.0067, `full` 0.2596 +/- 0.0074, `no_era5` 0.3462 +/- 0.0247, MCAR/no-blockmask 0.1910 +/- 0.0072.
 - The corrected conclusion is unchanged in direction: ERA5 conditioning is useful, but the implemented cross-attention block does not beat simpler no-cross fusion.
+
+## Gated Feature Injection Pivot (2026-05-19)
+
+- Current evidence does not support cross-attention as the primary fusion contribution: cross-attention `full` is tied with, and slightly worse than, the no-cross concat fusion ablation.
+- The project direction remains viable because the ERA5 information signal is large: no-ERA5 is far worse than either ERA5-conditioned variant.
+- Architectural response: introduce gated feature injection as the new primary ECBIT fusion path. It projects ERA5 tokens into the AWS token space and uses a learned vector gate multiplied by the missing-variable mask, so observed variables remain independent of ERA5 while missing variables can draw on reanalysis context.
+- New experiment matrix `round2_gated` will test whether gated feature injection improves over concat no-cross. If it does not, the paper claim should shift to: lightweight ERA5 conditioning is sufficient; the value lies in the ERA5 information and block-missing setup rather than a complex fusion mechanism.
