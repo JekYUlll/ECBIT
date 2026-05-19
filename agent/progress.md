@@ -127,3 +127,7 @@
 - Synced the fix to the remote server and verified remote targeted tests pass: 6 passed.
 - Recovered 17 completed Round3 runs on CPU with true held-out test metrics and re-synced them locally. Corrected partial Round3 mean MAE by station: Butcher Ridge 0.2893, Mount Sidley 0.3657, Nico 0.1921.
 - Started remote tmux session `ecbit_recover_test_metrics` to recover Round1 neural and Round2 ECBIT result files from checkpoints using true test metrics.
+- Completed remote recovery for Round1 iTransformer and Round2 ECBIT runs; synced corrected result JSON files locally.
+- Regenerated Round1 and Round2 aggregate CSVs, tables, and figures using test metrics.
+- Corrected Round1 test ranking: iTransformer 0.3599, ERA5 direct 0.3811, linear interpolation 0.3955, LOCF 0.4443.
+- Corrected Round2 block-missing test MAE: `no_cross` 0.2581, `full` 0.2596, `no_era5` 0.3462. The prior qualitative conclusion still holds: ERA5 helps; cross-attention is tied with no-cross.

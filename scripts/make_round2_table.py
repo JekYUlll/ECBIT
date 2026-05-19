@@ -47,7 +47,7 @@ def main() -> None:
     lines = [
         "\\begin{table}[t]",
         "  \\centering",
-        "  \\caption{Round 2 ECBIT ablation results. Values are mean MAE over completed runs; the count in parentheses indicates completed configurations. MCAR training uses a different mask distribution and is reported separately. Lower is better.}",
+        "  \\caption{Round 2 ECBIT ablation results. Values are mean test MAE over all runs; the count in parentheses indicates configurations. MCAR training uses a different mask distribution and is reported separately. Lower is better.}",
         "  \\label{tab:round2-ablations}",
         "  \\begin{tabular}{lc}",
         "    \\toprule",

@@ -227,3 +227,6 @@ Important correction: an initial selection with only mean core completeness reta
   - `recover_partial.py` can overwrite completed neural `result.json` files from `best.pt` checkpoints with true test metrics.
 - Corrected partial Round3 test metrics over 17 completed runs are now station-specific: Butcher Ridge mean MAE 0.2893, Mount Sidley 0.3657, Nico 0.1921. This confirms the held-out station filter is functioning when evaluated on the test split.
 - Consequence: prior Round1 iTransformer and Round2 ECBIT numbers must be treated as invalid until recovered from checkpoints and re-aggregated. A remote recovery job is running in tmux session `ecbit_recover_test_metrics`.
+- Recovery completed for Round1 and Round2. Corrected Round1 test ranking: iTransformer 0.3599, ERA5 direct 0.3811, linear interpolation 0.3955, LOCF 0.4443.
+- Corrected Round2 test ablation result: `no_cross` 0.2581 +/- 0.0067, `full` 0.2596 +/- 0.0074, `no_era5` 0.3462 +/- 0.0247, MCAR/no-blockmask 0.1910 +/- 0.0072.
+- The corrected conclusion is unchanged in direction: ERA5 conditioning is useful, but the implemented cross-attention block does not beat simpler no-cross fusion.

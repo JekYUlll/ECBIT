@@ -15,9 +15,23 @@
     "train_loss": 0.08772846127744593,
     "epoch": 48
   },
+  "test": {
+    "mae_T": 0.12005934119224548,
+    "rmse_T": 0.16047123074531555,
+    "mae_RH": 0.29023849964141846,
+    "rmse_RH": 0.40622273087501526,
+    "mae_wspd": 0.3211791515350342,
+    "rmse_wspd": 0.5165478587150574,
+    "mae_P": 0.05256181210279465,
+    "rmse_P": 0.06990650296211243,
+    "mae_q": 0.1634962260723114,
+    "rmse_q": 0.24489228427410126,
+    "mae_mean": 0.18950700759887695,
+    "rmse_mean": 0.2796081006526947
+  },
   "config": {
     "seed": 42,
-    "device": "cuda",
+    "device": "cpu",
     "data": {
       "manifest_csv": "data/antaws_impute_manifest.csv",
       "train_station_groups": [
