@@ -111,3 +111,5 @@
 - Recompiled the paper successfully; output is currently 4 pages.
 - Added `scripts/make_round1_table.py` and generated `paper/tables/tab_round1_baselines.tex`.
 - Inserted the Round1 core baseline table into the Experiments section and recompiled successfully.
+- Detected a worker cleanup bug after Round2 was nearly complete: `scripts/worker.py` still referenced the removed `gpu_id` variable in the final DONE print. The bug occurs after results are written, but it prevents clean worker termination.
+- Fixed the final worker status print to use `worker_id/world_size/cuda_id`, synced it to the remote server, and launched `ecbit_round2_remaining` to cover the four remaining Round2 configs.

@@ -174,7 +174,11 @@ def main():
             fail += 1
         print(f"[{i+1}/{len(my_configs)}] {name} rc={rc} ok={ok} fail={fail} skipped={skipped}", flush=True)
 
-    print(f"GPU {gpu_id} DONE: ok={ok} fail={fail} skipped={skipped}", flush=True)
+    print(
+        f"worker {worker_id}/{args.world_size} on cuda {cuda_id} DONE: "
+        f"ok={ok} fail={fail} skipped={skipped}",
+        flush=True,
+    )
 
 if __name__ == "__main__":
     main()
