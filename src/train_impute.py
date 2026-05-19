@@ -142,6 +142,12 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
         window_splits=["val"],
         station_ids=station_ids_for_split(data_cfg, "val"),
     )
+    test_ds = ImputationWindowDataset(
+        data_cfg.get("manifest_csv", "data/antaws_impute_manifest.csv"),
+        station_groups=data_cfg.get("test_station_groups", ["main"]),
+        window_splits=["test"],
+        station_ids=station_ids_for_split(data_cfg, "test"),
+    )
     num_workers = min(int(config["training"].get("num_workers", 2)), 2)
     train_loader = DataLoader(
         train_ds,
@@ -154,6 +160,12 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
         batch_size=int(config["training"].get("batch_size", 32)),
         shuffle=False,
         num_workers=num_workers,
+    )
+    test_loader = DataLoader(
+        test_ds,
+        batch_size=int(config.get("eval", {}).get("batch_size", 64)),
+        shuffle=False,
+        num_workers=min(int(config.get("eval", {}).get("num_workers", 2)), 2),
     )
 
     model = build_model(config)
@@ -205,7 +217,10 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
             if bad_epochs >= patience:
                 break
 
-    result = {"best": best, "config": config}
+    checkpoint = torch.load(out_dir / "best.pt", map_location=device)
+    model.load_state_dict(checkpoint["model"])
+    test_metrics = evaluate(model, test_loader, missing_cfg, device, seed + 9_000_000_000)
+    result = {"best": best, "test": test_metrics, "config": config}
     with open(out_dir / "result.json", "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2)
     return result

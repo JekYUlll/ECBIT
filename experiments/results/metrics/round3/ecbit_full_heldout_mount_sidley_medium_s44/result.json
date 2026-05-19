@@ -1,0 +1,87 @@
+{
+  "best": {
+    "mae_T": 0.16137728095054626,
+    "rmse_T": 0.21324864029884338,
+    "mae_RH": 0.43654659390449524,
+    "rmse_RH": 0.5770342350006104,
+    "mae_wspd": 0.4147040843963623,
+    "rmse_wspd": 0.644835352897644,
+    "mae_P": 0.051783449947834015,
+    "rmse_P": 0.06650480628013611,
+    "mae_q": 0.20704135298728943,
+    "rmse_q": 0.30297625064849854,
+    "mae_mean": 0.25429055094718933,
+    "rmse_mean": 0.36091986298561096,
+    "train_loss": 0.15988779613395143,
+    "epoch": 45
+  },
+  "test": {
+    "mae_T": 0.2742669880390167,
+    "rmse_T": 0.3478669822216034,
+    "mae_RH": 0.5901980996131897,
+    "rmse_RH": 0.7420216202735901,
+    "mae_wspd": 0.5055124759674072,
+    "rmse_wspd": 0.8443470597267151,
+    "mae_P": 0.0675831139087677,
+    "rmse_P": 0.08521293848752975,
+    "mae_q": 0.26689866185188293,
+    "rmse_q": 0.3699316084384918,
+    "mae_mean": 0.34089186787605286,
+    "rmse_mean": 0.47787603735923767
+  },
+  "config": {
+    "seed": 44,
+    "device": "cpu",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "test_station_ids": [
+        "mount_sidley"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round3/ecbit_full_heldout_mount_sidley_medium_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "full",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true
+    },
+    "missing": {
+      "pattern": "medium",
+      "rate": 0.4,
+      "min_block": 24,
+      "max_block": 72,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_full_heldout_mount_sidley_medium_s44"
+  }
+}

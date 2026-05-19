@@ -54,6 +54,7 @@ Last Updated: 2026-05-19
 | PyPOTS not installed in local `darts` environment | open | Wrappers implemented with lazy import; verify/install PyPOTS before SAITS/BRITS remote jobs |
 | Remote SSH authentication unavailable | resolved | microclimate-experiment-server credential fallback works; server login, conda `darts`, PyPOTS import, and GPU visibility verified |
 | Duplicate Round1 worker launches caused repeated LOCF jobs | resolved | Stopped duplicate remote processes, added per-run lock files to `scripts/worker.py`, and relaunched Round1 core in tmux |
+| Neural training results reported validation metrics instead of test metrics | resolving | Patched training/aggregation/recovery scripts; recovering Round1/Round2/Round3 neural result JSON files from checkpoints |
 
 ## Completion Criteria
 Paper submitted to IEEE TGRS or Remote Sensing.

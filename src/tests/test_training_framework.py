@@ -13,15 +13,17 @@ def make_tiny_dataset(tmp_path):
     data_dir = tmp_path / "processed"
     data_dir.mkdir()
     path = data_dir / "tiny_impute.npz"
+    heldout_path = data_dir / "heldout_impute.npz"
     n, t, c = 4, 8, 3
-    np.savez_compressed(
-        path,
-        X=np.ones((n, t, c), dtype=np.float32),
-        obs_mask=np.ones((n, t, c), dtype=np.float32),
-        E_3h=np.ones((n, t, c), dtype=np.float32) * 2,
-        T_enc=np.zeros((n, t, 4), dtype=np.float32),
-        window_split=np.asarray(["train", "train", "val", "test"]),
-    )
+    for out_path, value in [(path, 1.0), (heldout_path, 3.0)]:
+        np.savez_compressed(
+            out_path,
+            X=np.ones((n, t, c), dtype=np.float32) * value,
+            obs_mask=np.ones((n, t, c), dtype=np.float32),
+            E_3h=np.ones((n, t, c), dtype=np.float32) * 2,
+            T_enc=np.zeros((n, t, 4), dtype=np.float32),
+            window_split=np.asarray(["train", "train", "val", "test"]),
+        )
     manifest = tmp_path / "manifest.csv"
     pd.DataFrame(
         [
@@ -30,7 +32,13 @@ def make_tiny_dataset(tmp_path):
                 "station_id": "tiny",
                 "station_group": "main",
                 "path": str(path),
-            }
+            },
+            {
+                "station": "Heldout",
+                "station_id": "heldout",
+                "station_group": "heldout",
+                "path": str(heldout_path),
+            },
         ]
     ).to_csv(manifest, index=False)
     return manifest
@@ -45,6 +53,21 @@ def test_imputation_window_dataset_filters_split(tmp_path) -> None:
     assert item["x"].shape == (8, 3)
     assert item["era5"].shape == (8, 3)
     assert item["time_enc"].shape == (8, 4)
+
+
+def test_imputation_window_dataset_filters_station_id_and_group(tmp_path) -> None:
+    manifest = make_tiny_dataset(tmp_path)
+    ds = ImputationWindowDataset(
+        manifest,
+        station_groups=["heldout"],
+        window_splits=["test"],
+        station_ids=["heldout"],
+    )
+
+    assert len(ds) == 1
+    item = ds[0]
+    assert item["station_id"] == "heldout"
+    assert float(item["x"].mean()) == 3.0
 
 
 def test_artificial_mask_batch_respects_obs_mask() -> None:

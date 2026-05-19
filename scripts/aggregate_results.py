@@ -39,6 +39,13 @@ def load_json(path: Path) -> dict[str, Any]:
 
 
 def flatten_result(result: dict[str, Any]) -> dict[str, Any]:
+    if "test" in result:
+        metrics = dict(result["test"])
+        if "best" in result and isinstance(result["best"], dict):
+            metrics["best_epoch"] = result["best"].get("epoch")
+            metrics["val_mae_mean"] = result["best"].get("mae_mean")
+            metrics["val_rmse_mean"] = result["best"].get("rmse_mean")
+        return metrics
     if "best" in result:
         metrics = dict(result["best"])
         metrics["best_epoch"] = metrics.pop("epoch", None)

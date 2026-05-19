@@ -120,3 +120,10 @@
 - Complete Round2 result: block-missing `no_cross` MAE 0.2546, `full` MAE 0.2553, and `no_era5` MAE 0.3429. ERA5 conditioning is strongly supported; the current cross-attention variant is not better than no-cross fusion.
 - Inserted the Round2 ablation figure and table into the Experiments section and updated the implementation-status text.
 - Launched additional Round3 held-out station workers on remote GPU1-GPU4 in tmux session `ecbit_round3_gpus1_4`, while the original GPU5 worker continues.
+- Checked Round3 after multi-GPU launch: remote progress reached 17/45, with no Traceback/OOM/Killed in Round3 logs.
+- Diagnosed a critical neural evaluation bug: `train_impute.py` wrote validation metrics to `result.json`, so neural Round1/Round2/Round3 aggregates were not test metrics. Stateless baselines were already test metrics.
+- Fixed `train_impute.py` to evaluate the best checkpoint on the configured test split, fixed `aggregate_results.py` to prefer `result["test"]`, and enhanced `recover_partial.py` to overwrite completed neural runs from `best.pt`.
+- Local tests passed after the fix: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 30 passed.
+- Synced the fix to the remote server and verified remote targeted tests pass: 6 passed.
+- Recovered 17 completed Round3 runs on CPU with true held-out test metrics and re-synced them locally. Corrected partial Round3 mean MAE by station: Butcher Ridge 0.2893, Mount Sidley 0.3657, Nico 0.1921.
+- Started remote tmux session `ecbit_recover_test_metrics` to recover Round1 neural and Round2 ECBIT result files from checkpoints using true test metrics.

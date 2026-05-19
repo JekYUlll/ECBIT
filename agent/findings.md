@@ -216,3 +216,14 @@ Important correction: an initial selection with only mean core completeness reta
   - `no_era5`: 0.3429 +/- 0.0238.
 - MCAR/no-blockmask runs are much easier and should not be compared directly to block-missing runs: mean MAE 0.1882 +/- 0.0072 over 27 runs.
 - Scientific interpretation: ERA5 conditioning is clearly useful relative to no-ERA5, reducing mean MAE by about 25.6% versus the no-ERA5 ablation. The current cross-attention mechanism does not outperform the simpler no-cross fusion variant; any paper claim should emphasize ERA5-conditioned block imputation rather than cross-attention superiority unless later analysis identifies a narrower regime where cross-attention helps.
+
+## Metric Semantics Correction (2026-05-19)
+
+- Diagnosed a critical evaluation bug while checking Round3: neural `train_impute.py` saved the best validation metrics to `result.json`, while stateless baselines used `evaluate_impute.py` and reported test metrics.
+- Symptom: early Round3 held-out results were identical across different stations for the same missing pattern and seed, because all runs were reporting main-station validation metrics rather than station-specific held-out test metrics.
+- Fix implemented:
+  - `train_impute.py` now builds a test loader, reloads the best checkpoint, evaluates test split, and stores metrics under `result["test"]`.
+  - `aggregate_results.py` now uses `result["test"]` when present and keeps validation metrics only as auxiliary columns.
+  - `recover_partial.py` can overwrite completed neural `result.json` files from `best.pt` checkpoints with true test metrics.
+- Corrected partial Round3 test metrics over 17 completed runs are now station-specific: Butcher Ridge mean MAE 0.2893, Mount Sidley 0.3657, Nico 0.1921. This confirms the held-out station filter is functioning when evaluated on the test split.
+- Consequence: prior Round1 iTransformer and Round2 ECBIT numbers must be treated as invalid until recovered from checkpoints and re-aggregated. A remote recovery job is running in tmux session `ecbit_recover_test_metrics`.
