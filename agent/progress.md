@@ -116,3 +116,7 @@
 - Started Round3 held-out station generalization on idle GPU5 in tmux session `ecbit_round3_gpu5` while the final four Round2 jobs continue on GPU1-GPU4.
 - Added `scripts/plot_round2_ablations.py` and generated a preliminary `paper/figures/fig_round2_ablations.pdf/.png` from the current partial Round2 table. This script is ready to rerun when Round2 reaches 108/108.
 - Added `scripts/make_round2_table.py` and generated a preliminary `paper/tables/tab_round2_ablations.tex`; keep it out of the manuscript body until Round2 is complete.
+- Confirmed Round2 is complete locally: 108/108 result files, with regenerated `round2_core_runs.csv`, `round2_core_summary.csv`, `fig_round2_ablations`, and `tab_round2_ablations`.
+- Complete Round2 result: block-missing `no_cross` MAE 0.2546, `full` MAE 0.2553, and `no_era5` MAE 0.3429. ERA5 conditioning is strongly supported; the current cross-attention variant is not better than no-cross fusion.
+- Inserted the Round2 ablation figure and table into the Experiments section and updated the implementation-status text.
+- Launched additional Round3 held-out station workers on remote GPU1-GPU4 in tmux session `ecbit_round3_gpus1_4`, while the original GPU5 worker continues.

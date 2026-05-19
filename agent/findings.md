@@ -206,3 +206,13 @@ Important correction: an initial selection with only mean core completeness reta
 - Active Round2 logs show continued convergence and no new runtime failures.
 - Updated 58-run snapshot: `full` mean MAE 0.255 over 26 block-missing runs, `no_cross` 0.256 over 8 block-missing runs, and `no_era5` 0.347 over 3 block-missing runs.
 - Current interpretation: ERA5 conditioning appears useful relative to no-ERA5, but the cross-attention mechanism has not yet separated from the no-cross fusion ablation. Wait for the full 108-run Round2 matrix before final claims.
+
+## Round2 Complete Ablation Results (2026-05-19)
+
+- Round2 is complete: 108/108 ablation runs are available locally and aggregated in `experiments/results/tables/round2_core_runs.csv`.
+- Block-missing MAE over 27 runs per variant:
+  - `no_cross`: 0.2546 +/- 0.0055.
+  - `full`: 0.2553 +/- 0.0059.
+  - `no_era5`: 0.3429 +/- 0.0238.
+- MCAR/no-blockmask runs are much easier and should not be compared directly to block-missing runs: mean MAE 0.1882 +/- 0.0072 over 27 runs.
+- Scientific interpretation: ERA5 conditioning is clearly useful relative to no-ERA5, reducing mean MAE by about 25.6% versus the no-ERA5 ablation. The current cross-attention mechanism does not outperform the simpler no-cross fusion variant; any paper claim should emphasize ERA5-conditioned block imputation rather than cross-attention superiority unless later analysis identifies a narrower regime where cross-attention helps.

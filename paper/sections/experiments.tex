@@ -22,5 +22,14 @@ Round 1 compares six baselines: linear interpolation, last-observation-carried-f
 
 \input{tables/tab_round1_baselines}
 
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.92\textwidth]{figures/fig_round2_ablations.pdf}
+  \caption{Round 2 ECBIT ablation results over block-missing and MCAR masking regimes. Removing ERA5 substantially degrades block-imputation accuracy, while the current cross-attention implementation is statistically tied with the no-cross fusion variant. The MCAR training setting is easier and is therefore reported separately rather than compared directly to block-missing results.}
+  \label{fig:round2-ablations}
+\end{figure*}
+
+\input{tables/tab_round2_ablations}
+
 \subsection{Implementation Status}
-The data pipeline, model implementations, training/evaluation entrypoints, and 315 YAML experiment configurations have been implemented. Round 1 core baselines are complete for interpolation, last-observation-carried-forward, ERA5 direct substitution, and iTransformer. SAITS and BRITS are scheduled as heavier PyPOTS baselines after the core neural ablations finish. Round 2 ECBIT ablations are currently running on the remote GPU server. Completed Round 1 results show a consistent trade-off: ERA5 direct substitution is competitive for long block gaps, while linear interpolation is strongest among stateless methods for short gaps. This supports the central ECBIT hypothesis that ERA5 is useful primarily as a conditional prior during outages rather than as an unconditional replacement for station observations.
+The data pipeline, model implementations, training/evaluation entrypoints, and 315 YAML experiment configurations have been implemented. Round 1 core baselines are complete for interpolation, last-observation-carried-forward, ERA5 direct substitution, and iTransformer. Round 2 ECBIT ablations are complete. SAITS and BRITS are scheduled as heavier PyPOTS baselines after the core neural ablations finish. Completed Round 1 results show a consistent trade-off: ERA5 direct substitution is competitive for long block gaps, while linear interpolation is strongest among stateless methods for short gaps. Completed Round 2 results support the value of ERA5 conditioning: removing ERA5 increases block-missing MAE from 0.255 to 0.343. However, the full cross-attention model is tied with the no-cross fusion ablation, indicating that the present evidence supports ERA5-conditioned imputation more strongly than the specific cross-attention mechanism.
