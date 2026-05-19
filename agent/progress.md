@@ -135,3 +135,5 @@
 - Implemented `GatedFeatureInjection` in `src/models/ecbit.py` with missing-variable gating, retained `cross_attn` for backward-compatible old configurations, and kept `concat` as the explicit no-cross lightweight fusion baseline.
 - Added `fusion_type` support to `train_impute.py` and generated a new `experiments/configs/round2_gated/` matrix with 108 runs targeting `experiments/results/metrics/round2_gated/`.
 - Local verification after gated injection implementation: `/home/horeb/miniconda3/bin/conda run -n darts pytest -q src/tests` -> 31 passed.
+- Synced gated-injection code/configs to the remote server and verified remote targeted tests pass: 7 passed.
+- Launched remote tmux session `ecbit_round2_gated_gpus1_5` on GPU1-GPU5 for the 108-run gated ablation matrix. Initial status: all five workers entered their first `ecbit_full_*` configs with no immediate Traceback/OOM/Killed errors.
