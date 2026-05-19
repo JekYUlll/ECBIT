@@ -114,3 +114,4 @@
 - Detected a worker cleanup bug after Round2 was nearly complete: `scripts/worker.py` still referenced the removed `gpu_id` variable in the final DONE print. The bug occurs after results are written, but it prevents clean worker termination.
 - Fixed the final worker status print to use `worker_id/world_size/cuda_id`, synced it to the remote server, and launched `ecbit_round2_remaining` to cover the four remaining Round2 configs.
 - Started Round3 held-out station generalization on idle GPU5 in tmux session `ecbit_round3_gpu5` while the final four Round2 jobs continue on GPU1-GPU4.
+- Added `scripts/plot_round2_ablations.py` and generated a preliminary `paper/figures/fig_round2_ablations.pdf/.png` from the current partial Round2 table. This script is ready to rerun when Round2 reaches 108/108.
