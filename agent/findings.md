@@ -243,3 +243,6 @@ Important correction: an initial selection with only mean core completeness reta
 - `round2_gated` has started successfully on the remote server and has produced 5/108 completed runs.
 - The first 5 completed runs are all `full` long-gap configurations. Mean MAE is 0.2673; matched against old no-cross rows, the early delta is +0.0015 MAE. This is only a smoke signal, not enough for a conclusion.
 - Round3 partial held-out test metrics now cover 23/45 runs after re-running checkpoint recovery on newly completed jobs. Station difficulty is heterogeneous: Nico is easiest so far (0.1936), Butcher Ridge intermediate (0.2893), Mount Sidley hardest (0.3500).
+- Updated monitoring: `round2_gated` now has 14/108 completed runs. The completed subset covers `full` long and medium patterns only. Gated feature injection is currently indistinguishable from concat no-cross on matched old rows: long delta +0.00133, medium delta -0.00233, overall delta +0.00003 MAE.
+- Interpretation remains provisional, but the early trend supports the fallback claim that lightweight ERA5 conditioning may be sufficient and that the main empirical value lies in the ERA5 information plus block-missing setup rather than a specific fusion layer.
+- Round3 now has 31/45 held-out runs with test metrics. Sabrina has entered the partial table with mean MAE 0.2525 over 5 runs.

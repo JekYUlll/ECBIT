@@ -147,3 +147,7 @@
 - Smoke signal for gated injection is too early to conclude: first 5 long-gap full runs have mean MAE 0.2673, about +0.0015 versus matched old no-cross rows.
 - Detected that 4 newly completed Round3 results did not yet contain `test` metrics because some workers were started before the metric-semantics patch. Ran remote `recover_partial.py --metrics-dir experiments/results/metrics/round3 --overwrite --completed-only --device cpu`; Round3 now has 23/23 completed result files with `test` metrics.
 - Re-synced and regenerated `round3_partial` tables. Current held-out station mean MAE: Butcher Ridge 0.2893 over 9 runs, Mount Sidley 0.3500 over 9 runs, Nico 0.1936 over 5 runs.
+- Checked remote experiments again: `round2_gated` advanced to 14/108 and Round3 advanced to 31/45. Active logs still show no Traceback/OOM/Killed.
+- Recovered newly completed Round3 checkpoints so 31/31 completed Round3 result files contain test metrics.
+- Synced and regenerated `round2_gated_partial` and `round3_partial` tables. Current gated full runs cover long and medium patterns only; matched against old no-cross rows, the overall MAE delta is approximately +0.00003, effectively tied at this early stage.
+- Current Round3 held-out station mean MAE: Butcher Ridge 0.2893 over 9 runs, Mount Sidley 0.3500 over 9 runs, Nico 0.1775 over 8 runs, Sabrina 0.2525 over 5 runs.

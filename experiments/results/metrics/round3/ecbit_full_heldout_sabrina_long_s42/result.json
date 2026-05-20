@@ -1,0 +1,87 @@
+{
+  "best": {
+    "mae_T": 0.1641835868358612,
+    "rmse_T": 0.21550214290618896,
+    "mae_RH": 0.44299980998039246,
+    "rmse_RH": 0.5879992246627808,
+    "mae_wspd": 0.41987186670303345,
+    "rmse_wspd": 0.6456525921821594,
+    "mae_P": 0.06112450733780861,
+    "rmse_P": 0.08449878543615341,
+    "mae_q": 0.20802287757396698,
+    "rmse_q": 0.3059966266155243,
+    "mae_mean": 0.2592405378818512,
+    "rmse_mean": 0.3679298758506775,
+    "train_loss": 0.1604929240603073,
+    "epoch": 48
+  },
+  "test": {
+    "mae_T": 0.2025342434644699,
+    "rmse_T": 0.27504196763038635,
+    "mae_RH": 0.340771347284317,
+    "rmse_RH": 0.43791717290878296,
+    "mae_wspd": 0.4818326532840729,
+    "rmse_wspd": 0.6463795304298401,
+    "mae_P": 0.05251409858465195,
+    "rmse_P": 0.0658201053738594,
+    "mae_q": 0.21368837356567383,
+    "rmse_q": 0.29276585578918457,
+    "mae_mean": 0.2582681477069855,
+    "rmse_mean": 0.34358489513397217
+  },
+  "config": {
+    "seed": 42,
+    "device": "cpu",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "test_station_ids": [
+        "sabrina"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round3/ecbit_full_heldout_sabrina_long_s42",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "full",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true
+    },
+    "missing": {
+      "pattern": "long",
+      "rate": 0.4,
+      "min_block": 72,
+      "max_block": 240,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_full_heldout_sabrina_long_s42"
+  }
+}
