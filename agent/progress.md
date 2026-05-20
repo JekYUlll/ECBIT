@@ -167,3 +167,8 @@
 - Current gated ablation snapshot over 53 completed runs: `full` mean MAE 0.2589 over 24 runs, `no_cross` mean MAE 0.2586 over 11 runs, `no_era5` mean MAE 0.3484 over 4 runs, and MCAR/no-blockmask mean MAE 0.1902 over 14 runs.
 - Matched gated-full vs old no-cross rows: 24 matched runs, overall delta -0.00018 MAE; by pattern, long +0.00133, medium -0.00146, short -0.00051. Within the new gated matrix, matched full vs concat/no-cross delta is -0.00017 MAE over 11 rows.
 - Current Round3 held-out station means over 42 runs: Butcher Ridge 0.2893, Mount Sidley 0.3500, Nico 0.1732, Sabrina 0.2458, Zhongshan 0.3243. Zhongshan is still partial with 6/9 runs.
+
+### Planning Update
+- Added a consolidated idea/validation summary to `agent/findings.md`.
+- Current working thesis recorded: the publishable contribution is ERA5-conditioned block-missing AWS imputation, not cross-attention superiority.
+- The result narrative is now: ERA5 conditioning is strongly validated; cross-attention and gated injection are tied with no-cross lightweight fusion; station-level held-out difficulty must be reported explicitly.

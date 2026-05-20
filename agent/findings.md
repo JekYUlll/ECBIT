@@ -268,3 +268,13 @@ Important correction: an initial selection with only mean core completeness reta
 - Round3 has 42/45 completed held-out station runs, all with `test` metrics.
 - Station-level mean MAE so far: Nico 0.1732, Sabrina 0.2458, Butcher Ridge 0.2893, Zhongshan 0.3243 over 6/9 runs, and Mount Sidley 0.3500.
 - This confirms strong station heterogeneity. Nico is easy, Mount Sidley and Zhongshan are harder; the final three Zhongshan runs are needed before treating station ranking as final.
+
+## Current Idea and Validation Summary (2026-05-21)
+
+- Core idea: Antarctic AWS imputation should be treated as block-missing recovery rather than random point-missing recovery. ERA5 reanalysis supplies the missing-window background meteorological state, so the central contribution is ERA5-conditioned block imputation.
+- Validated point 1: AntAWS has realistic long contiguous missing blocks. The block-missing simulator and curriculum therefore match the target failure mode better than MCAR masking.
+- Validated point 2: ERA5 is the strongest empirical signal. Corrected Round2 test metrics show `no_era5` MAE 0.3462, versus ERA5-conditioned variants near 0.258-0.260.
+- Validated point 3: cross-attention is not supported as the key mechanism. Corrected Round2 test metrics show cross-attention `full` MAE 0.2596 versus `no_cross` MAE 0.2581.
+- Validated point 4: gated feature injection is currently also tied with no-cross fusion. At 53/108 gated runs, `full` mean MAE is 0.2589 and `no_cross` mean MAE is 0.2586; matched full-vs-no-cross deltas are about -0.0002 MAE.
+- Validated point 5: held-out station generalization is heterogeneous. Current Round3 partial means range from Nico 0.1732 to Mount Sidley 0.3500, indicating station-level difficulty must be reported rather than hidden in a single aggregate.
+- Current paper claim should be: ERA5 conditioning is causally useful for Antarctic block-missing AWS imputation; the value comes mainly from external reanalysis information and block-missing training, while complex attention/gating fusion has not shown stable extra benefit over lightweight conditioning.
