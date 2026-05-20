@@ -1,0 +1,85 @@
+{
+  "best": {
+    "mae_T": 0.15844833850860596,
+    "rmse_T": 0.2094336301088333,
+    "mae_RH": 0.4473753273487091,
+    "rmse_RH": 0.5847831964492798,
+    "mae_wspd": 0.41302546858787537,
+    "rmse_wspd": 0.6409114599227905,
+    "mae_P": 0.052138060331344604,
+    "rmse_P": 0.06918651610612869,
+    "mae_q": 0.20699988305568695,
+    "rmse_q": 0.3040429353713989,
+    "mae_mean": 0.25559741258621216,
+    "rmse_mean": 0.3616715371608734,
+    "train_loss": 0.15287006778849496,
+    "epoch": 49
+  },
+  "test": {
+    "mae_T": 0.1576562225818634,
+    "rmse_T": 0.21325315535068512,
+    "mae_RH": 0.4444158375263214,
+    "rmse_RH": 0.586853563785553,
+    "mae_wspd": 0.42910704016685486,
+    "rmse_wspd": 0.686257004737854,
+    "mae_P": 0.05236092954874039,
+    "rmse_P": 0.06878194957971573,
+    "mae_q": 0.21467645466327667,
+    "rmse_q": 0.3152288496494293,
+    "mae_mean": 0.2596432864665985,
+    "rmse_mean": 0.37407490611076355
+  },
+  "config": {
+    "seed": 44,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round2_gated/ecbit_full_medium_r60_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "full",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true,
+      "fusion_type": "gated"
+    },
+    "missing": {
+      "pattern": "medium",
+      "rate": 0.6,
+      "min_block": 24,
+      "max_block": 72,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_full_medium_r60_s44"
+  }
+}

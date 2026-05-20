@@ -249,3 +249,22 @@ Important correction: an initial selection with only mean core completeness reta
 - Throughput diagnosis: `round2_gated` is slow primarily because it was co-scheduled with Round3 on the same GPU1-GPU5 devices, not because CPUs are underused. CPU load is low relative to the 224-thread host, DataLoader workers are present, and GPU utilization is high. The system is doing useful work, but each 4090 is running two small training processes under the existing 150W power cap.
 - Added a GPU0 gated worker after confirming GPU0 was idle. This should improve throughput without changing experiment semantics because per-run lock files prevent duplicate result writes.
 - With 15 completed gated runs, the matched gated-vs-no-cross delta is -0.00010 MAE, still effectively zero.
+
+## Gated Ablation Monitoring (2026-05-21)
+
+- `round2_gated` advanced to 53/108 completed runs. All completed results contain true `test` metrics.
+- The GPU0 extra worker ended normally after completing its assigned 15-run shard. A new GPU0 catch-up worker was launched to scan all remaining configs and rely on per-run locks to avoid duplicates.
+- No runtime failures were found in active gated or Round3 logs.
+- Current gated ablation means:
+  - `full`: MAE 0.2589 over 24 runs.
+  - `no_cross`: MAE 0.2586 over 11 runs.
+  - `no_era5`: MAE 0.3484 over 4 runs.
+  - `no_blockmask` / MCAR: MAE 0.1902 over 14 runs, not directly comparable to block-missing runs.
+- Matched evidence still does not show a fusion-mechanism gain. Gated `full` vs old concat/no-cross has overall delta -0.00018 MAE across 24 matched rows; within the new gated matrix, gated `full` vs concat/no-cross has delta -0.00017 MAE across 11 matched rows.
+- Interpretation: the evidence is increasingly consistent with the fallback paper claim: ERA5 conditioning is valuable, while the specific lightweight fusion layer may not matter much once ERA5 is available and block-missing training is used.
+
+## Round3 Held-Out Generalization Monitoring (2026-05-21)
+
+- Round3 has 42/45 completed held-out station runs, all with `test` metrics.
+- Station-level mean MAE so far: Nico 0.1732, Sabrina 0.2458, Butcher Ridge 0.2893, Zhongshan 0.3243 over 6/9 runs, and Mount Sidley 0.3500.
+- This confirms strong station heterogeneity. Nico is easy, Mount Sidley and Zhongshan are harder; the final three Zhongshan runs are needed before treating station ranking as final.

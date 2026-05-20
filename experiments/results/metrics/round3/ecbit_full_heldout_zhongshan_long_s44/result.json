@@ -1,0 +1,87 @@
+{
+  "best": {
+    "mae_T": 0.16707418859004974,
+    "rmse_T": 0.2196846902370453,
+    "mae_RH": 0.440218061208725,
+    "rmse_RH": 0.582190752029419,
+    "mae_wspd": 0.4276992678642273,
+    "rmse_wspd": 0.6546732187271118,
+    "mae_P": 0.05616851896047592,
+    "rmse_P": 0.07533510029315948,
+    "mae_q": 0.21000875532627106,
+    "rmse_q": 0.30693137645721436,
+    "mae_mean": 0.2602337896823883,
+    "rmse_mean": 0.36776304244995117,
+    "train_loss": 0.1631966086968877,
+    "epoch": 45
+  },
+  "test": {
+    "mae_T": 0.14695103466510773,
+    "rmse_T": 0.1970975548028946,
+    "mae_RH": 0.5269244909286499,
+    "rmse_RH": 0.6414734125137329,
+    "mae_wspd": 0.765659749507904,
+    "rmse_wspd": 0.9710454344749451,
+    "mae_P": 0.05576653033494949,
+    "rmse_P": 0.06989067047834396,
+    "mae_q": 0.3400774896144867,
+    "rmse_q": 0.4345959424972534,
+    "mae_mean": 0.3670758605003357,
+    "rmse_mean": 0.4628206193447113
+  },
+  "config": {
+    "seed": 44,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "test_station_ids": [
+        "zhongshan"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round3/ecbit_full_heldout_zhongshan_long_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "full",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true
+    },
+    "missing": {
+      "pattern": "long",
+      "rate": 0.4,
+      "min_block": 72,
+      "max_block": 240,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_full_heldout_zhongshan_long_s44"
+  }
+}

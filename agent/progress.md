@@ -155,3 +155,15 @@
 - Launched an extra gated worker on currently idle GPU0 in tmux session `ecbit_round2_gated_gpu0_extra` using `worker_id=5`, `world_size=6`, and lock-file protection. It entered `ecbit_full_short_r20_s44` without immediate errors.
 - Synced latest results: `round2_gated` is now 15/108 and Round3 is 32/45. Round3 32/32 completed results have test metrics after recovery.
 - Updated partial signal: gated full results remain tied with old no-cross on matched rows, with overall MAE delta about -0.00010 across 15 completed full runs.
+
+## Session: 2026-05-21
+
+### Phase 3 · Experiments
+- Checked remote ECBIT experiments at 02:34 CST: `round2_gated` has 53/108 completed results and Round3 held-out has 42/45 completed results. All completed result files contain `test` metrics.
+- Active log scan found no Traceback, RuntimeError, CUDA OOM, Killed, or Error lines in the `round2_gated` and Round3 logs.
+- Diagnosed the idle GPU0 state: `ecbit_round2_gated_gpu0_extra` completed its 15 assigned configs successfully (`ok=15 fail=0 skipped=0`) and exited normally. It was not a crash or CPU-utilization problem.
+- Launched a GPU0 catch-up worker in tmux session `ecbit_round2_gated_gpu0_catchup` with lock-file protection. It skipped locked runs and entered remaining `round2_gated` configs.
+- Synced latest remote metrics locally and regenerated `round2_gated_partial` and `round3_partial` aggregate tables.
+- Current gated ablation snapshot over 53 completed runs: `full` mean MAE 0.2589 over 24 runs, `no_cross` mean MAE 0.2586 over 11 runs, `no_era5` mean MAE 0.3484 over 4 runs, and MCAR/no-blockmask mean MAE 0.1902 over 14 runs.
+- Matched gated-full vs old no-cross rows: 24 matched runs, overall delta -0.00018 MAE; by pattern, long +0.00133, medium -0.00146, short -0.00051. Within the new gated matrix, matched full vs concat/no-cross delta is -0.00017 MAE over 11 rows.
+- Current Round3 held-out station means over 42 runs: Butcher Ridge 0.2893, Mount Sidley 0.3500, Nico 0.1732, Sabrina 0.2458, Zhongshan 0.3243. Zhongshan is still partial with 6/9 runs.

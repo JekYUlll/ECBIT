@@ -1,0 +1,83 @@
+{
+  "best": {
+    "mae_T": 0.11476659029722214,
+    "rmse_T": 0.15351177752017975,
+    "mae_RH": 0.26813143491744995,
+    "rmse_RH": 0.3717533349990845,
+    "mae_wspd": 0.30457237362861633,
+    "rmse_wspd": 0.49058663845062256,
+    "mae_P": 0.05369539186358452,
+    "rmse_P": 0.0697057768702507,
+    "mae_q": 0.1510954201221466,
+    "rmse_q": 0.2240404635667801,
+    "mae_mean": 0.1784522384405136,
+    "rmse_mean": 0.2619195878505707,
+    "train_loss": 0.07899094244428709,
+    "epoch": 49
+  },
+  "test": {
+    "mae_T": 0.11413837969303131,
+    "rmse_T": 0.15285977721214294,
+    "mae_RH": 0.2705686092376709,
+    "rmse_RH": 0.3785122036933899,
+    "mae_wspd": 0.3096219599246979,
+    "rmse_wspd": 0.5028619766235352,
+    "mae_P": 0.053835127502679825,
+    "rmse_P": 0.07005693763494492,
+    "mae_q": 0.15737596154212952,
+    "rmse_q": 0.23459723591804504,
+    "mae_mean": 0.1811080276966095,
+    "rmse_mean": 0.26777762174606323
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round2_gated/ecbit_no_blockmask_long_r20_s43",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "no_blockmask",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true,
+      "fusion_type": "gated"
+    },
+    "missing": {
+      "pattern": "mcar",
+      "target_pattern": "long",
+      "rate": 0.2
+    },
+    "run_name": "ecbit_no_blockmask_long_r20_s43"
+  }
+}

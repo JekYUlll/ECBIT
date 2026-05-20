@@ -16,22 +16,22 @@
     "epoch": 49
   },
   "test": {
-    "mae_T": 0.17437294125556946,
-    "rmse_T": 0.2310580015182495,
-    "mae_RH": 0.16326956450939178,
-    "rmse_RH": 0.20437216758728027,
-    "mae_wspd": 0.2097572535276413,
-    "rmse_wspd": 0.2704082429409027,
-    "mae_P": 0.08269653469324112,
-    "rmse_P": 0.10429632663726807,
-    "mae_q": 0.06462430208921432,
-    "rmse_q": 0.08340710401535034,
-    "mae_mean": 0.1389441192150116,
-    "rmse_mean": 0.17870835959911346
+    "mae_T": 0.18769387900829315,
+    "rmse_T": 0.2533130347728729,
+    "mae_RH": 0.3105720579624176,
+    "rmse_RH": 0.40042969584465027,
+    "mae_wspd": 0.4063972234725952,
+    "rmse_wspd": 0.539445161819458,
+    "mae_P": 0.05477794632315636,
+    "rmse_P": 0.07075223326683044,
+    "mae_q": 0.24623027443885803,
+    "rmse_q": 0.3366676867008209,
+    "mae_mean": 0.24113428592681885,
+    "rmse_mean": 0.3201215863227844
   },
   "config": {
     "seed": 42,
-    "device": "cpu",
+    "device": "cuda",
     "data": {
       "manifest_csv": "data/antaws_impute_manifest.csv",
       "train_station_groups": [
@@ -44,7 +44,7 @@
         "heldout"
       ],
       "test_station_ids": [
-        "nico"
+        "sabrina"
       ]
     },
     "training": {
@@ -59,7 +59,7 @@
       "batch_size": 64,
       "num_workers": 4
     },
-    "output_dir": "experiments/results/metrics/round3/ecbit_full_heldout_nico_short_s42",
+    "output_dir": "experiments/results/metrics/round3/ecbit_full_heldout_sabrina_short_s42",
     "runner": "train",
     "model": {
       "name": "ecbit",
@@ -82,6 +82,6 @@
       "max_block": 24,
       "variable_wise": true
     },
-    "run_name": "ecbit_full_heldout_nico_short_s42"
+    "run_name": "ecbit_full_heldout_sabrina_short_s42"
   }
 }
