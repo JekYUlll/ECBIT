@@ -151,3 +151,7 @@
 - Recovered newly completed Round3 checkpoints so 31/31 completed Round3 result files contain test metrics.
 - Synced and regenerated `round2_gated_partial` and `round3_partial` tables. Current gated full runs cover long and medium patterns only; matched against old no-cross rows, the overall MAE delta is approximately +0.00003, effectively tied at this early stage.
 - Current Round3 held-out station mean MAE: Butcher Ridge 0.2893 over 9 runs, Mount Sidley 0.3500 over 9 runs, Nico 0.1775 over 8 runs, Sabrina 0.2525 over 5 runs.
+- Investigated slow `round2_gated` throughput. Diagnosis: CPU is not the bottleneck (`load average` about 10 on a 224-thread server, memory abundant); each active training job uses only about two DataLoader workers because `train_impute.py` caps workers at 2. The main slowdown is GPU oversubscription: Round3 and gated workers are both running on GPU1-GPU5, so each GPU has two training processes. GPUs are highly utilized but each process is small (~536 MiB) and shares a 150W power-capped 4090.
+- Launched an extra gated worker on currently idle GPU0 in tmux session `ecbit_round2_gated_gpu0_extra` using `worker_id=5`, `world_size=6`, and lock-file protection. It entered `ecbit_full_short_r20_s44` without immediate errors.
+- Synced latest results: `round2_gated` is now 15/108 and Round3 is 32/45. Round3 32/32 completed results have test metrics after recovery.
+- Updated partial signal: gated full results remain tied with old no-cross on matched rows, with overall MAE delta about -0.00010 across 15 completed full runs.
