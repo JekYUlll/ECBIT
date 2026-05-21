@@ -41,9 +41,10 @@ Active Follow-up: Execute rapid feasibility checks from `agent/ECBIT 新实验�
 - [x] Missing pattern analysis figure
 - [ ] Main result comparison figure
 - [ ] ERA5 conditioning effect figure
-- [ ] ERA5 variable importance analysis (remote job `ecbit_era5_robustness` running as of 2026-05-21 22:00 CST)
-- [ ] ERA5 temporal-resolution robustness analysis (same remote job)
-- [ ] MCAR-trained ERA5 baseline evaluated on block-missing tests (remote job `ecbit_mcar_on_block` running as of 2026-05-21 22:02 CST)
+- [x] ERA5 variable importance analysis
+- [x] ERA5 temporal-resolution robustness analysis
+- [x] MCAR-trained ERA5 baseline evaluated on block-missing tests
+- [ ] Block length sensitivity training matrix (18 configs launched as remote job `ecbit_followup_blocklen` on GPU3-GPU5 as of 2026-05-21 22:06 CST)
 - [ ] Imputation curve visualization
 
 ## Phase 5 · Paper Writing

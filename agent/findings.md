@@ -301,3 +301,14 @@ Important correction: an initial selection with only mean core completeness reta
 - Implementation note: the project data are aligned to 3-hourly AntAWS windows, so temporal robustness is evaluated as current 3h versus 6h, 12h, and 24h ERA5 inputs interpolated back to the model sequence length.
 - Expected decision value: if variable masking shows a long-tail importance pattern, the paper can explain ERA5's value through specific meteorological channels; if 6h/24h downsampling has small MAE impact, the deployment claim can state robustness to lower-frequency ERA5 inputs.
 - Direction 5 was also converted into a no-training analysis by reusing the completed `no_blockmask` checkpoints. These checkpoints were trained with MCAR masks; the new evaluation changes only the test-time artificial mask to the matched block pattern, separating MCAR training from block-missing evaluation.
+- Direction 3 was launched as a compact 18-run training matrix. Because the preprocessed tensors are 3-hourly, the intended max-block horizons are implemented as max steps 8, 24, and 72 for 24h, 72h, and 216h respectively. This avoids the earlier ambiguity between hours and tensor steps.
+
+## Rapid Feasibility Results: ERA5 Robustness and MCAR-on-Block (2026-05-21)
+
+- ERA5 variable masking completed over all 27 gated-full Round2 checkpoints. Baseline MAE from this re-evaluation is 0.2574, matching the completed gated result.
+- Variable importance by MAE increase when masked: T +0.0559, wind speed +0.0404, specific humidity q +0.0374, pressure +0.0299, RH +0.0229.
+- The top three ERA5 variables (T, wind speed, q) account for 0.1336 summed delta, exceeding the 0.088 no-ERA5 gap reference. This supports a long-tail interpretation: ERA5 value is concentrated in a few physically meaningful channels, with RH least useful among the five tested channels.
+- ERA5 temporal downsampling completed over all 27 gated-full checkpoints. 6h ERA5 is effectively harmless (+0.0008 MAE), 12h causes a small degradation (+0.0073), and 24h causes a clear degradation (+0.0302).
+- Decision implication for direction 6: go for a practical robustness claim at 6h resolution; no-go for daily/24h inputs unless retrained or adapted.
+- MCAR-trained ERA5 checkpoint evaluation on block-missing test masks completed over all 27 no-blockmask checkpoints. MAE by target block pattern: short 0.3365, medium 0.4161, long 0.4686.
+- MCAR-trained ERA5 is worse than no-ERA5 block-trained models on block-missing tests, especially for long gaps (0.4686 vs 0.3662). This is stronger than the original expected outcome: block-missing curriculum is not merely additive with ERA5; it is necessary for ERA5 conditioning to transfer to block failures.

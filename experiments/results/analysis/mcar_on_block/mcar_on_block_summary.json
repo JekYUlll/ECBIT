@@ -1,0 +1,23 @@
+[
+  {
+    "train_pattern": "mcar",
+    "test_pattern": "long",
+    "count": 9,
+    "mean": 0.4685601525836521,
+    "std": 0.039306736734342006
+  },
+  {
+    "train_pattern": "mcar",
+    "test_pattern": "medium",
+    "count": 9,
+    "mean": 0.41614214579264325,
+    "std": 0.045446831474319965
+  },
+  {
+    "train_pattern": "mcar",
+    "test_pattern": "short",
+    "count": 9,
+    "mean": 0.33654462960031295,
+    "std": 0.03454438373096639
+  }
+]

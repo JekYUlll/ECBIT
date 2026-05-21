@@ -189,3 +189,9 @@
 - Confirmed 108 remote `round2_gated` checkpoints exist. Launched tmux session `ecbit_era5_robustness` on GPU1 with output under `experiments/results/analysis/era5_robustness`.
 - Added `scripts/evaluate_mcar_on_block.py` for direction five. It reuses existing MCAR-trained `no_blockmask` checkpoints and evaluates them on the corresponding short/medium/long block-missing test masks, so no new training is required for this fairness check.
 - Local compile/test check passed for the new script; launched remote tmux session `ecbit_mcar_on_block` on GPU2 with output under `experiments/results/analysis/mcar_on_block`.
+- Added `scripts/generate_followup_configs.py` and generated 18 direction-three block-length sensitivity configs under `experiments/configs/followup_blocklen`.
+- Block-length settings use the 3-hour AntAWS step size: 24h = 2-8 steps, 72h = 6-24 steps, and 216h = 24-72 steps. Each length is run with gated full and no-ERA5 variants over seeds 42/43/44 at 40% missingness.
+- Synced configs to the remote server and launched tmux session `ecbit_followup_blocklen` on GPU3-GPU5.
+- `ecbit_era5_robustness` completed and results were synced locally. Key findings: masking ERA5 T hurts most (+0.0559 MAE), followed by wind speed (+0.0404) and q (+0.0374); 6h ERA5 downsampling is nearly harmless (+0.0008), 12h is small but visible (+0.0073), and 24h is clearly harmful (+0.0302).
+- `ecbit_mcar_on_block` completed and results were synced locally. MCAR-trained ERA5 models perform poorly on block-missing tests: short 0.3365, medium 0.4161, long 0.4686 MAE. This is worse than block-trained no-ERA5 for all patterns, showing that block curriculum is necessary for using ERA5 effectively.
+- `ecbit_followup_blocklen` remains running. First three 216h/full jobs are training normally with no errors detected; latest visible validation MAE around epoch 5 is near 0.30.
