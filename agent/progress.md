@@ -195,3 +195,12 @@
 - `ecbit_era5_robustness` completed and results were synced locally. Key findings: masking ERA5 T hurts most (+0.0559 MAE), followed by wind speed (+0.0404) and q (+0.0374); 6h ERA5 downsampling is nearly harmless (+0.0008), 12h is small but visible (+0.0073), and 24h is clearly harmful (+0.0302).
 - `ecbit_mcar_on_block` completed and results were synced locally. MCAR-trained ERA5 models perform poorly on block-missing tests: short 0.3365, medium 0.4161, long 0.4686 MAE. This is worse than block-trained no-ERA5 for all patterns, showing that block curriculum is necessary for using ERA5 effectively.
 - `ecbit_followup_blocklen` remains running. First three 216h/full jobs are training normally with no errors detected; latest visible validation MAE around epoch 5 is near 0.30.
+
+## Session: 2026-05-22
+
+### Follow-up Block-Length Check
+- Checked remote `ecbit_followup_blocklen` at 00:28-00:31 CST. Status: 6/18 result files complete; no Traceback, RuntimeError, CUDA OOM, Killed, or Error lines found in follow-up logs.
+- Completed configs: all 216h full and 216h no-ERA5 runs for seeds 42/43/44.
+- Active configs: `ecbit_blocklen_24h_full_s42/s43/s44` on GPU3/GPU4/GPU5. Latest visible epochs are 13, 12, and 11 respectively, with validation MAE around 0.25.
+- GPU3-GPU5 are active at about 25-26% utilization with ~546 MiB each. Main training processes are alive and CPU-active; load average is low (~4 on the 224-thread host).
+- ETA estimate: if current 24h/full speed persists, the active wave may need roughly 2.5-3 hours more. Three additional waves remain after that (`24h_no_era5`, `72h_full`, `72h_no_era5`), so conservative completion is around 10-13 hours from 00:31 CST. A faster outcome is possible if later waves match the earlier 216h runs (~40 minutes per wave), in which case completion would be around 03:30-05:00 CST.
