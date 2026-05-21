@@ -180,3 +180,12 @@
 - Final gated ablation result: gated injection MAE 0.2577, concat/no-cross MAE 0.2580, no-ERA5 MAE 0.3457. Gated injection is tied with no-cross; removing ERA5 causes a 34.14% relative MAE degradation.
 - Final Round3 held-out station means: Nico 0.1732, Sabrina 0.2458, Butcher Ridge 0.2893, Zhongshan 0.3073, Mount Sidley 0.3500.
 - Updated the paper experiments/conclusion sections, regenerated the Round2 ablation figure/table from `round2_gated_final`, added a Round3 held-out table, and verified `latexmk -pdf` succeeds with a 4-page PDF.
+
+### Rapid Feasibility Follow-up
+- Read `agent/ECBIT 新实验方向：快速可行性验证设计.md` and began the first-priority inference-only checks: ERA5 variable masking and ERA5 temporal downsampling robustness.
+- Added `scripts/evaluate_era5_robustness.py`, which reuses completed `round2_gated` full checkpoints and evaluates baseline, per-variable ERA5 masking, and 6h/12h/24h ERA5 downsampling in one pass per checkpoint.
+- Added `src/tests/test_era5_robustness.py`; local targeted tests passed: `pytest -q src/tests/test_era5_robustness.py src/tests/test_ecbit.py` -> 8 passed.
+- Synced the analysis script and test to the remote server. Remote targeted tests also passed: 8 passed.
+- Confirmed 108 remote `round2_gated` checkpoints exist. Launched tmux session `ecbit_era5_robustness` on GPU1 with output under `experiments/results/analysis/era5_robustness`.
+- Added `scripts/evaluate_mcar_on_block.py` for direction five. It reuses existing MCAR-trained `no_blockmask` checkpoints and evaluates them on the corresponding short/medium/long block-missing test masks, so no new training is required for this fairness check.
+- Local compile/test check passed for the new script; launched remote tmux session `ecbit_mcar_on_block` on GPU2 with output under `experiments/results/analysis/mcar_on_block`.

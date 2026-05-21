@@ -3,6 +3,7 @@ Goal: Submit ERA5-Conditioned Block Imputation paper to IEEE TGRS or Remote Sens
 Current Phase: Phase 3 — Experiments / Phase 5 — Paper Writing
 Last Updated: 2026-05-21
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; complex cross-attention/gated fusion has not yet shown stable gains over lightweight no-cross conditioning.
+Active Follow-up: Execute rapid feasibility checks from `agent/ECBIT 新实验方向：快速可行性验证设计.md`, starting with inference-only ERA5 variable importance and temporal-resolution robustness.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -40,6 +41,9 @@ Current Claim: ERA5-conditioned block-missing AWS imputation is strongly support
 - [x] Missing pattern analysis figure
 - [ ] Main result comparison figure
 - [ ] ERA5 conditioning effect figure
+- [ ] ERA5 variable importance analysis (remote job `ecbit_era5_robustness` running as of 2026-05-21 22:00 CST)
+- [ ] ERA5 temporal-resolution robustness analysis (same remote job)
+- [ ] MCAR-trained ERA5 baseline evaluated on block-missing tests (remote job `ecbit_mcar_on_block` running as of 2026-05-21 22:02 CST)
 - [ ] Imputation curve visualization
 
 ## Phase 5 · Paper Writing

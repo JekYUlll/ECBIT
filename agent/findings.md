@@ -292,3 +292,12 @@ Important correction: an initial selection with only mean core completeness reta
 - `round3` is complete: 45/45 held-out station runs, all with true `test` metrics.
 - Final held-out station means: Nico 0.1732, Sabrina 0.2458, Butcher Ridge 0.2893, Zhongshan 0.3073, Mount Sidley 0.3500.
 - Paper implication: keep the honest claim that ERA5-conditioned block imputation works, while explicitly reporting that gated/cross-attention fusion does not beat simpler no-cross conditioning.
+
+## Rapid Feasibility Plan Execution (2026-05-21)
+
+- The follow-up markdown proposes six directions. Execution started with the highest-priority low-cost checks:
+  - Direction 2: inference-time ERA5 variable masking to identify which ERA5 variables drive the 34% no-ERA5 gap.
+  - Direction 6: inference-time ERA5 temporal downsampling to test whether the model needs high-frequency ERA5 structure or only coarse background state.
+- Implementation note: the project data are aligned to 3-hourly AntAWS windows, so temporal robustness is evaluated as current 3h versus 6h, 12h, and 24h ERA5 inputs interpolated back to the model sequence length.
+- Expected decision value: if variable masking shows a long-tail importance pattern, the paper can explain ERA5's value through specific meteorological channels; if 6h/24h downsampling has small MAE impact, the deployment claim can state robustness to lower-frequency ERA5 inputs.
+- Direction 5 was also converted into a no-training analysis by reusing the completed `no_blockmask` checkpoints. These checkpoints were trained with MCAR masks; the new evaluation changes only the test-time artificial mask to the matched block pattern, separating MCAR training from block-missing evaluation.
