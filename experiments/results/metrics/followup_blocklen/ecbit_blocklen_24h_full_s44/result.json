@@ -1,0 +1,90 @@
+{
+  "best": {
+    "mae_T": 0.14300177991390228,
+    "rmse_T": 0.188663050532341,
+    "mae_RH": 0.37650129199028015,
+    "rmse_RH": 0.5048375725746155,
+    "mae_wspd": 0.3801575005054474,
+    "rmse_wspd": 0.5921891331672668,
+    "mae_P": 0.05508077144622803,
+    "rmse_P": 0.07268694788217545,
+    "mae_q": 0.1862475872039795,
+    "rmse_q": 0.2723398506641388,
+    "mae_mean": 0.22819778323173523,
+    "rmse_mean": 0.3261433243751526,
+    "train_loss": 0.12345609954174827,
+    "epoch": 48
+  },
+  "test": {
+    "mae_T": 0.14054220914840698,
+    "rmse_T": 0.18661096692085266,
+    "mae_RH": 0.3765444755554199,
+    "rmse_RH": 0.5110676288604736,
+    "mae_wspd": 0.3892097771167755,
+    "rmse_wspd": 0.6133384108543396,
+    "mae_P": 0.05523698404431343,
+    "rmse_P": 0.07362079620361328,
+    "mae_q": 0.19318875670433044,
+    "rmse_q": 0.2839062809944153,
+    "mae_mean": 0.23094442486763,
+    "rmse_mean": 0.33370882272720337
+  },
+  "config": {
+    "seed": 44,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/followup_blocklen/ecbit_blocklen_24h_full_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "full",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true,
+      "fusion_type": "gated"
+    },
+    "missing": {
+      "pattern": "blocklen_24h",
+      "rate": 0.4,
+      "min_block": 2,
+      "max_block": 8,
+      "variable_wise": true
+    },
+    "analysis": {
+      "block_max_hours": 24,
+      "block_min_steps": 2,
+      "block_max_steps": 8
+    },
+    "run_name": "ecbit_blocklen_24h_full_s44"
+  }
+}

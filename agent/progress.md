@@ -204,3 +204,10 @@
 - Active configs: `ecbit_blocklen_24h_full_s42/s43/s44` on GPU3/GPU4/GPU5. Latest visible epochs are 13, 12, and 11 respectively, with validation MAE around 0.25.
 - GPU3-GPU5 are active at about 25-26% utilization with ~546 MiB each. Main training processes are alive and CPU-active; load average is low (~4 on the 224-thread host).
 - ETA estimate: if current 24h/full speed persists, the active wave may need roughly 2.5-3 hours more. Three additional waves remain after that (`24h_no_era5`, `72h_full`, `72h_no_era5`), so conservative completion is around 10-13 hours from 00:31 CST. A faster outcome is possible if later waves match the earlier 216h runs (~40 minutes per wave), in which case completion would be around 03:30-05:00 CST.
+
+### Follow-up Block-Length Check
+- Checked remote `ecbit_followup_blocklen` at 05:07 CST. Status: 9/18 result files complete; no follow-up log errors found.
+- Newly completed since the prior check: all `24h_full` runs for seeds 42/43/44.
+- Active configs: `24h_no_era5_s42/s43/s44`, currently at epochs 25, 16, and 19 respectively. GPU3-GPU5 remain active at about 22-26% utilization.
+- Partial aggregate after syncing 9 results: `216h_full` MAE 0.2581, `216h_no_era5` MAE 0.3504, delta 0.0924; `24h_full` MAE 0.2304. The 24h no-ERA5 runs are still needed to test whether ERA5 gain increases with block length.
+- Updated ETA: the active `24h_no_era5` wave likely finishes around 06:30-07:30 CST if current pace holds. Two waves remain afterward (`72h_full`, `72h_no_era5`), so expected final completion is roughly 10:00-12:00 CST, with a conservative bound of early afternoon.
