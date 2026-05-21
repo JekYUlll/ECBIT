@@ -32,9 +32,9 @@ Current Claim: ERA5-conditioned block-missing AWS imputation is strongly support
 ## Phase 3 · Experiments
 - [ ] Run baseline experiments
 - [x] Run ECBIT ablations
-- [ ] Run gated-injection ECBIT ablations (53/108 complete as of 2026-05-21 02:34 CST)
-- [ ] Run held-out station generalization experiments (42/45 complete as of 2026-05-21 02:34 CST)
-- [ ] Aggregate results
+- [x] Run gated-injection ECBIT ablations (108/108 complete as of 2026-05-21 17:39 CST)
+- [x] Run held-out station generalization experiments (45/45 complete as of 2026-05-21 17:39 CST)
+- [x] Aggregate results for completed Round1 core, Round2 cross-attention, Round2 gated, and Round3 held-out matrices
 
 ## Phase 4 · Analysis and Visualization
 - [x] Missing pattern analysis figure
@@ -45,8 +45,8 @@ Current Claim: ERA5-conditioned block-missing AWS imputation is strongly support
 ## Phase 5 · Paper Writing
 - [x] Introduction and Related Work
 - [x] Methodology
-- [ ] Experiments
-- [ ] Conclusion
+- [x] Experiments updated with completed gated and held-out results
+- [x] Conclusion updated with current evidence
 - [ ] Format and submission checks
 
 ## Blocked Issues

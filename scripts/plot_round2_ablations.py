@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plot Round 2 ECBIT ablation trends for the paper."""
+"""Plot Round 2 ERA5-conditioning ablation trends for the paper."""
 
 from __future__ import annotations
 
@@ -16,8 +16,8 @@ OUT_PNG = Path("paper/figures/fig_round2_ablations.png")
 
 VARIANT_ORDER = ["full", "no_cross", "no_era5"]
 VARIANT_LABELS = {
-    "full": "ECBIT full",
-    "no_cross": "No cross-attn",
+    "full": "Gated injection",
+    "no_cross": "Concat/no-cross",
     "no_era5": "No ERA5",
 }
 COLORS = {
@@ -103,7 +103,7 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
     plot_mcar(axes[3], runs)
     axes[0].legend(frameon=False, fontsize=7, loc="upper left")
     axes[3].legend(frameon=False, fontsize=7, loc="upper left")
-    fig.suptitle("Round 2 ECBIT ablations", fontsize=10, fontweight="bold")
+    fig.suptitle("Round 2 ERA5-conditioning ablations", fontsize=10, fontweight="bold")
 
     out_pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_pdf, bbox_inches="tight")

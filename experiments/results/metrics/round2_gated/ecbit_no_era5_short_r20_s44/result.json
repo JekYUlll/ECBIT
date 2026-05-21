@@ -1,0 +1,84 @@
+{
+  "best": {
+    "mae_T": 0.22287051379680634,
+    "rmse_T": 0.2957417964935303,
+    "mae_RH": 0.4576299488544464,
+    "rmse_RH": 0.6025142073631287,
+    "mae_wspd": 0.5280196070671082,
+    "rmse_wspd": 0.8107353448867798,
+    "mae_P": 0.09021475911140442,
+    "rmse_P": 0.12013403326272964,
+    "mae_q": 0.25402548909187317,
+    "rmse_q": 0.36689165234565735,
+    "mae_mean": 0.31055206060409546,
+    "rmse_mean": 0.4392034113407135,
+    "train_loss": 0.21325948481855828,
+    "epoch": 48
+  },
+  "test": {
+    "mae_T": 0.22253870964050293,
+    "rmse_T": 0.2964384853839874,
+    "mae_RH": 0.45577430725097656,
+    "rmse_RH": 0.6050382852554321,
+    "mae_wspd": 0.5269121527671814,
+    "rmse_wspd": 0.8189451098442078,
+    "mae_P": 0.0919879823923111,
+    "rmse_P": 0.12374822795391083,
+    "mae_q": 0.26589128375053406,
+    "rmse_q": 0.3865208625793457,
+    "mae_mean": 0.3126209080219269,
+    "rmse_mean": 0.4461382031440735
+  },
+  "config": {
+    "seed": 44,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round2_gated/ecbit_no_era5_short_r20_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "no_era5",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": false,
+      "use_cross": false
+    },
+    "missing": {
+      "pattern": "short",
+      "rate": 0.2,
+      "min_block": 6,
+      "max_block": 24,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_no_era5_short_r20_s44"
+  }
+}

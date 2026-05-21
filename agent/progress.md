@@ -172,3 +172,11 @@
 - Added a consolidated idea/validation summary to `agent/findings.md`.
 - Current working thesis recorded: the publishable contribution is ERA5-conditioned block-missing AWS imputation, not cross-attention superiority.
 - The result narrative is now: ERA5 conditioning is strongly validated; cross-attention and gated injection are tied with no-cross lightweight fusion; station-level held-out difficulty must be reported explicitly.
+
+### Final Round2-Gated and Round3 Check
+- Remote check at 17:39 CST found `round2_gated` complete at 108/108 and Round3 complete at 45/45. All completed files contain `test` metrics.
+- All ECBIT tmux experiment sessions have exited. Active log scan found no Traceback, RuntimeError, CUDA OOM, Killed, or Error lines for the gated and held-out logs.
+- Synced full remote metrics locally and generated `round2_gated_final_*`, `round3_final_*`, and refreshed partial aggregate CSVs.
+- Final gated ablation result: gated injection MAE 0.2577, concat/no-cross MAE 0.2580, no-ERA5 MAE 0.3457. Gated injection is tied with no-cross; removing ERA5 causes a 34.14% relative MAE degradation.
+- Final Round3 held-out station means: Nico 0.1732, Sabrina 0.2458, Butcher Ridge 0.2893, Zhongshan 0.3073, Mount Sidley 0.3500.
+- Updated the paper experiments/conclusion sections, regenerated the Round2 ablation figure/table from `round2_gated_final`, added a Round3 held-out table, and verified `latexmk -pdf` succeeds with a 4-page PDF.

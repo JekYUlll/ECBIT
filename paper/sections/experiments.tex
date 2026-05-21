@@ -11,7 +11,7 @@ We scan 267 AntAWS 3-hourly station files and retain stations with record length
 \end{figure}
 
 \subsection{Baselines and Ablations}
-Round 1 compares six baselines: linear interpolation, last-observation-carried-forward, ERA5 direct substitution after train-set bias correction, BRITS, SAITS, and an iTransformer imputation baseline. Round 2 evaluates ECBIT variants: full conditional cross-attention, no cross-attention, no ERA5, and no block-mask training. Round 3 evaluates held-out station generalization for ECBIT full at a 40\% missing rate.
+Round 1 compares six baselines: linear interpolation, last-observation-carried-forward, ERA5 direct substitution after train-set bias correction, BRITS, SAITS, and an iTransformer imputation baseline. Round 2 evaluates ERA5-conditioned ECBIT variants: gated ERA5 injection, concat/no-cross fusion, no ERA5, and no block-mask training. Round 3 evaluates held-out station generalization at a 40\% missing rate.
 
 \begin{figure*}[t]
   \centering
@@ -25,11 +25,13 @@ Round 1 compares six baselines: linear interpolation, last-observation-carried-f
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_round2_ablations.pdf}
-  \caption{Round 2 ECBIT ablation results over block-missing and MCAR masking regimes. Removing ERA5 substantially degrades block-imputation accuracy, while the current cross-attention implementation is statistically tied with the no-cross fusion variant. The MCAR training setting is easier and is therefore reported separately rather than compared directly to block-missing results.}
+  \caption{Round 2 ERA5-conditioning ablation results over block-missing and MCAR masking regimes. Removing ERA5 substantially degrades block-imputation accuracy, while gated injection is statistically tied with concat/no-cross fusion. The MCAR training setting is easier and is therefore reported separately rather than compared directly to block-missing results.}
   \label{fig:round2-ablations}
 \end{figure*}
 
 \input{tables/tab_round2_ablations}
 
-\subsection{Implementation Status}
-The data pipeline, model implementations, training/evaluation entrypoints, and 315 YAML experiment configurations have been implemented. Round 1 core baselines are complete for interpolation, last-observation-carried-forward, ERA5 direct substitution, and iTransformer. Round 2 ECBIT ablations are complete. SAITS and BRITS are scheduled as heavier PyPOTS baselines after the core neural ablations finish. Completed Round 1 results show a consistent trade-off: ERA5 direct substitution is competitive for long block gaps, while linear interpolation is strongest among stateless methods for short gaps. Completed Round 2 results support the value of ERA5 conditioning: removing ERA5 increases block-missing test MAE from 0.260 to 0.346. However, the full cross-attention model is tied with the no-cross fusion ablation, indicating that the present evidence supports ERA5-conditioned imputation more strongly than the specific cross-attention mechanism.
+\input{tables/tab_round3_heldout}
+
+\subsection{Result Summary}
+Round 1 core baselines show a consistent trade-off: ERA5 direct substitution is competitive for long block gaps, while linear interpolation is strongest among stateless methods for short gaps. Completed Round 2 results support the value of ERA5 conditioning: removing ERA5 increases block-missing test MAE from 0.258 to 0.346, a 34\% relative degradation against gated injection. However, gated injection is tied with concat/no-cross fusion, indicating that the present evidence supports ERA5-conditioned block imputation more strongly than any specific fusion mechanism. Round 3 shows substantial station heterogeneity, with held-out MAE ranging from 0.173 on Nico to 0.350 on Mount Sidley.

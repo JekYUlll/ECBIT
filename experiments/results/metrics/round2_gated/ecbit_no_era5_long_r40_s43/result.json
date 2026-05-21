@@ -1,0 +1,84 @@
+{
+  "best": {
+    "mae_T": 0.27330800890922546,
+    "rmse_T": 0.37027353048324585,
+    "mae_RH": 0.5274145007133484,
+    "rmse_RH": 0.6817603707313538,
+    "mae_wspd": 0.5922926664352417,
+    "rmse_wspd": 0.915809154510498,
+    "mae_P": 0.1072566956281662,
+    "rmse_P": 0.15614287555217743,
+    "mae_q": 0.2938883602619171,
+    "rmse_q": 0.43696752190589905,
+    "mae_mean": 0.35883206129074097,
+    "rmse_mean": 0.5121906995773315,
+    "train_loss": 0.28090938968596113,
+    "epoch": 49
+  },
+  "test": {
+    "mae_T": 0.27318066358566284,
+    "rmse_T": 0.37387439608573914,
+    "mae_RH": 0.5395814776420593,
+    "rmse_RH": 0.7008910775184631,
+    "mae_wspd": 0.5958269238471985,
+    "rmse_wspd": 0.9099981784820557,
+    "mae_P": 0.10894619673490524,
+    "rmse_P": 0.15692637860774994,
+    "mae_q": 0.30111467838287354,
+    "rmse_q": 0.4457412362098694,
+    "mae_mean": 0.36372998356819153,
+    "rmse_mean": 0.5174862146377563
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round2_gated/ecbit_no_era5_long_r40_s43",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "no_era5",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": false,
+      "use_cross": false
+    },
+    "missing": {
+      "pattern": "long",
+      "rate": 0.4,
+      "min_block": 72,
+      "max_block": 240,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_no_era5_long_r40_s43"
+  }
+}

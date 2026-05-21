@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a Round 2 ECBIT ablation LaTeX table."""
+"""Generate a Round 2 ECBIT/gated ablation LaTeX table."""
 
 from __future__ import annotations
 
@@ -13,8 +13,8 @@ RUNS_CSV = Path("experiments/results/tables/round2_partial_runs.csv")
 OUT_TEX = Path("paper/tables/tab_round2_ablations.tex")
 VARIANT_ORDER = ["full", "no_cross", "no_era5", "no_blockmask"]
 VARIANT_LABELS = {
-    "full": "ECBIT full",
-    "no_cross": "No cross-attention",
+    "full": "Gated ERA5 injection",
+    "no_cross": "Concat/no-cross fusion",
     "no_era5": "No ERA5",
     "no_blockmask": "MCAR training",
 }
@@ -47,7 +47,7 @@ def main() -> None:
     lines = [
         "\\begin{table}[t]",
         "  \\centering",
-        "  \\caption{Round 2 ECBIT ablation results. Values are mean test MAE over all runs; the count in parentheses indicates configurations. MCAR training uses a different mask distribution and is reported separately. Lower is better.}",
+        "  \\caption{Round 2 ERA5-conditioning ablation results. Values are mean test MAE over all runs; the count in parentheses indicates configurations. MCAR training uses a different mask distribution and is reported separately. Lower is better.}",
         "  \\label{tab:round2-ablations}",
         "  \\begin{tabular}{lc}",
         "    \\toprule",

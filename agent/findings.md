@@ -278,3 +278,17 @@ Important correction: an initial selection with only mean core completeness reta
 - Validated point 4: gated feature injection is currently also tied with no-cross fusion. At 53/108 gated runs, `full` mean MAE is 0.2589 and `no_cross` mean MAE is 0.2586; matched full-vs-no-cross deltas are about -0.0002 MAE.
 - Validated point 5: held-out station generalization is heterogeneous. Current Round3 partial means range from Nico 0.1732 to Mount Sidley 0.3500, indicating station-level difficulty must be reported rather than hidden in a single aggregate.
 - Current paper claim should be: ERA5 conditioning is causally useful for Antarctic block-missing AWS imputation; the value comes mainly from external reanalysis information and block-missing training, while complex attention/gating fusion has not shown stable extra benefit over lightweight conditioning.
+
+## Final Gated and Held-Out Results (2026-05-21)
+
+- `round2_gated` is complete: 108/108 runs, all with true `test` metrics and no runtime failures in logs.
+- Final Round2 gated means:
+  - Gated ERA5 injection: MAE 0.2577 +/- 0.0074 over 27 block-missing runs.
+  - Concat/no-cross fusion: MAE 0.2580 +/- 0.0062 over 27 block-missing runs.
+  - No ERA5: MAE 0.3457 +/- 0.0242 over 27 block-missing runs.
+  - MCAR/no-blockmask: MAE 0.1897 +/- 0.0069 over 27 MCAR runs, reported separately.
+- Gated injection is tied with no-cross fusion: matched full-vs-no-cross delta is -0.00025 MAE within the completed gated matrix.
+- Removing ERA5 is the dominant effect: no-ERA5 is worse than gated full by +0.088 MAE on average, a 34.14% relative degradation.
+- `round3` is complete: 45/45 held-out station runs, all with true `test` metrics.
+- Final held-out station means: Nico 0.1732, Sabrina 0.2458, Butcher Ridge 0.2893, Zhongshan 0.3073, Mount Sidley 0.3500.
+- Paper implication: keep the honest claim that ERA5-conditioned block imputation works, while explicitly reporting that gated/cross-attention fusion does not beat simpler no-cross conditioning.

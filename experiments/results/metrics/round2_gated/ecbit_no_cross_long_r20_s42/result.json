@@ -1,0 +1,85 @@
+{
+  "best": {
+    "mae_T": 0.1648576557636261,
+    "rmse_T": 0.2160988748073578,
+    "mae_RH": 0.46320801973342896,
+    "rmse_RH": 0.6041134595870972,
+    "mae_wspd": 0.40935617685317993,
+    "rmse_wspd": 0.6376495361328125,
+    "mae_P": 0.06524967402219772,
+    "rmse_P": 0.08409889787435532,
+    "mae_q": 0.20843110978603363,
+    "rmse_q": 0.30315712094306946,
+    "mae_mean": 0.2622205317020416,
+    "rmse_mean": 0.3690235912799835,
+    "train_loss": 0.155899885764309,
+    "epoch": 46
+  },
+  "test": {
+    "mae_T": 0.16799083352088928,
+    "rmse_T": 0.22374919056892395,
+    "mae_RH": 0.4527459442615509,
+    "rmse_RH": 0.5987564921379089,
+    "mae_wspd": 0.42612823843955994,
+    "rmse_wspd": 0.6769843697547913,
+    "mae_P": 0.07007086277008057,
+    "rmse_P": 0.09600827097892761,
+    "mae_q": 0.21723347902297974,
+    "rmse_q": 0.31665199995040894,
+    "mae_mean": 0.2668338716030121,
+    "rmse_mean": 0.3824300765991211
+  },
+  "config": {
+    "seed": 42,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round2_gated/ecbit_no_cross_long_r20_s42",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "no_cross",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": false,
+      "fusion_type": "concat"
+    },
+    "missing": {
+      "pattern": "long",
+      "rate": 0.2,
+      "min_block": 72,
+      "max_block": 240,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_no_cross_long_r20_s42"
+  }
+}

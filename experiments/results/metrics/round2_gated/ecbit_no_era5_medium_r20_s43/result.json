@@ -1,0 +1,84 @@
+{
+  "best": {
+    "mae_T": 0.24546878039836884,
+    "rmse_T": 0.32973843812942505,
+    "mae_RH": 0.4986945688724518,
+    "rmse_RH": 0.6519306898117065,
+    "mae_wspd": 0.5719266533851624,
+    "rmse_wspd": 0.8782553672790527,
+    "mae_P": 0.09429475665092468,
+    "rmse_P": 0.12534359097480774,
+    "mae_q": 0.26981034874916077,
+    "rmse_q": 0.39428791403770447,
+    "mae_mean": 0.3360390067100525,
+    "rmse_mean": 0.4759112000465393,
+    "train_loss": 0.24581884961891798,
+    "epoch": 46
+  },
+  "test": {
+    "mae_T": 0.24402156472206116,
+    "rmse_T": 0.3298886716365814,
+    "mae_RH": 0.49975576996803284,
+    "rmse_RH": 0.6589000821113586,
+    "mae_wspd": 0.5740661025047302,
+    "rmse_wspd": 0.8676456809043884,
+    "mae_P": 0.09501242637634277,
+    "rmse_P": 0.12932144105434418,
+    "mae_q": 0.27900561690330505,
+    "rmse_q": 0.4075304865837097,
+    "mae_mean": 0.33837229013442993,
+    "rmse_mean": 0.47865724563598633
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/round2_gated/ecbit_no_era5_medium_r20_s43",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "no_era5",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": false,
+      "use_cross": false
+    },
+    "missing": {
+      "pattern": "medium",
+      "rate": 0.2,
+      "min_block": 24,
+      "max_block": 72,
+      "variable_wise": true
+    },
+    "run_name": "ecbit_no_era5_medium_r20_s43"
+  }
+}

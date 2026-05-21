@@ -1,16 +1,16 @@
 \begin{table}[t]
   \centering
-  \caption{Round 2 ECBIT ablation results. Values are mean test MAE over all runs; the count in parentheses indicates configurations. MCAR training uses a different mask distribution and is reported separately. Lower is better.}
+  \caption{Round 2 ERA5-conditioning ablation results. Values are mean test MAE over all runs; the count in parentheses indicates configurations. MCAR training uses a different mask distribution and is reported separately. Lower is better.}
   \label{tab:round2-ablations}
   \begin{tabular}{lc}
     \toprule
     Variant & Block-mask MAE \\
     \midrule
-    ECBIT full & 0.260 $\pm$ 0.007 (27) \\
-    No cross-attention & \textbf{0.258 $\pm$ 0.007} (27) \\
-    No ERA5 & 0.346 $\pm$ 0.025 (27) \\
+    Gated ERA5 injection & \textbf{0.258 $\pm$ 0.007} (27) \\
+    Concat/no-cross fusion & 0.258 $\pm$ 0.006 (27) \\
+    No ERA5 & 0.346 $\pm$ 0.024 (27) \\
     \midrule
-    MCAR training & 0.191 $\pm$ 0.007 (27) \\
+    MCAR training & 0.190 $\pm$ 0.007 (27) \\
     \bottomrule
   \end{tabular}
 \end{table}
