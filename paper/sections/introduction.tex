@@ -10,7 +10,7 @@ The current benchmark contains 32 selected AntAWS stations with at least 10 year
 
 The contributions are:
 \begin{itemize}
-  \item a realistic Antarctic AWS block-imputation benchmark with real observation masks, ERA5 alignment, and held-out station splits;
-  \item evidence that ERA5-conditioned block imputation improves most under long contiguous outages, where local station context is weakest;
-  \item an experimental protocol that separates interpolation skill, reanalysis direct substitution, transformer imputation capacity, ERA5-conditioned gains, and block-curriculum effects.
+  \item a realistic Antarctic AWS block-imputation benchmark with sparse observation masks, aligned ERA5 inputs, block-failure simulation, and held-out station splits;
+  \item quantitative evidence that ERA5 conditioning is most valuable under long contiguous outages, where local station context is weakest;
+  \item a factorized experimental analysis showing that ERA5 value depends on block-missing curriculum, is concentrated in physically meaningful variables, and is robust to moderate ERA5 temporal coarsening.
 \end{itemize}

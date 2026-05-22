@@ -246,3 +246,6 @@
 - Main actionable recommendation: complete the missing MCAR/no-ERA5 cell so the curriculum/ERA5 analysis becomes a clean 2x2 factorial comparison rather than a partial MCAR-trained ERA5 check.
 - Decision: run a 27-config matrix matching existing no-blockmask coverage (3 patterns x 3 rates x 3 seeds), with MCAR training masks, no ERA5, and block-missing test evaluation via the existing checkpoint evaluation flow.
 - Additional manuscript tasks from the note: neutralize abstract architecture wording, reorder contribution list toward benchmark/block curriculum and ERA5 evidence, add TSI-Bench related-work context, add practical deployment discussion, and deepen held-out station interpretation.
+- Added `scripts/generate_mcar_noera5_configs.py`, generated 27 configs under `experiments/configs/followup_mcar_noera5`, and updated `scripts/evaluate_mcar_on_block.py` to accept a configurable glob.
+- Synced the project to the remote GPU server and launched `ecbit_mcar_noera5`, `ecbit_mcar_noera5_w1`, and `ecbit_mcar_noera5_w2` on GPU2-GPU4 at 04:42 CST.
+- Initial health check at 04:43 CST: 0/27 complete, all three workers active, GPUs2-4 at about 21-22% utilization, and no Traceback/OOM/Killed/Error lines found.
