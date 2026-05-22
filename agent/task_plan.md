@@ -68,4 +68,4 @@ Active Follow-up: Complete the MCAR-vs-block 2x2 curriculum/ERA5 factorial check
 | Neural training results reported validation metrics instead of test metrics | resolved for completed Round1/Round2 and partial Round3 | Patched training/aggregation/recovery scripts; recovered completed neural result JSON files from checkpoints and regenerated aggregates |
 
 ## Completion Criteria
-Paper submitted to IEEE TGRS or Remote Sensing.
+Journal-style SCI manuscript package ready for venue selection, with complete experiment tables, reproducible figures, compiled LaTeX PDF, and a defensible narrative centered on Antarctic AWS block imputation rather than a specific fusion-module claim.
