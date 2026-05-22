@@ -1,40 +1,35 @@
-\section{Experiments}
+\section{Results}
 
-\subsection{Data}
-We scan 267 AntAWS 3-hourly station files and retain stations with record length of at least 10 years, temperature completeness of at least 70\%, mean core-variable completeness of at least 50\%, and minimum core-variable completeness of at least 20\%. This yields 27 main stations and five held-out stations: Butcher Ridge, Mount Sidley, Nico, Sabrina, and Zhongshan. ERA5 point time series are aligned to the exact station timestamps and normalized with statistics fitted on main-station train windows.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/fig_missing_patterns.pdf}
-  \caption{Observed missingness in selected AntAWS stations. Wind speed and relative humidity show the largest missing burden, and high-percentile gaps last multiple days, motivating block-wise rather than point-wise imputation.}
-  \label{fig:missing-patterns}
-\end{figure}
-
-\subsection{Baselines and Ablations}
-Round 1 compares core baselines: linear interpolation, last-observation-carried-forward, ERA5 direct substitution after train-set bias correction, and an iTransformer imputation baseline. Round 2 evaluates ERA5-conditioned ECBIT variants: gated ERA5 injection, concat/no-cross fusion, no ERA5, and no block-mask training. Round 3 evaluates held-out station generalization at a 40\% missing rate.
+\subsection{How Strong Are Non-ERA5 Baselines?}
+The core baselines establish two reference points. First, local continuity is useful for short gaps but degrades as blocks grow longer. Linear interpolation is therefore a strong sanity check for short outages, while last-observation-carried-forward is consistently weaker. Second, ERA5 direct substitution is competitive for long gaps, showing that reanalysis already contains useful background information even without neural conditioning.
 
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_round1_baselines.pdf}
-  \caption{Round 1 core baseline results over three block-missing regimes and three missing rates. iTransformer is the strongest completed baseline overall. Among stateless methods, ERA5 direct substitution is most competitive on long gaps, while linear interpolation is strongest on short gaps.}
+  \caption{Core baseline results over three block-missing regimes and three missing rates. iTransformer is the strongest completed baseline overall. Among stateless methods, ERA5 direct substitution is most competitive on long gaps, while linear interpolation is strongest on short gaps.}
   \label{fig:round1-baselines}
 \end{figure*}
 
 \input{tables/tab_round1_baselines}
 
+The iTransformer imputation baseline is the strongest completed baseline on average, with mean MAE 0.360. However, it remains substantially worse than ERA5-conditioned ECBIT in the matched block-missing setting reported below. This gap indicates that the main improvement is not simply from using a variate-token transformer backbone; it comes from conditioning on external meteorological background information.
+
+\subsection{Does ERA5 Conditioning Improve Block Imputation?}
+Table~\ref{tab:round2-ablations} and Fig.~\ref{fig:round2-ablations} show the main ablation result. Removing ERA5 increases block-missing test MAE from 0.258 to 0.346, a 34\% relative degradation against gated injection. This is the largest effect in the study and supports ERA5 as the dominant source of improvement.
+
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_round2_ablations.pdf}
-  \caption{Round 2 ERA5-conditioning ablation results over block-missing and MCAR masking regimes. Removing ERA5 substantially degrades block-imputation accuracy, while gated injection is statistically tied with concat/no-cross fusion. The MCAR training setting is easier and is therefore reported separately rather than compared directly to block-missing results.}
+  \caption{ERA5-conditioning ablation results over block-missing and MCAR masking regimes. Removing ERA5 substantially degrades block-imputation accuracy, while gated injection is statistically tied with concat/no-cross fusion. The MCAR training setting is easier and is therefore reported separately rather than compared directly to block-missing results.}
   \label{fig:round2-ablations}
 \end{figure*}
 
 \input{tables/tab_round2_ablations}
 
-\input{tables/tab_round3_heldout}
+The same ablation also prevents an over-interpretation of the architecture. Gated injection and concat/no-cross fusion are essentially tied, with mean MAE 0.258 in both cases. Therefore, the evidence supports ERA5-conditioned block imputation, but it does not support the stronger claim that a particular fusion layer is necessary.
 
-\subsection{Follow-up Analyses}
-The main ablation shows that ERA5 is useful, but not why. We therefore run three compact follow-up analyses using completed checkpoints or a small additional training matrix. First, we vary the maximum synthetic outage length at 40\% missingness. The ERA5-conditioned model remains more stable than the no-ERA5 variant, and the absolute ERA5 gap grows from 0.037 MAE at 24 hours to 0.092 MAE at 216 hours. Second, we mask one ERA5 variable at inference time. Temperature produces the largest degradation, followed by wind speed and specific humidity; relative humidity is least important, consistent with known ERA5 humidity bias in polar settings. Third, we downsample ERA5 at inference time. Moving to 6-hour ERA5 changes MAE by only 0.001, while daily ERA5 increases MAE by 0.030.
+\subsection{Does the ERA5 Benefit Increase for Longer Outages?}
+The block-length sensitivity analysis directly tests whether ERA5 is most useful when local station context is weakest. At 40\% missingness, the ERA5/no-ERA5 MAE gap increases from 0.037 for 24-hour blocks to 0.070 for 72-hour blocks and 0.092 for 216-hour blocks. The relative improvement grows from 13.8\% to 26.4\%.
 
 \begin{figure*}[t]
   \centering
@@ -43,7 +38,20 @@ The main ablation shows that ERA5 is useful, but not why. We therefore run three
   \label{fig:followup-analyses}
 \end{figure*}
 
-We also evaluate the MCAR-trained ERA5 model on block-missing tests. Its MAE is 0.337, 0.416, and 0.469 on short, medium, and long block regimes, respectively, worse than block-trained no-ERA5 models. This indicates that ERA5 and block-missing curriculum interact: the external reanalysis signal becomes useful for outage recovery only when the training mask distribution matches block failures.
+This monotonic pattern is important for the Antarctic AWS setting. It shows that ERA5 is not only improving average error; it is most helpful in the long contiguous outages that motivate the benchmark.
 
-\subsection{Result Summary}
-Round 1 core baselines show a consistent trade-off: ERA5 direct substitution is competitive for long block gaps, while linear interpolation is strongest among stateless methods for short gaps. Completed Round 2 results support the value of ERA5 conditioning: removing ERA5 increases block-missing test MAE from 0.258 to 0.346, a 34\% relative degradation against gated injection. However, gated injection is tied with concat/no-cross fusion, indicating that the present evidence supports ERA5-conditioned block imputation more strongly than any specific fusion mechanism. Round 3 shows substantial station heterogeneity, with held-out MAE ranging from 0.173 on Nico to 0.350 on Mount Sidley. The follow-up analyses further show that the ERA5 benefit is largest precisely in long outages, which is the target failure mode for Antarctic AWS records.
+\subsection{Which ERA5 Variables Matter?}
+The variable-masking analysis in Fig.~\ref{fig:followup-analyses} shows that the ERA5 signal is concentrated in a small set of meteorological channels. Masking ERA5 temperature increases MAE by 0.0559, followed by wind speed at 0.0404 and specific humidity at 0.0374. Pressure and relative humidity produce smaller degradations. This supports a physically interpretable view of the conditioning signal: temperature, wind, and moisture background states carry most of the useful information for reconstructing missing AWS windows.
+
+\subsection{Is High-Frequency ERA5 Required?}
+The temporal downsampling analysis shows that the model is robust to moderate ERA5 temporal coarsening. Downsampling ERA5 to 6-hour resolution increases MAE by only 0.0008, and 12-hour resolution increases MAE by 0.0073. Daily downsampling is more damaging, increasing MAE by 0.0302. This suggests that the model mainly exploits mesoscale background evolution rather than fragile hour-level variation, but daily inputs are too coarse for the current training setup.
+
+\subsection{Does MCAR Training Transfer to Block Failures?}
+We evaluate the MCAR-trained ERA5 model on block-missing tests to isolate the role of training-mask distribution. Its MAE is 0.337, 0.416, and 0.469 on short, medium, and long block regimes, respectively. These values are worse than block-trained no-ERA5 models. Thus, ERA5 access alone is not enough: the model must be trained under block-missing conditions to learn how to use ERA5 during contiguous outages.
+
+\subsection{How Well Does the Model Generalize Across Stations?}
+Held-out station evaluation reveals substantial spatial heterogeneity. Mean MAE ranges from 0.173 on Nico to 0.350 on Mount Sidley. This variation is too large to hide behind a single aggregate score and likely reflects differences in station environment, elevation, coastal versus interior regimes, and station-specific ERA5 bias.
+
+\input{tables/tab_round3_heldout}
+
+The held-out results motivate future station-adaptive conditioning, but they do not invalidate the main result. They show that ERA5-conditioned block imputation transfers to unseen stations with variable difficulty, and that station-level reporting should be part of Antarctic AWS imputation benchmarks.

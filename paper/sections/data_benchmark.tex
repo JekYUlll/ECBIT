@@ -1,0 +1,26 @@
+\section{Data and Benchmark Construction}
+
+\subsection{Station Selection}
+We construct the benchmark from the 3-hourly AntAWS station archive. The raw archive contains 267 station files after metadata matching and file-level screening. We retain stations only when they provide at least ten years of records, at least 70\% temperature completeness, at least 50\% mean completeness over the core variables, at least 20\% completeness for every core variable, and valid geographic metadata. These criteria remove stations that are long but effectively unusable for multivariate imputation, such as stations with nearly absent relative humidity records.
+
+The final benchmark contains 32 stations. Twenty-seven stations are used for the main train/validation/test experiments, and five geographically diverse stations are reserved for held-out generalization: Butcher Ridge, Mount Sidley, Nico, Sabrina, and Zhongshan. The held-out split is designed to test whether the imputation model transfers across Antarctic regimes rather than only across time windows from the same stations.
+
+\subsection{ERA5 Alignment}
+For each selected station, we download ERA5 point time series and align them to the exact AntAWS 3-hourly timestamps. The aligned ERA5 variables are temperature, relative humidity, wind speed, pressure, and specific humidity, matching the AWS variable set used by the imputation model. All ERA5 files are validated to have finite values and the same temporal length as the corresponding station record before preprocessing.
+
+The resulting benchmark uses ERA5 as a dense external background field, not as ground truth. Station observations remain the target whenever they are available. ERA5 is therefore most relevant when a station variable is artificially hidden or truly missing in the input window.
+
+\subsection{Sparse Window Generation}
+Strictly complete windows are rare in Antarctic AWS records. Requiring every variable to be observed for a full 168-step window would leave only a small number of windows and would bias the benchmark toward unusually clean periods. We therefore generate sparse windows with explicit observation masks.
+
+Each window contains $T=168$ 3-hourly steps, corresponding to three weeks. Windows are retained when they meet minimum observation-fraction and targetability criteria. The final preprocessing output contains 41,388 windows with normalized AWS values, binary observation masks, aligned ERA5 sequences, timestamp encodings, and split identifiers. Artificial missing labels are sampled only from positions where the original station value is observed, so evaluation never treats truly unobserved values as ground truth.
+
+\subsection{Observed Missingness}
+The selected station records show strongly structured missingness. Wind speed and relative humidity have the largest missing burden, and high-percentile gaps persist for multiple days. This observed pattern motivates block-wise imputation: point-wise MCAR missingness is an inadequate proxy for Antarctic station failures caused by icing, power interruptions, and maintenance gaps.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_missing_patterns.pdf}
+  \caption{Observed missingness in selected AntAWS stations. Wind speed and relative humidity show the largest missing burden, and high-percentile gaps last multiple days, motivating block-wise rather than point-wise imputation.}
+  \label{fig:missing-patterns}
+\end{figure}

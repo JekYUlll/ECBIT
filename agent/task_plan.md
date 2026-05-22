@@ -1,9 +1,9 @@
 # ECBIT Task Plan
-Goal: Submit ERA5-Conditioned Block Imputation paper to IEEE TGRS or Remote Sensing.
-Current Phase: Phase 4 — Analysis and Visualization / Phase 5 — Paper Writing
+Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
+Current Phase: Phase 5 — Journal Manuscript Restructuring
 Last Updated: 2026-05-22
-Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; complex cross-attention/gated fusion has not yet shown stable gains over lightweight no-cross conditioning.
-Active Follow-up: Integrate completed rapid feasibility checks into figures and the paper narrative.
+Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
+Active Follow-up: Convert the short conference-style draft into a fuller journal-style manuscript without selecting a target journal yet.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -52,6 +52,9 @@ Active Follow-up: Integrate completed rapid feasibility checks into figures and 
 - [x] Methodology
 - [x] Experiments updated with completed gated and held-out results
 - [x] Conclusion updated with current evidence
+- [x] Journal-style data/benchmark section
+- [x] Journal-style experimental protocol section
+- [x] Journal-style discussion and limitations section
 - [ ] Format and submission checks
 
 ## Blocked Issues

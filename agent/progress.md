@@ -230,3 +230,11 @@
 - Updated the paper abstract, introduction, methodology, experiments, architecture caption, and conclusion to make gated feature injection the primary architecture and the ERA5/block-curriculum interaction the main empirical narrative.
 - Added the follow-up figure and MCAR-on-block result paragraph to `paper/sections/experiments.tex`.
 - Compile check passed: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` produced a 5-page `paper/main.pdf`. Remaining warnings are non-blocking: a 1.6pt TikZ overfull hbox and an underfull vbox.
+
+### Journal Narrative Restructuring
+- User clarified that the immediate task is not journal selection; the manuscript should be transformed from a conference-style short paper into a journal-style SCI-ready narrative suitable for Q3-or-better targets.
+- New framing: benchmark/problem contribution first, ERA5-conditioned block imputation second, and model architecture as a lightweight implementation rather than the primary novelty.
+- Planned structural changes: add independent Data/Benchmark, Experimental Protocol, and Discussion sections; reorganize results around research questions instead of experiment rounds.
+- Added `paper/sections/data_benchmark.tex`, `paper/sections/experimental_protocol.tex`, and `paper/sections/discussion.tex`.
+- Rewrote `paper/sections/experiments.tex` into a research-question-driven Results section covering baselines, ERA5 effect, outage length, ERA5 variables, temporal resolution, MCAR transfer, and held-out station generalization.
+- Compile check passed after restructuring: `paper/main.pdf` is now 6 pages. Remaining warning is the known small TikZ overfull hbox.

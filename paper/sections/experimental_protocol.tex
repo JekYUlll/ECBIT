@@ -1,0 +1,16 @@
+\section{Experimental Protocol}
+
+\subsection{Evaluation Setting}
+All reported neural results are evaluated on held-out test windows using the checkpoint selected by validation performance. Metrics are computed only on artificially hidden positions that were observed in the original AWS record. We report normalized mean absolute error (MAE) and root mean squared error (RMSE), averaged over variables unless otherwise specified.
+
+The main block-missing experiments use three outage regimes: short, medium, and long blocks. Missing rates are 20\%, 40\%, and 60\%, with three random seeds for each configuration. The held-out station experiment evaluates transfer to five stations excluded from model training at 40\% block missingness.
+
+\subsection{Baselines}
+We compare against four core baselines. Linear interpolation and last-observation-carried-forward test whether local temporal continuity is sufficient. ERA5 direct substitution fills missing positions with bias-corrected ERA5 values while preserving observed AWS values, testing the strength of reanalysis alone. The iTransformer imputation baseline tests a neural variate-token model without ERA5 conditioning.
+
+We also implemented wrappers for BRITS and SAITS, but the current completed result matrix focuses on the baselines above and the ECBIT ablations. This avoids mixing incomplete third-party baseline runs into the main claims. BRITS and SAITS remain relevant methodological references because they represent recurrent and self-attention imputation families, respectively.
+
+\subsection{Ablations and Follow-up Analyses}
+The primary ECBIT ablation compares gated ERA5 injection, concat/no-cross fusion, and no-ERA5 training under matched block-missing conditions. A no-blockmask variant trains with MCAR masks and is reported separately because its training distribution differs from the block-failure regime.
+
+To explain the ERA5 signal, we run three follow-up analyses. First, block-length sensitivity varies the maximum outage horizon from 24 to 216 hours while comparing ERA5-conditioned and no-ERA5 models. Second, ERA5 variable masking replaces one ERA5 channel at inference time with its training-set mean to measure channel importance. Third, ERA5 temporal downsampling evaluates whether the model depends on high-frequency ERA5 structure or only on a coarser background state.

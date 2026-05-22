@@ -328,3 +328,9 @@ Important correction: an initial selection with only mean core completeness reta
 - The paper should no longer frame cross-attention as the main mechanism. The final architecture narrative is gated ERA5 feature injection with missing-variable masking, while cross-attention remains an ablation that did not improve over lightweight fusion.
 - The strongest current story is a three-way interaction: realistic block-missing curriculum, ERA5 external background state, and long contiguous outage length. MCAR-trained ERA5 fails on block tests, and the ERA5/no-ERA5 gap grows monotonically from 24h to 216h blocks.
 - The follow-up synthesis figure should carry three messages in one place: long blocks amplify ERA5 value, useful ERA5 information is concentrated in T/wind/q, and 6h ERA5 resolution is sufficient whereas daily inputs are not.
+
+## Journal Manuscript Framing (2026-05-22)
+
+- Do not optimize the manuscript for a single named journal yet. The current target is a solid SCI journal narrative, Q3 or above.
+- The manuscript should stop behaving like a conference model paper. Its center should be: Antarctic AWS records contain realistic long block outages; ERA5 supplies external meteorological background; block-missing curriculum is necessary for ERA5 to become useful; and performance/generalization must be reported under station and outage heterogeneity.
+- The model should be described as a reproducible lightweight conditioning framework used to test this scientific/data hypothesis, not as a claim that gated fusion or attention is intrinsically superior.
