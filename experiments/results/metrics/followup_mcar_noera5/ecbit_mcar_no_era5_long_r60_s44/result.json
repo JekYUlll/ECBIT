@@ -1,0 +1,82 @@
+{
+  "best": {
+    "mae_T": 0.14013537764549255,
+    "rmse_T": 0.1904948502779007,
+    "mae_RH": 0.31345707178115845,
+    "rmse_RH": 0.43612316250801086,
+    "mae_wspd": 0.36748674511909485,
+    "rmse_wspd": 0.6177220940589905,
+    "mae_P": 0.061943355947732925,
+    "rmse_P": 0.08152727037668228,
+    "mae_q": 0.17593933641910553,
+    "rmse_q": 0.2651689946651459,
+    "mae_mean": 0.21179239451885223,
+    "rmse_mean": 0.3182072639465332,
+    "train_loss": 0.11703326140159095,
+    "epoch": 49
+  },
+  "test": {
+    "mae_T": 0.1397249400615692,
+    "rmse_T": 0.19006912410259247,
+    "mae_RH": 0.3189874589443207,
+    "rmse_RH": 0.44690248370170593,
+    "mae_wspd": 0.36671414971351624,
+    "rmse_wspd": 0.6099523305892944,
+    "mae_P": 0.06140667572617531,
+    "rmse_P": 0.08268380910158157,
+    "mae_q": 0.185944065451622,
+    "rmse_q": 0.28191572427749634,
+    "mae_mean": 0.21455545723438263,
+    "rmse_mean": 0.32230469584465027
+  },
+  "config": {
+    "seed": 44,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/followup_mcar_noera5/ecbit_mcar_no_era5_long_r60_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "no_era5",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": false,
+      "use_cross": false
+    },
+    "missing": {
+      "pattern": "mcar",
+      "target_pattern": "long",
+      "rate": 0.6
+    },
+    "run_name": "ecbit_mcar_no_era5_long_r60_s44"
+  }
+}

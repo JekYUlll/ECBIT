@@ -347,3 +347,14 @@ Important correction: an initial selection with only mean core completeness reta
 - The manuscript now includes a main result comparison figure, a qualitative long-block imputation case, the baseline and ablation figures/tables, the follow-up analysis figure, and the held-out station table.
 - LaTeX compilation succeeds at 7 pages under the current IEEE journal template. The latest warning scan reports no undefined references, citation warnings, overfull boxes, or underfull boxes.
 - Active remaining empirical gap: the MCAR/no-ERA5 training cell is running so the block-curriculum by ERA5-conditioning 2x2 factorial table can be completed. The helper script `scripts/make_curriculum_factorial_table.py` is ready and currently produces three populated cells plus one missing cell until that experiment finishes and is evaluated on block masks.
+
+## MCAR-vs-Block Factorial Completion (2026-05-23)
+
+- The MCAR-trained no-ERA5 matrix is complete: 27/27 training runs and 27/27 block-mask evaluations, with no Traceback/OOM/Killed errors in logs.
+- MCAR-trained no-ERA5 evaluated on block masks: short MAE 0.4230, medium 0.5460, long 0.6192, overall 0.5294.
+- Completed 2x2 factorial overall MAE:
+  - Block training + ERA5: 0.2577.
+  - Block training + no ERA5: 0.3457.
+  - MCAR training + ERA5: 0.4071.
+  - MCAR training + no ERA5: 0.5294.
+- Interpretation: both block curriculum and ERA5 conditioning independently matter, and their combination is the only strong regime. ERA5 access alone does not transfer well from MCAR training to block failures; block curriculum alone helps but remains far worse than block curriculum plus ERA5.

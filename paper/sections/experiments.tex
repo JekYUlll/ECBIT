@@ -63,7 +63,11 @@ The variable-masking analysis in Fig.~\ref{fig:followup-analyses} shows that the
 The temporal downsampling analysis shows that the model is robust to moderate ERA5 temporal coarsening. Downsampling ERA5 to 6-hour resolution increases MAE by only 0.0008, and 12-hour resolution increases MAE by 0.0073. Daily downsampling is more damaging, increasing MAE by 0.0302. This suggests that the model mainly exploits mesoscale background evolution rather than fragile hour-level variation, but daily inputs are too coarse for the current training setup.
 
 \subsection{Does MCAR Training Transfer to Block Failures?}
-We evaluate the MCAR-trained ERA5 model on block-missing tests to isolate the role of training-mask distribution. Its MAE is 0.337, 0.416, and 0.469 on short, medium, and long block regimes, respectively. These values are worse than block-trained no-ERA5 models. Thus, ERA5 access alone is not enough: the model must be trained under block-missing conditions to learn how to use ERA5 during contiguous outages.
+Table~\ref{tab:curriculum-era5-factorial} completes the factorial check between training-mask distribution and ERA5 conditioning. The best cell is block training with ERA5 conditioning, with overall MAE 0.258. Removing ERA5 under the same block curriculum increases MAE to 0.346. Conversely, keeping ERA5 but training with MCAR masks gives MAE 0.407 on block tests. The worst cell is MCAR training without ERA5, with MAE 0.529.
+
+\input{tables/tab_curriculum_era5_factorial}
+
+This result separates the two effects cleanly. ERA5 is valuable, but access to ERA5 is not sufficient when the training objective does not match contiguous outages. Likewise, block training helps even without ERA5, but it cannot recover the full benefit of external meteorological context. The useful regime is their combination: block-missing curriculum teaches the model when local AWS evidence is unreliable, and ERA5 supplies the background state needed to bridge the gap.
 
 \subsection{How Well Does the Model Generalize Across Stations?}
 Held-out station evaluation reveals substantial spatial heterogeneity. Mean MAE ranges from 0.173 on Nico to 0.350 on Mount Sidley. This variation is too large to hide behind a single aggregate score and likely reflects differences in station environment, elevation, coastal versus interior regimes, and station-specific ERA5 bias.
