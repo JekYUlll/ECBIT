@@ -17,6 +17,8 @@ Real AntAWS missingness is block-structured. We therefore sample contiguous outa
 \subsection{ECBIT Architecture}
 ECBIT uses two variate-token encoders. For each variable $c$, the observation token is formed from its full time series, the observation mask, and shared time encodings. ERA5 tokens are formed from the aligned ERA5 variable and the same time encodings. Transformer encoders produce $Z^{aws}, Z^{era5} \in \mathbb{R}^{C \times d}$.
 
+In the experiments, each 168-step variable trajectory is flattened with its auxiliary mask and time features and projected to a $d=128$ token embedding. The AWS and ERA5 streams each use three transformer encoder layers, eight attention heads, a feed-forward width of 256, dropout of 0.1, and layer normalization. Time encodings contain shared calendar features for the 3-hourly window, so the variate token represents both the variable trajectory and its position within the seasonal and diurnal cycle.
+
 \begin{figure*}[t]
   \centering
   \resizebox{0.98\textwidth}{!}{\input{figures/fig_ecbit_arch}}
@@ -29,7 +31,7 @@ The final ECBIT variant uses gated feature injection. ERA5 tokens are first proj
 \Delta^{era5} = W_e Z^{era5}, \quad
 s = \sigma(W_g [Z^{aws}; Z^{era5}]).
 \end{equation}
-A missing-variable gate $g_c=\mathbb{1}[\sum_t M_{t,c}>0]$ controls whether ERA5 can alter the AWS representation:
+Here $s_c$ denotes the slice of $s$ corresponding to variable $c$. A missing-variable gate $g_c=\mathbb{1}[\sum_t M_{t,c}>0]$ controls whether ERA5 can alter the AWS representation:
 \begin{equation}
 Z_c = \mathrm{LayerNorm}(Z^{aws}_c + g_c\, s_c \odot \Delta^{era5}_c).
 \end{equation}

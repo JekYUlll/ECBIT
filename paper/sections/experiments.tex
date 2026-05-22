@@ -36,13 +36,15 @@ Table~\ref{tab:round2-ablations} and Fig.~\ref{fig:round2-ablations} show the ma
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_round2_ablations.pdf}
-  \caption{ERA5-conditioning ablation results over block-missing and MCAR masking regimes. Removing ERA5 substantially degrades block-imputation accuracy, while gated injection is statistically tied with concat/no-cross fusion. The MCAR training setting is easier and is therefore reported separately rather than compared directly to block-missing results.}
+  \caption{ERA5-conditioning ablation results over block-missing and MCAR masking regimes. Error bars show one standard deviation across seeds and missing rates. Removing ERA5 substantially degrades block-imputation accuracy, while gated injection is statistically tied with concat/no-cross fusion. The MCAR training setting is easier and is therefore reported separately rather than compared directly to block-missing results.}
   \label{fig:round2-ablations}
 \end{figure*}
 
 \input{tables/tab_round2_ablations}
 
 The same ablation also prevents an over-interpretation of the architecture. Gated injection and concat/no-cross fusion are essentially tied, with mean MAE 0.258 in both cases. Therefore, the evidence supports ERA5-conditioned block imputation, but it does not support the stronger claim that a particular fusion layer is necessary.
+
+The MCAR row in Table~\ref{tab:round2-ablations} is included only as a distributional reference. Its MAE is not directly comparable to the block-missing rows because the model is trained and evaluated under a point-wise MCAR mask distribution, whereas the block variants are evaluated under contiguous outage blocks.
 
 \subsection{Does the ERA5 Benefit Increase for Longer Outages?}
 The block-length sensitivity analysis directly tests whether ERA5 is most useful when local station context is weakest. At 40\% missingness, the ERA5/no-ERA5 MAE gap increases from 0.037 for 24-hour blocks to 0.070 for 72-hour blocks and 0.092 for 216-hour blocks. The relative improvement grows from 13.8\% to 26.4\%.
@@ -69,11 +71,11 @@ Table~\ref{tab:curriculum-era5-factorial} completes the factorial check between 
 
 The factorized effect sizes show that block curriculum is the larger main effect. Averaged over ERA5 settings, changing MCAR training to block training reduces MAE by 0.166. Averaged over training curricula, adding ERA5 reduces MAE by 0.105. The difference-in-differences is positive but modest: ERA5 improves MCAR training by 0.122 MAE and block training by 0.088 MAE, corresponding to an effect-coded interaction of 0.017 MAE. Thus, the result is best described as two strong independent main effects with a small positive synergy, not as a purely architectural interaction.
 
-This result also explains why MCAR+ERA5 is worse than block training without ERA5. Under MCAR masks, the model sees scattered local context and can use ERA5 as an instantaneous auxiliary value. Under block failures, the required behavior is different: the model must use the temporal evolution of ERA5 across a long interval where AWS evidence is absent. ERA5 is therefore useful only when the training objective teaches the model to rely on it under contiguous outages.
+This result also explains why MCAR+ERA5 is worse than block training without ERA5. Under MCAR masks, the model usually sees scattered local AWS context at the same or adjacent time steps and can use ERA5 as an instantaneous auxiliary value. Under block failures, the required behavior is different: the model must follow the temporal evolution of ERA5 across a multi-day interval where the target AWS variable is absent. MCAR training does not teach this mode of use; it rewards local patching around isolated missing points rather than sustained reliance on the reanalysis trajectory. Consequently, even an ERA5-equipped MCAR model is less effective on block tests than a no-ERA5 model trained to reconstruct contiguous outages from station-side temporal and cross-variable context.
 
 \subsection{How Well Does the Model Generalize Across Stations?}
 Held-out station evaluation reveals substantial spatial heterogeneity. Mean MAE ranges from 0.173 on Nico to 0.350 on Mount Sidley. This variation is too large to hide behind a single aggregate score and likely reflects differences in station environment, elevation, coastal versus interior regimes, and station-specific ERA5 bias.
 
 \input{tables/tab_round3_heldout}
 
-The held-out results motivate future station-adaptive conditioning, but they do not invalidate the main result. They show that ERA5-conditioned block imputation transfers to unseen stations with variable difficulty, and that station-level reporting should be part of Antarctic AWS imputation benchmarks.
+Mount Sidley and Zhongshan illustrate two different hard cases. Mount Sidley is a high-elevation West Antarctic station in complex terrain, so point-sampled ERA5 may misrepresent near-surface temperature and wind conditions even when the synoptic evolution is correct. Zhongshan is a low-elevation coastal station, where sea-ice, ocean, and katabatic-flow interactions can introduce mesoscale variability that is difficult to capture at ERA5 grid scale. The held-out results therefore motivate future station-adaptive conditioning, but they do not invalidate the main result. They show that ERA5-conditioned block imputation transfers to unseen stations with variable difficulty, and that station-level reporting should be part of Antarctic AWS imputation benchmarks.

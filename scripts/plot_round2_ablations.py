@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-RUNS_CSV = Path("experiments/results/tables/round2_partial_runs.csv")
+RUNS_CSV = Path("experiments/results/tables/round2_gated_final_runs.csv")
 OUT_PDF = Path("paper/figures/fig_round2_ablations.pdf")
 OUT_PNG = Path("paper/figures/fig_round2_ablations.png")
 
