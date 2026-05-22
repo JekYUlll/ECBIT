@@ -19,7 +19,7 @@ ECBIT uses two variate-token encoders. For each variable $c$, the observation to
 
 \begin{figure*}[t]
   \centering
-  \input{figures/fig_ecbit_arch}
+  \resizebox{0.98\textwidth}{!}{\input{figures/fig_ecbit_arch}}
   \caption{ECBIT architecture. Sparse AWS observations and aligned ERA5 sequences are encoded as variate tokens in separate streams. ERA5 information enters through gated feature injection, while the missing-variable gate suppresses ERA5 influence for variables without missing positions.}
   \label{fig:ecbit-arch}
 \end{figure*}
