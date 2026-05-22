@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 5 — Journal Manuscript Restructuring
-Last Updated: 2026-05-22
+Current Phase: Phase 3 — Follow-up Experiment / Phase 5 — Journal Manuscript Refinement
+Last Updated: 2026-05-23
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Convert the short conference-style draft into a fuller journal-style manuscript without selecting a target journal yet.
+Active Follow-up: Complete the MCAR-vs-block 2x2 curriculum/ERA5 factorial check, then update journal narrative and figures.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -45,6 +45,7 @@ Active Follow-up: Convert the short conference-style draft into a fuller journal
 - [x] ERA5 temporal-resolution robustness analysis
 - [x] MCAR-trained ERA5 baseline evaluated on block-missing tests
 - [x] Block length sensitivity training matrix (18/18 complete as of 2026-05-22 14:05 CST)
+- [ ] MCAR-trained no-ERA5 factorial completion for block-test 2x2 matrix
 - [ ] Imputation curve visualization
 
 ## Phase 5 · Paper Writing

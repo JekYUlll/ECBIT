@@ -334,3 +334,9 @@ Important correction: an initial selection with only mean core completeness reta
 - Do not optimize the manuscript for a single named journal yet. The current target is a solid SCI journal narrative, Q3 or above.
 - The manuscript should stop behaving like a conference model paper. Its center should be: Antarctic AWS records contain realistic long block outages; ERA5 supplies external meteorological background; block-missing curriculum is necessary for ERA5 to become useful; and performance/generalization must be reported under station and outage heterogeneity.
 - The model should be described as a reproducible lightweight conditioning framework used to test this scientific/data hypothesis, not as a claim that gated fusion or attention is intrinsically superior.
+
+## ECBIT05-23-01 Follow-up Decision (2026-05-23)
+
+- The highest-value remaining experiment is not FiLM or CFA. It is completing the MCAR-vs-block 2x2 matrix by adding MCAR-trained no-ERA5 models and evaluating them on block masks.
+- This will separate two questions cleanly: whether ERA5 helps under MCAR training, and whether block curriculum is required even without ERA5.
+- FiLM station adaptation and CFA low-rank adapters remain optional future-work directions, not prerequisites for a Q3-or-better SCI submission narrative.

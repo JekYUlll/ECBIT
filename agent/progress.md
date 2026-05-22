@@ -238,3 +238,11 @@
 - Added `paper/sections/data_benchmark.tex`, `paper/sections/experimental_protocol.tex`, and `paper/sections/discussion.tex`.
 - Rewrote `paper/sections/experiments.tex` into a research-question-driven Results section covering baselines, ERA5 effect, outage length, ERA5 variables, temporal resolution, MCAR transfer, and held-out station generalization.
 - Compile check passed after restructuring: `paper/main.pdf` is now 6 pages. Remaining warning is the known small TikZ overfull hbox.
+
+## Session: 2026-05-23
+
+### ECBIT05-23-01 Review and Action Plan
+- Read `agent/ECBIT05-23-01.md`.
+- Main actionable recommendation: complete the missing MCAR/no-ERA5 cell so the curriculum/ERA5 analysis becomes a clean 2x2 factorial comparison rather than a partial MCAR-trained ERA5 check.
+- Decision: run a 27-config matrix matching existing no-blockmask coverage (3 patterns x 3 rates x 3 seeds), with MCAR training masks, no ERA5, and block-missing test evaluation via the existing checkpoint evaluation flow.
+- Additional manuscript tasks from the note: neutralize abstract architecture wording, reorder contribution list toward benchmark/block curriculum and ERA5 evidence, add TSI-Bench related-work context, add practical deployment discussion, and deepen held-out station interpretation.

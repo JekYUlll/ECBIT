@@ -88,6 +88,7 @@ def evaluate_block(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config-dir", type=Path, default=Path("experiments/configs/round2_gated"))
+    parser.add_argument("--config-glob", default="ecbit_no_blockmask_*.yaml")
     parser.add_argument("--metrics-dir", type=Path, default=Path("experiments/results/metrics/round2_gated"))
     parser.add_argument("--output-dir", type=Path, default=Path("experiments/results/analysis/mcar_on_block"))
     parser.add_argument("--batch-size", type=int, default=128)
@@ -97,7 +98,7 @@ def main() -> None:
 
     rows = []
     device = torch.device(args.device)
-    for config_path in sorted(args.config_dir.glob("ecbit_no_blockmask_*.yaml")):
+    for config_path in sorted(args.config_dir.glob(args.config_glob)):
         config = load_config(config_path)
         run_name = config.get("run_name", config_path.stem)
         checkpoint = args.metrics_dir / run_name / "best.pt"
