@@ -322,3 +322,9 @@ Important correction: an initial selection with only mean core completeness reta
   - 216h: gated full 0.2581, no-ERA5 0.3504, absolute gap 0.0924, relative improvement 26.4%.
 - This gives a high-value paper result: ERA5 conditioning becomes increasingly important as the missing block becomes longer. The effect is monotonic across the tested horizons and directly supports the Antarctic AWS outage framing.
 - Interpretation: the model's main advantage is not a generic low-MAE gain on easy short gaps; it is using ERA5 to bridge multi-day missing windows where local AWS history is insufficient.
+
+## Paper Narrative Update (2026-05-22)
+
+- The paper should no longer frame cross-attention as the main mechanism. The final architecture narrative is gated ERA5 feature injection with missing-variable masking, while cross-attention remains an ablation that did not improve over lightweight fusion.
+- The strongest current story is a three-way interaction: realistic block-missing curriculum, ERA5 external background state, and long contiguous outage length. MCAR-trained ERA5 fails on block tests, and the ERA5/no-ERA5 gap grows monotonically from 24h to 216h blocks.
+- The follow-up synthesis figure should carry three messages in one place: long blocks amplify ERA5 value, useful ERA5 information is concentrated in T/wind/q, and 6h ERA5 resolution is sufficient whereas daily inputs are not.

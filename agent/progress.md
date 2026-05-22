@@ -220,3 +220,13 @@
   - 72h blocks: gated full MAE 0.2471 vs no-ERA5 0.3170, delta 0.0699, relative improvement 22.1%.
   - 216h blocks: gated full MAE 0.2581 vs no-ERA5 0.3504, delta 0.0924, relative improvement 26.4%.
 - Scientific implication: ERA5 conditioning is most valuable for long contiguous outages, exactly the regime targeted by block-missing Antarctic AWS imputation.
+
+### Paper Integration Plan
+- Started integrating completed rapid feasibility checks into the paper narrative.
+- Figure design: create one three-panel synthesis figure combining block-length sensitivity, ERA5 variable masking, and ERA5 temporal downsampling. This keeps the result compact enough for the current IEEE-style draft while covering the strongest new evidence.
+- Narrative design: use the new figure to support a reframed claim: ECBIT's contribution is ERA5-conditioned block imputation under realistic outages; the key evidence is the interaction between ERA5 information, block-missing curriculum, and long outage length rather than superiority of a specific fusion block.
+- MCAR-on-block will be reported in text rather than a standalone figure/table because the three values mainly serve the curriculum-interaction argument.
+- Added `scripts/plot_followup_analyses.py` and generated `paper/figures/fig_followup_analyses.pdf/.png`.
+- Updated the paper abstract, introduction, methodology, experiments, architecture caption, and conclusion to make gated feature injection the primary architecture and the ERA5/block-curriculum interaction the main empirical narrative.
+- Added the follow-up figure and MCAR-on-block result paragraph to `paper/sections/experiments.tex`.
+- Compile check passed: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` produced a 5-page `paper/main.pdf`. Remaining warnings are non-blocking: a 1.6pt TikZ overfull hbox and an underfull vbox.

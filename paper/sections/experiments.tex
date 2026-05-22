@@ -11,7 +11,7 @@ We scan 267 AntAWS 3-hourly station files and retain stations with record length
 \end{figure}
 
 \subsection{Baselines and Ablations}
-Round 1 compares six baselines: linear interpolation, last-observation-carried-forward, ERA5 direct substitution after train-set bias correction, BRITS, SAITS, and an iTransformer imputation baseline. Round 2 evaluates ERA5-conditioned ECBIT variants: gated ERA5 injection, concat/no-cross fusion, no ERA5, and no block-mask training. Round 3 evaluates held-out station generalization at a 40\% missing rate.
+Round 1 compares core baselines: linear interpolation, last-observation-carried-forward, ERA5 direct substitution after train-set bias correction, and an iTransformer imputation baseline. Round 2 evaluates ERA5-conditioned ECBIT variants: gated ERA5 injection, concat/no-cross fusion, no ERA5, and no block-mask training. Round 3 evaluates held-out station generalization at a 40\% missing rate.
 
 \begin{figure*}[t]
   \centering
@@ -33,5 +33,17 @@ Round 1 compares six baselines: linear interpolation, last-observation-carried-f
 
 \input{tables/tab_round3_heldout}
 
+\subsection{Follow-up Analyses}
+The main ablation shows that ERA5 is useful, but not why. We therefore run three compact follow-up analyses using completed checkpoints or a small additional training matrix. First, we vary the maximum synthetic outage length at 40\% missingness. The ERA5-conditioned model remains more stable than the no-ERA5 variant, and the absolute ERA5 gap grows from 0.037 MAE at 24 hours to 0.092 MAE at 216 hours. Second, we mask one ERA5 variable at inference time. Temperature produces the largest degradation, followed by wind speed and specific humidity; relative humidity is least important, consistent with known ERA5 humidity bias in polar settings. Third, we downsample ERA5 at inference time. Moving to 6-hour ERA5 changes MAE by only 0.001, while daily ERA5 increases MAE by 0.030.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/fig_followup_analyses.pdf}
+  \caption{Follow-up analyses explaining the ERA5 signal. (a) ERA5-conditioned imputation degrades more slowly than no-ERA5 imputation as outage length increases. (b) ERA5 value is concentrated in temperature, wind speed, and specific humidity. (c) The model is robust to 6-hour ERA5 inputs but not to daily downsampling.}
+  \label{fig:followup-analyses}
+\end{figure*}
+
+We also evaluate the MCAR-trained ERA5 model on block-missing tests. Its MAE is 0.337, 0.416, and 0.469 on short, medium, and long block regimes, respectively, worse than block-trained no-ERA5 models. This indicates that ERA5 and block-missing curriculum interact: the external reanalysis signal becomes useful for outage recovery only when the training mask distribution matches block failures.
+
 \subsection{Result Summary}
-Round 1 core baselines show a consistent trade-off: ERA5 direct substitution is competitive for long block gaps, while linear interpolation is strongest among stateless methods for short gaps. Completed Round 2 results support the value of ERA5 conditioning: removing ERA5 increases block-missing test MAE from 0.258 to 0.346, a 34\% relative degradation against gated injection. However, gated injection is tied with concat/no-cross fusion, indicating that the present evidence supports ERA5-conditioned block imputation more strongly than any specific fusion mechanism. Round 3 shows substantial station heterogeneity, with held-out MAE ranging from 0.173 on Nico to 0.350 on Mount Sidley.
+Round 1 core baselines show a consistent trade-off: ERA5 direct substitution is competitive for long block gaps, while linear interpolation is strongest among stateless methods for short gaps. Completed Round 2 results support the value of ERA5 conditioning: removing ERA5 increases block-missing test MAE from 0.258 to 0.346, a 34\% relative degradation against gated injection. However, gated injection is tied with concat/no-cross fusion, indicating that the present evidence supports ERA5-conditioned block imputation more strongly than any specific fusion mechanism. Round 3 shows substantial station heterogeneity, with held-out MAE ranging from 0.173 on Nico to 0.350 on Mount Sidley. The follow-up analyses further show that the ERA5 benefit is largest precisely in long outages, which is the target failure mode for Antarctic AWS records.

@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Submit ERA5-Conditioned Block Imputation paper to IEEE TGRS or Remote Sensing.
-Current Phase: Phase 3 — Experiments / Phase 5 — Paper Writing
+Current Phase: Phase 4 — Analysis and Visualization / Phase 5 — Paper Writing
 Last Updated: 2026-05-22
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; complex cross-attention/gated fusion has not yet shown stable gains over lightweight no-cross conditioning.
-Active Follow-up: Execute rapid feasibility checks from `agent/ECBIT 新实验方向：快速可行性验证设计.md`, starting with inference-only ERA5 variable importance and temporal-resolution robustness.
+Active Follow-up: Integrate completed rapid feasibility checks into figures and the paper narrative.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -40,7 +40,7 @@ Active Follow-up: Execute rapid feasibility checks from `agent/ECBIT 新实验�
 ## Phase 4 · Analysis and Visualization
 - [x] Missing pattern analysis figure
 - [ ] Main result comparison figure
-- [ ] ERA5 conditioning effect figure
+- [x] ERA5 conditioning effect figure (follow-up synthesis figure added to paper)
 - [x] ERA5 variable importance analysis
 - [x] ERA5 temporal-resolution robustness analysis
 - [x] MCAR-trained ERA5 baseline evaluated on block-missing tests

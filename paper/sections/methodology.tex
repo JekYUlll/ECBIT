@@ -20,16 +20,17 @@ ECBIT uses two variate-token encoders. For each variable $c$, the observation to
 \begin{figure*}[t]
   \centering
   \input{figures/fig_ecbit_arch}
-  \caption{ECBIT architecture. Sparse AWS observations and aligned ERA5 sequences are encoded as variate tokens in separate streams. ERA5 information enters through cross-attention, but the variable-level gate suppresses ERA5 influence for variables without missing positions.}
+  \caption{ECBIT architecture. Sparse AWS observations and aligned ERA5 sequences are encoded as variate tokens in separate streams. ERA5 information enters through gated feature injection, while the missing-variable gate suppresses ERA5 influence for variables without missing positions.}
   \label{fig:ecbit-arch}
 \end{figure*}
 
-Conditional fusion applies cross-attention with AWS as query and ERA5 as key/value:
+The final ECBIT variant uses gated feature injection. ERA5 tokens are first projected into the AWS embedding space, and a learned vector gate blends ERA5 information into each AWS token:
 \begin{equation}
-H = \mathrm{MHA}(Q=Z^{aws}, K=Z^{era5}, V=Z^{era5}).
+\Delta^{era5} = W_e Z^{era5}, \quad
+s = \sigma(W_g [Z^{aws}; Z^{era5}]).
 \end{equation}
-A variable-level gate $g_c=\mathbb{1}[\sum_t M_{t,c}>0]$ controls whether ERA5 can alter the AWS representation:
+A missing-variable gate $g_c=\mathbb{1}[\sum_t M_{t,c}>0]$ controls whether ERA5 can alter the AWS representation:
 \begin{equation}
-Z_c = \mathrm{LayerNorm}(Z^{aws}_c + g_c H_c).
+Z_c = \mathrm{LayerNorm}(Z^{aws}_c + g_c\, s_c \odot \Delta^{era5}_c).
 \end{equation}
-The reconstruction head maps each variable token back to a length-$T$ sequence. If a variable has no missing positions, its output is independent of ERA5 after fusion.
+The reconstruction head maps each variable token back to a length-$T$ sequence. If a variable has no missing positions, its output is independent of ERA5 after fusion. Cross-attention and concat/no-cross fusion are retained as ablations to test whether a more complex fusion mechanism is actually necessary.
