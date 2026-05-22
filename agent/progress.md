@@ -211,3 +211,12 @@
 - Active configs: `24h_no_era5_s42/s43/s44`, currently at epochs 25, 16, and 19 respectively. GPU3-GPU5 remain active at about 22-26% utilization.
 - Partial aggregate after syncing 9 results: `216h_full` MAE 0.2581, `216h_no_era5` MAE 0.3504, delta 0.0924; `24h_full` MAE 0.2304. The 24h no-ERA5 runs are still needed to test whether ERA5 gain increases with block length.
 - Updated ETA: the active `24h_no_era5` wave likely finishes around 06:30-07:30 CST if current pace holds. Two waves remain afterward (`72h_full`, `72h_no_era5`), so expected final completion is roughly 10:00-12:00 CST, with a conservative bound of early afternoon.
+
+### Follow-up Block-Length Final
+- Checked remote `ecbit_followup_blocklen` at 14:05 CST. Status: 18/18 result files complete; no Traceback, RuntimeError, CUDA OOM, Killed, or Error lines found in follow-up logs.
+- Synced final metrics locally and generated `experiments/results/tables/followup_blocklen_final_runs.csv` plus `followup_blocklen_final_summary.csv`.
+- Final block-length sensitivity results show ERA5 benefit increases with block length:
+  - 24h blocks: gated full MAE 0.2304 vs no-ERA5 0.2674, delta 0.0370, relative improvement 13.8%.
+  - 72h blocks: gated full MAE 0.2471 vs no-ERA5 0.3170, delta 0.0699, relative improvement 22.1%.
+  - 216h blocks: gated full MAE 0.2581 vs no-ERA5 0.3504, delta 0.0924, relative improvement 26.4%.
+- Scientific implication: ERA5 conditioning is most valuable for long contiguous outages, exactly the regime targeted by block-missing Antarctic AWS imputation.

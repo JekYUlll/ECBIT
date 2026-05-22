@@ -312,3 +312,13 @@ Important correction: an initial selection with only mean core completeness reta
 - Decision implication for direction 6: go for a practical robustness claim at 6h resolution; no-go for daily/24h inputs unless retrained or adapted.
 - MCAR-trained ERA5 checkpoint evaluation on block-missing test masks completed over all 27 no-blockmask checkpoints. MAE by target block pattern: short 0.3365, medium 0.4161, long 0.4686.
 - MCAR-trained ERA5 is worse than no-ERA5 block-trained models on block-missing tests, especially for long gaps (0.4686 vs 0.3662). This is stronger than the original expected outcome: block-missing curriculum is not merely additive with ERA5; it is necessary for ERA5 conditioning to transfer to block failures.
+
+## Rapid Feasibility Results: Block-Length Sensitivity (2026-05-22)
+
+- The compact block-length sensitivity matrix is complete: 18/18 runs, covering 24h, 72h, and 216h synthetic outage horizons with gated full and no-ERA5 variants over seeds 42/43/44 at 40% missingness.
+- Mean MAE by setting:
+  - 24h: gated full 0.2304, no-ERA5 0.2674, absolute gap 0.0370, relative improvement 13.8%.
+  - 72h: gated full 0.2471, no-ERA5 0.3170, absolute gap 0.0699, relative improvement 22.1%.
+  - 216h: gated full 0.2581, no-ERA5 0.3504, absolute gap 0.0924, relative improvement 26.4%.
+- This gives a high-value paper result: ERA5 conditioning becomes increasingly important as the missing block becomes longer. The effect is monotonic across the tested horizons and directly supports the Antarctic AWS outage framing.
+- Interpretation: the model's main advantage is not a generic low-MAE gain on easy short gaps; it is using ERA5 to bridge multi-day missing windows where local AWS history is insufficient.
