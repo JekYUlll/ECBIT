@@ -12,5 +12,5 @@ The contributions are:
 \begin{itemize}
   \item a realistic Antarctic AWS block-imputation benchmark with sparse observation masks, aligned ERA5 inputs, block-failure simulation, and held-out station splits;
   \item quantitative evidence that ERA5 conditioning is most valuable under long contiguous outages, where local station context is weakest;
-  \item a factorized experimental analysis showing that ERA5 value depends on block-missing curriculum, is concentrated in physically meaningful variables, and is robust to moderate ERA5 temporal coarsening.
+  \item a factorial ablation showing that block-missing curriculum (0.166 MAE reduction) and ERA5 conditioning (0.105 MAE reduction) are independently important and complementary, with ERA5 value concentrated in temperature, wind speed, and specific humidity channels.
 \end{itemize}

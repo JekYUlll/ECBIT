@@ -358,3 +358,5 @@ Important correction: an initial selection with only mean core completeness reta
   - MCAR training + ERA5: 0.4071.
   - MCAR training + no ERA5: 0.5294.
 - Interpretation: both block curriculum and ERA5 conditioning independently matter, and their combination is the only strong regime. ERA5 access alone does not transfer well from MCAR training to block failures; block curriculum alone helps but remains far worse than block curriculum plus ERA5.
+- Factor decomposition now used in the paper: average block-curriculum main effect is 0.166 MAE, average ERA5 main effect is 0.105 MAE, and the effect-coded interaction is +0.017 MAE. The accurate wording is two strong independent main effects with a small positive synergy, not a large interaction effect.
+- Added external literature context after verification: arXiv:2603.22372 supports the caution that unconstrained auxiliary fusion can inject irrelevant information; arXiv:2605.12196 supports physically grounded selection of meteorological exogenous variables.

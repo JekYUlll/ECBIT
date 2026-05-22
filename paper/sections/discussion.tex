@@ -15,10 +15,14 @@ The MCAR-on-block evaluation shows that ERA5 conditioning alone is insufficient.
 
 For practical Antarctic AWS recovery, this matters more than performance on generic random-missing benchmarks. Station failures often remove contiguous spans of one or more variables, so evaluation and training should match that failure mode.
 
+The completed factorial matrix makes this conclusion quantitative. Block-missing curriculum has a larger average main effect than ERA5 conditioning (0.166 versus 0.105 MAE), while their effect-coded interaction is positive but small (0.017 MAE). This is methodologically useful beyond the present dataset: exogenous variables can be valuable, but their value depends on whether the training mask distribution teaches the model how to use them under the target failure mode.
+
 \subsection{Practical Deployment Considerations}
 The temporal-resolution analysis suggests that ECBIT does not require fragile hour-level ERA5 structure. Downsampling ERA5 to 6-hour resolution changes MAE by less than 0.001, while daily inputs are clearly too coarse. This supports practical deployments where only lower-frequency reanalysis products or delayed operational reanalysis streams are available, provided that sub-daily temporal structure is preserved.
 
 The variable-importance results also suggest a prioritization rule for partial ERA5 availability. Temperature, wind speed, and specific humidity are the most valuable channels; pressure and relative humidity contribute less in the current benchmark. If a deployment pipeline must reduce ERA5 variables, the top three channels should be preserved first.
+
+The held-out station results further suggest that deployment should include station-level validation. Mean MAE ranges from 0.173 to 0.350 across the five held-out stations, so high-elevation, coastal, or locally complex stations should be checked before operational use rather than assumed to follow the aggregate benchmark average.
 
 \subsection{Station Heterogeneity}
 Held-out station results vary by roughly a factor of two, from Nico to Mount Sidley. This heterogeneity likely reflects a combination of local geography, elevation, coastal versus interior climate regimes, and station-specific ERA5 representativeness. In particular, high-elevation sites and coastal stations can experience local processes that are difficult for point-sampled reanalysis to capture. Future work should therefore consider station-adaptive conditioning, metadata-aware calibration, or few-shot adaptation for stations with large ERA5 bias.
