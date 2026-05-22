@@ -2,8 +2,9 @@
 
 ## Project Goal
 Complete and submit "ERA5-Conditioned Block Imputation for Sparse Antarctic
-Weather Station Time Series" to IEEE TGRS or Remote Sensing.
-Target submission: within 4 weeks of project start.
+Weather Station Time Series" as a journal-style SCI manuscript.
+Near-term target: finish the reproducible experiment package and paper narrative
+before choosing a specific Q3-or-better venue.
 
 ## Project Context
 This project builds on two prior experiments:
@@ -70,7 +71,7 @@ Examples:
 
 ```text
 [data] feat: AntAWS station selection, 38 stations retained
-[model] feat: ECBIT conditional cross-attention module
+[model] feat: gated ERA5 feature injection
 [exp] result: Round 1 baselines complete
 [paper] write: methodology section
 ```

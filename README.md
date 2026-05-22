@@ -12,7 +12,9 @@ The preceding ECAFT project showed that naive ERA5-AWS cross-attention is not en
 
 ## Current Status
 
-Phase 0 initialization is in progress. See:
+The core data pipeline, ECBIT implementation, gated ablations, held-out station
+evaluation, and rapid follow-up analyses are complete. The active work is the
+final MCAR/no-ERA5 factorial cell and journal-style manuscript refinement. See:
 
 - `PLAN.md`
 - `agent/task_plan.md`
