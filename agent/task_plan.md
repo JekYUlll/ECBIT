@@ -46,7 +46,7 @@ Active Follow-up: Complete the MCAR-vs-block 2x2 curriculum/ERA5 factorial check
 - [x] MCAR-trained ERA5 baseline evaluated on block-missing tests
 - [x] Block length sensitivity training matrix (18/18 complete as of 2026-05-22 14:05 CST)
 - [ ] MCAR-trained no-ERA5 factorial completion for block-test 2x2 matrix
-- [ ] Imputation curve visualization
+- [x] Imputation curve visualization
 
 ## Phase 5 · Paper Writing
 - [x] Introduction and Related Work

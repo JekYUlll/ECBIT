@@ -12,6 +12,15 @@ Figure~\ref{fig:main-results} summarizes the main comparison across completed ba
 
 \begin{figure*}[t]
   \centering
+  \includegraphics[width=0.92\textwidth]{figures/fig_imputation_case.pdf}
+  \caption{Qualitative long-block imputation case for AWS temperature. The shaded region marks artificially hidden observations used for evaluation. Linear interpolation is constrained by endpoint continuity, whereas ERA5 provides a physically plausible background trajectory through the outage.}
+  \label{fig:imputation-case}
+\end{figure*}
+
+Figure~\ref{fig:imputation-case} illustrates why long contiguous outages require external context. When observations are absent for multiple days, local interpolation becomes a low-frequency bridge between endpoints, while ERA5 retains synoptic-scale temperature evolution within the missing interval. The figure is a qualitative diagnostic; the model comparisons below use aggregate test metrics over all stations, missing rates, seeds, and block regimes.
+
+\begin{figure*}[t]
+  \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_round1_baselines.pdf}
   \caption{Core baseline results over three block-missing regimes and three missing rates. iTransformer is the strongest completed baseline overall. Among stateless methods, ERA5 direct substitution is most competitive on long gaps, while linear interpolation is strongest on short gaps.}
   \label{fig:round1-baselines}

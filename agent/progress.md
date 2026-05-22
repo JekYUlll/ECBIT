@@ -251,3 +251,4 @@
 - Initial health check at 04:43 CST: 0/27 complete, all three workers active, GPUs2-4 at about 21-22% utilization, and no Traceback/OOM/Killed/Error lines found.
 - Added `scripts/plot_main_results.py`, generated `paper/figures/fig_main_results.pdf/.png`, and inserted the main comparison figure at the start of the Results section.
 - Added `scripts/make_curriculum_factorial_table.py` for the pending 2x2 block-curriculum x ERA5-conditioning table. A dry run with the three completed cells succeeded; the generated table artifact is intentionally left out of the manuscript until the MCAR/no-ERA5 cell completes.
+- Added `scripts/plot_imputation_case.py`, generated `paper/figures/fig_imputation_case.pdf/.png`, and inserted a qualitative long-block case into Results. The figure shows AWS observed truth, artificially hidden labels, ERA5, linear fill, and ERA5-direct fill; it is framed as a diagnostic case rather than a neural-model ranking.
