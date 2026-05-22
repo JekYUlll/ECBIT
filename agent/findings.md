@@ -340,3 +340,10 @@ Important correction: an initial selection with only mean core completeness reta
 - The highest-value remaining experiment is not FiLM or CFA. It is completing the MCAR-vs-block 2x2 matrix by adding MCAR-trained no-ERA5 models and evaluating them on block masks.
 - This will separate two questions cleanly: whether ERA5 helps under MCAR training, and whether block curriculum is required even without ERA5.
 - FiLM station adaptation and CFA low-rank adapters remain optional future-work directions, not prerequisites for a Q3-or-better SCI submission narrative.
+
+## Journal Draft State (2026-05-23)
+
+- The current LaTeX draft has been restructured into journal-style sections: Introduction, Related Work, Data/Benchmark, Methodology, Experimental Protocol, Results, Discussion, and Conclusion.
+- The manuscript now includes a main result comparison figure, a qualitative long-block imputation case, the baseline and ablation figures/tables, the follow-up analysis figure, and the held-out station table.
+- LaTeX compilation succeeds at 7 pages under the current IEEE journal template. The latest warning scan reports no undefined references, citation warnings, overfull boxes, or underfull boxes.
+- Active remaining empirical gap: the MCAR/no-ERA5 training cell is running so the block-curriculum by ERA5-conditioning 2x2 factorial table can be completed. The helper script `scripts/make_curriculum_factorial_table.py` is ready and currently produces three populated cells plus one missing cell until that experiment finishes and is evaluated on block masks.
