@@ -249,3 +249,5 @@
 - Added `scripts/generate_mcar_noera5_configs.py`, generated 27 configs under `experiments/configs/followup_mcar_noera5`, and updated `scripts/evaluate_mcar_on_block.py` to accept a configurable glob.
 - Synced the project to the remote GPU server and launched `ecbit_mcar_noera5`, `ecbit_mcar_noera5_w1`, and `ecbit_mcar_noera5_w2` on GPU2-GPU4 at 04:42 CST.
 - Initial health check at 04:43 CST: 0/27 complete, all three workers active, GPUs2-4 at about 21-22% utilization, and no Traceback/OOM/Killed/Error lines found.
+- Added `scripts/plot_main_results.py`, generated `paper/figures/fig_main_results.pdf/.png`, and inserted the main comparison figure at the start of the Results section.
+- Added `scripts/make_curriculum_factorial_table.py` for the pending 2x2 block-curriculum x ERA5-conditioning table. A dry run with the three completed cells succeeded; the generated table artifact is intentionally left out of the manuscript until the MCAR/no-ERA5 cell completes.

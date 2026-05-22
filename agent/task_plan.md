@@ -39,7 +39,7 @@ Active Follow-up: Complete the MCAR-vs-block 2x2 curriculum/ERA5 factorial check
 
 ## Phase 4 · Analysis and Visualization
 - [x] Missing pattern analysis figure
-- [ ] Main result comparison figure
+- [x] Main result comparison figure
 - [x] ERA5 conditioning effect figure (follow-up synthesis figure added to paper)
 - [x] ERA5 variable importance analysis
 - [x] ERA5 temporal-resolution robustness analysis

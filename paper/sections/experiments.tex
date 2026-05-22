@@ -1,7 +1,14 @@
 \section{Results}
 
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/fig_main_results.pdf}
+  \caption{Main block-imputation comparison across core baselines and ECBIT variants. ERA5-conditioned ECBIT variants substantially outperform non-ERA5 baselines, while concat and gated ERA5 fusion are nearly identical.}
+  \label{fig:main-results}
+\end{figure*}
+
 \subsection{How Strong Are Non-ERA5 Baselines?}
-The core baselines establish two reference points. First, local continuity is useful for short gaps but degrades as blocks grow longer. Linear interpolation is therefore a strong sanity check for short outages, while last-observation-carried-forward is consistently weaker. Second, ERA5 direct substitution is competitive for long gaps, showing that reanalysis already contains useful background information even without neural conditioning.
+Figure~\ref{fig:main-results} summarizes the main comparison across completed baselines and ECBIT variants. The core baselines establish two reference points. First, local continuity is useful for short gaps but degrades as blocks grow longer. Linear interpolation is therefore a strong sanity check for short outages, while last-observation-carried-forward is consistently weaker. Second, ERA5 direct substitution is competitive for long gaps, showing that reanalysis already contains useful background information even without neural conditioning.
 
 \begin{figure*}[t]
   \centering
