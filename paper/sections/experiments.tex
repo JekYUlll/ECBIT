@@ -3,14 +3,14 @@
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.95\textwidth]{figures/fig_main_results.pdf}
-  \caption{Main block-imputation comparison across core baselines and ECBIT variants. ERA5-conditioned ECBIT variants substantially outperform non-ERA5 baselines, while concat and gated ERA5 fusion are nearly identical.}
+  \caption{Main block-imputation comparison across core baselines and ECBIT variants. ECBIT + ERA5 denotes gated injection; concat fusion is shown separately and has the same mean MAE (0.258).}
   \label{fig:main-results}
 \end{figure*}
 
 \subsection{How Strong Are Non-ERA5 Baselines?}
 Figure~\ref{fig:main-results} summarizes the main comparison across completed baselines and ECBIT variants. The core baselines establish two reference points. First, local continuity is useful for short gaps but degrades as blocks grow longer. Linear interpolation is therefore a strong sanity check for short outages, while last-observation-carried-forward is consistently weaker. Second, ERA5 direct substitution is competitive for long gaps, showing that reanalysis already contains useful background information even without neural conditioning.
 
-The pattern-level behavior in Fig.~\ref{fig:round1-baselines} is more informative than the aggregate ranking alone. Linear interpolation has mean MAE 0.303 on short blocks but deteriorates to 0.483 on long blocks, because its only information source is the boundary behavior around the gap. ERA5 direct substitution is nearly flat across gap regimes, with MAE about 0.38 for short, medium, and long blocks. This is worse than interpolation on short gaps but better than interpolation on long gaps, which is exactly the regime where a physically coherent background field should help. SAITS is the strongest non-ERA5 baseline by MAE, with overall MAE 0.334, but it still rises from 0.252 on short blocks to 0.410 on long blocks. The iTransformer baseline has the lowest baseline RMSE and a similar long-block MAE of 0.402, indicating that learned temporal structure helps but does not close the gap to ERA5-conditioned block imputation.
+The pattern-level behavior in Fig.~\ref{fig:round1-baselines} is more informative than the aggregate ranking alone. Linear interpolation has mean MAE 0.303 on short blocks but deteriorates to 0.483 on long blocks, because its only information source is the boundary behavior around the gap. ERA5 direct substitution is nearly flat across gap regimes, with MAE about 0.38 for short, medium, and long blocks. This is worse than interpolation on short gaps but better than interpolation on long gaps, which is exactly the regime where a physically coherent background field should help. SAITS is the strongest non-ERA5 baseline by MAE, with overall MAE 0.334, but it still rises from 0.252 on short blocks to 0.410 on long blocks. iTransformer achieves the lowest mean baseline RMSE, although the difference from SAITS is within one standard deviation. Both learned baselines indicate that temporal structure helps but does not close the gap to ERA5-conditioned block imputation.
 
 \begin{figure*}[t]
   \centering
@@ -24,13 +24,13 @@ Figure~\ref{fig:imputation-case} illustrates why long contiguous outages require
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_round1_baselines.pdf}
-  \caption{Core baseline results over three block-missing regimes and three missing rates. SAITS is the strongest non-ERA5 baseline by mean MAE, while iTransformer has the lowest baseline RMSE. ERA5 direct substitution is most competitive on long gaps among stateless methods, and linear interpolation is strongest on short gaps.}
+  \caption{Core baseline results over three block-missing regimes and three missing rates. SAITS has the lowest mean MAE; iTransformer has the lowest mean RMSE with overlap to SAITS.}
   \label{fig:round1-baselines}
 \end{figure*}
 
 \input{tables/tab_round1_baselines}
 
-SAITS has the lowest baseline MAE (0.334), while iTransformer has the lowest baseline RMSE (0.508). Both remain substantially worse than ERA5-conditioned ECBIT in the matched block-missing setting reported below. This gap indicates that the main improvement is not simply from using a transformer-style imputation backbone; it comes from conditioning on external meteorological background information.
+SAITS has the lowest baseline MAE (0.334). iTransformer achieves the lowest mean baseline RMSE (0.508), though the difference from SAITS (0.517) is within one standard deviation. Both remain substantially worse than ERA5-conditioned ECBIT in the matched block-missing setting reported below. This gap indicates that the main improvement is not simply from using a transformer-style imputation backbone; it comes from conditioning on external meteorological background information.
 
 Per-variable baseline errors also show why a single aggregate number is insufficient. In the completed Round 1 matrix, relative humidity and wind speed are consistently harder than pressure and temperature. This matches the observed missingness structure: RH and wind have higher missing burden and longer outage blocks in the selected AntAWS stations. The task is therefore not merely temporal smoothing; it requires recovery of variables whose station-side records are both noisier and more frequently absent.
 
@@ -57,7 +57,7 @@ The per-variable ablation reinforces this conclusion. With ERA5, temperature, wi
 The MCAR row in Table~\ref{tab:round2-ablations} is included only as a distributional reference. Its MAE is not directly comparable to the block-missing rows because the model is trained and evaluated under a point-wise MCAR mask distribution, whereas the block variants are evaluated under contiguous outage blocks.
 
 \subsection{Does the ERA5 Benefit Increase for Longer Outages?}
-The block-length sensitivity analysis directly tests whether ERA5 is most useful when local station context is weakest. At 40\% missingness, the ERA5/no-ERA5 MAE gap increases from 0.037 for 24-hour blocks to 0.070 for 72-hour blocks and 0.092 for 216-hour blocks. The relative improvement grows from 13.8\% to 26.4\%.
+The block-length sensitivity analysis directly tests whether ERA5 is most useful when local station context is weakest. Unlike the main curriculum, which samples random lengths within the short, medium, and long ranges, this analysis fixes the maximum outage horizon to 24, 72, and 216 hours. These horizons correspond to representative short, medium, and long outage settings. At 40\% missingness, the ERA5/no-ERA5 MAE gap increases from 0.037 for 24-hour blocks to 0.070 for 72-hour blocks and 0.092 for 216-hour blocks. The relative improvement grows from 13.8\% to 26.4\%.
 
 \begin{figure*}[t]
   \centering

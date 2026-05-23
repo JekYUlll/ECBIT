@@ -299,3 +299,12 @@
 - SAITS final aggregate: overall MAE 0.3342 +/- 0.0930 over 27 runs; short 0.2516, medium 0.3406, long 0.4104. It is the strongest non-ERA5 baseline by MAE, but remains worse than ERA5-conditioned ECBIT at 0.2577.
 - Updated Results, Experimental Protocol, and Discussion to treat SAITS as a completed independent third-party baseline rather than a missing-baseline limitation.
 - Verification: `python -m pytest -q src/tests/test_pypots_wrappers.py src/tests/test_training_framework.py` passed locally (9 passed, 1 warning); `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 12-page PDF. Final log scan found no undefined references, citation warnings, overfull boxes, or underfull boxes.
+
+### Residual Review Cleanup
+- Addressed the residual SAITS baseline ambiguity by explicitly stating in Section V-B that SAITS is trained with the same block-missing mask generator and evaluated on the same block-missing configurations as ECBIT, but without ERA5 inputs.
+- Clarified that Table II's MCAR row is an in-distribution MCAR-test reference, whereas Table IV's MCAR rows are MCAR-trained models evaluated out-of-distribution on block-missing masks.
+- Softened the SAITS/iTransformer RMSE wording to state that iTransformer has the lowest mean RMSE but the difference from SAITS is within one standard deviation.
+- Added a Section VI-C bridge explaining that the block-length sensitivity analysis fixes maximum horizons of 24/72/216 h, unlike the main curriculum's random short/medium/long sampling intervals.
+- Added Figure 3 caption clarification that `ECBIT + ERA5` denotes the gated injection variant and that concat fusion is shown separately with the same mean MAE.
+- Expanded the third-party baseline discussion to note that SAITS and iTransformer represent different attention designs.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed; compiled PDF is 13 pages and the warning scan found no undefined references, citation warnings, overfull boxes, or underfull boxes.
