@@ -10,6 +10,8 @@
 \subsection{How Strong Are Non-ERA5 Baselines?}
 Figure~\ref{fig:main-results} summarizes the main comparison across completed baselines and ECBIT variants. The core baselines establish two reference points. First, local continuity is useful for short gaps but degrades as blocks grow longer. Linear interpolation is therefore a strong sanity check for short outages, while last-observation-carried-forward is consistently weaker. Second, ERA5 direct substitution is competitive for long gaps, showing that reanalysis already contains useful background information even without neural conditioning.
 
+The pattern-level behavior in Fig.~\ref{fig:round1-baselines} is more informative than the aggregate ranking alone. Linear interpolation has mean MAE 0.303 on short blocks but deteriorates to 0.483 on long blocks, because its only information source is the boundary behavior around the gap. ERA5 direct substitution is nearly flat across gap regimes, with MAE about 0.38 for short, medium, and long blocks. This is worse than interpolation on short gaps but better than interpolation on long gaps, which is exactly the regime where a physically coherent background field should help. The iTransformer baseline lies between these two behaviors: it benefits from learned multivariate station context and achieves MAE 0.326 on short blocks and 0.352 on medium blocks, but it rises to 0.402 on long blocks when station-side context becomes weak.
+
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_imputation_case.pdf}
@@ -30,8 +32,12 @@ Figure~\ref{fig:imputation-case} illustrates why long contiguous outages require
 
 The iTransformer imputation baseline is the strongest completed baseline on average, with mean MAE 0.360. However, it remains substantially worse than ERA5-conditioned ECBIT in the matched block-missing setting reported below. This gap indicates that the main improvement is not simply from using a variate-token transformer backbone; it comes from conditioning on external meteorological background information.
 
+Per-variable baseline errors also show why a single aggregate number is insufficient. In the completed Round 1 matrix, relative humidity and wind speed are consistently harder than pressure and temperature. This matches the observed missingness structure: RH and wind have higher missing burden and longer outage blocks in the selected AntAWS stations. The task is therefore not merely temporal smoothing; it requires recovery of variables whose station-side records are both noisier and more frequently absent.
+
 \subsection{Does ERA5 Conditioning Improve Block Imputation?}
 Table~\ref{tab:round2-ablations} and Fig.~\ref{fig:round2-ablations} show the main ablation result. Removing ERA5 increases block-missing test MAE from 0.258 to 0.346, a 34\% relative degradation against gated injection. This is the largest effect in the study and supports ERA5 as the dominant source of improvement.
+
+The effect is stable across missing rates. For the gated model, mean MAE remains near 0.259, 0.257, and 0.257 at 20\%, 40\%, and 60\% artificial missingness, respectively. The no-ERA5 model degrades from 0.331 to 0.345 and 0.362 over the same rates. Thus, ERA5 conditioning is not only a constant offset in average performance; it also dampens the error growth that occurs when more of the local station context is removed.
 
 \begin{figure*}[t]
   \centering
@@ -43,6 +49,8 @@ Table~\ref{tab:round2-ablations} and Fig.~\ref{fig:round2-ablations} show the ma
 \input{tables/tab_round2_ablations}
 
 The same ablation also prevents an over-interpretation of the architecture. Gated injection and concat/no-cross fusion are essentially tied, with mean MAE 0.258 in both cases. Therefore, the evidence supports ERA5-conditioned block imputation, but it does not support the stronger claim that a particular fusion layer is necessary.
+
+The per-variable ablation reinforces this conclusion. With ERA5, temperature, wind speed, pressure, and specific humidity MAE are approximately 0.159, 0.424, 0.055, and 0.215. Removing ERA5 increases these values to 0.254, 0.576, 0.097, and 0.292. Relative humidity also improves, though less dramatically, from 0.510 without ERA5 to 0.436 with ERA5. The largest absolute improvements occur in physically coherent background variables: temperature, wind, and moisture. This pattern is more important than the small numerical difference between gated and concat fusion.
 
 The MCAR row in Table~\ref{tab:round2-ablations} is included only as a distributional reference. Its MAE is not directly comparable to the block-missing rows because the model is trained and evaluated under a point-wise MCAR mask distribution, whereas the block variants are evaluated under contiguous outage blocks.
 
@@ -58,11 +66,19 @@ The block-length sensitivity analysis directly tests whether ERA5 is most useful
 
 This monotonic pattern is important for the Antarctic AWS setting. It shows that ERA5 is not only improving average error; it is most helpful in the long contiguous outages that motivate the benchmark.
 
+The variable-level block-length results show that the long-gap degradation is not uniform. For 216-hour blocks, no-ERA5 wind-speed MAE reaches 0.586 and RH MAE reaches 0.519, while ERA5-conditioned wind-speed and RH MAE are 0.426 and 0.436. Temperature also shows a large long-gap benefit, dropping from 0.258 without ERA5 to 0.159 with ERA5. Pressure remains comparatively easy because both AWS and ERA5 pressure are smooth at synoptic scales. These results suggest that ERA5 is most valuable when the missing variable has strong synoptic evolution and when local interpolation cannot infer that evolution from endpoints alone.
+
 \subsection{Which ERA5 Variables Matter?}
 The variable-masking analysis in Fig.~\ref{fig:followup-analyses} shows that the ERA5 signal is concentrated in a small set of meteorological channels. Masking ERA5 temperature increases MAE by 0.0559, followed by wind speed at 0.0404 and specific humidity at 0.0374. Pressure and relative humidity produce smaller degradations. This supports a physically interpretable view of the conditioning signal: temperature, wind, and moisture background states carry most of the useful information for reconstructing missing AWS windows.
 
+This ordering is physically plausible. ERA5 temperature provides the large-scale thermal state and synoptic variability that local interpolation loses during multi-day outages. Wind speed is difficult to reconstruct from nearby AWS variables alone because it is strongly affected by pressure gradients, katabatic forcing, local topography, and coastal flow regimes. Specific humidity contributes moisture-state information that is more stable than relative humidity under temperature-dependent saturation effects. By contrast, ERA5 pressure is already highly correlated with AWS pressure and is often smooth enough for station-side temporal context to recover; ERA5 relative humidity is useful but less reliable because polar humidity biases and near-saturation behavior can be difficult for reanalysis to represent.
+
+The masking experiment is an inference-time sensitivity test, not a retraining ablation. Each perturbation replaces one ERA5 channel with its training-set mean while leaving the trained model unchanged. It therefore measures how much the trained ECBIT relies on each ERA5 channel under the learned conditioning policy. The fact that the top three channels account for most of the total masking degradation gives a practical variable-prioritization rule for deployments where full ERA5 processing is not always available.
+
 \subsection{Is High-Frequency ERA5 Required?}
 The temporal downsampling analysis shows that the model is robust to moderate ERA5 temporal coarsening. Downsampling ERA5 to 6-hour resolution increases MAE by only 0.0008, and 12-hour resolution increases MAE by 0.0073. Daily downsampling is more damaging, increasing MAE by 0.0302. This suggests that the model mainly exploits mesoscale background evolution rather than fragile hour-level variation, but daily inputs are too coarse for the current training setup.
+
+This result matters operationally. ERA5 is available hourly, while the AntAWS product used here is 3-hourly. The near-zero penalty at 6-hour resolution indicates that ECBIT does not depend on exact hour-by-hour ERA5 fluctuations; it can use a coarser but still sub-daily background trajectory. The larger 24-hour penalty indicates the lower limit of that robustness. Daily averages remove synoptic timing, diurnal structure, and rapid frontal transitions that are useful during long AWS outages. For practical gap filling, the result supports delayed or lower-frequency ERA5 pipelines as long as they preserve sub-daily evolution.
 
 \subsection{Factorial Ablation of Curriculum and ERA5 Conditioning}
 Table~\ref{tab:curriculum-era5-factorial} completes the factorial check between training-mask distribution and ERA5 conditioning. The best cell is block training with ERA5 conditioning, with overall MAE 0.258. Removing ERA5 under the same block curriculum increases MAE to 0.346. Conversely, keeping ERA5 but training with MCAR masks gives MAE 0.407 on block tests. The worst cell is MCAR training without ERA5, with MAE 0.529.
@@ -70,6 +86,8 @@ Table~\ref{tab:curriculum-era5-factorial} completes the factorial check between 
 \input{tables/tab_curriculum_era5_factorial}
 
 The factorized effect sizes show that block curriculum is the larger main effect. Averaged over ERA5 settings, changing MCAR training to block training reduces MAE by 0.166. Averaged over training curricula, adding ERA5 reduces MAE by 0.105. The difference-in-differences is positive but modest: ERA5 improves MCAR training by 0.122 MAE and block training by 0.088 MAE, corresponding to an effect-coded interaction of 0.017 MAE. Thus, the result is best described as two strong independent main effects with a small positive synergy, not as a purely architectural interaction.
+
+The factorial table is the most important safeguard against a misleading interpretation of the paper. A simple comparison between ECBIT and iTransformer could suggest that the result is just an architectural improvement. A simple comparison between ERA5 and no-ERA5 under block training could suggest that the result is just an auxiliary-data effect. The 2$\times$2 design shows that neither explanation is complete. Block curriculum alone is powerful, ERA5 alone is helpful but insufficient, and the best result requires both the realistic failure-mode curriculum and the external physical prior.
 
 This result also explains why MCAR+ERA5 is worse than block training without ERA5. Under MCAR masks, the model usually sees scattered local AWS context at the same or adjacent time steps and can use ERA5 as an instantaneous auxiliary value. Under block failures, the required behavior is different: the model must follow the temporal evolution of ERA5 across a multi-day interval where the target AWS variable is absent. MCAR training does not teach this mode of use; it rewards local patching around isolated missing points rather than sustained reliance on the reanalysis trajectory. Consequently, even an ERA5-equipped MCAR model is less effective on block tests than a no-ERA5 model trained to reconstruct contiguous outages from station-side temporal and cross-variable context.
 
@@ -79,3 +97,5 @@ Held-out station evaluation reveals substantial spatial heterogeneity. Mean MAE 
 \input{tables/tab_round3_heldout}
 
 Mount Sidley and Zhongshan illustrate two different hard cases. Mount Sidley is a high-elevation West Antarctic station in complex terrain, so point-sampled ERA5 may misrepresent near-surface temperature and wind conditions even when the synoptic evolution is correct. Zhongshan is a low-elevation coastal station, where sea-ice, ocean, and katabatic-flow interactions can introduce mesoscale variability that is difficult to capture at ERA5 grid scale. The held-out results therefore motivate future station-adaptive conditioning, but they do not invalidate the main result. They show that ERA5-conditioned block imputation transfers to unseen stations with variable difficulty, and that station-level reporting should be part of Antarctic AWS imputation benchmarks.
+
+The held-out pattern also clarifies what should be expected from operational deployment. Low MAE at Nico indicates that some unseen stations are well served by the learned main-station representation. Higher MAE at Mount Sidley and Zhongshan indicates that metadata and local regime information may be needed for robust deployment at difficult sites. Future benchmark reports should therefore include station-level tables, not only pooled test scores, because the same aggregate performance can hide very different station-level reliability profiles.

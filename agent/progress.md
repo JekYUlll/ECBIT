@@ -266,3 +266,12 @@
 ### Figure Title Cleanup
 - Removed redundant in-figure bold/global titles from `fig_missing_patterns`, `fig_main_results`, `fig_round1_baselines`, and `fig_round2_ablations`; retained panel titles such as Short/Medium/Long/MCAR because they are needed for reading multi-panel figures.
 - Regenerated the affected PDF/PNG figures and recompiled `paper/main.pdf` successfully with `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex`.
+
+### Journal Length and Citation Expansion
+- Treated the length/reference-count assessment as P0 for journal readiness.
+- Expanded `paper/references.bib`; the final compiled bibliography now contains 30 cited references, adding polar AWS datasets, Antarctic ERA5 validation, imputation surveys/probabilistic imputation, time-series transformer backbones, ST-DAN, ERA5 super-resolution, and Antarctic temperature reconstruction.
+- Expanded Related Work into polar AWS/reanalysis, imputation, time-series transformers, and exogenous/domain-specific restoration subsections.
+- Expanded Methodology with normalization, sparse-label semantics, block-mask generator details, variate-token construction equations, architecture hyperparameters, and the training/evaluation procedure.
+- Expanded Results with pattern-level baseline interpretation, missing-rate stability, per-variable ERA5 effects, block-length physical interpretation, ERA5 channel sensitivity, temporal downsampling implications, factorial interpretation, and station-level generalization commentary.
+- Expanded Discussion with ERA5 signal interpretation, fusion implications, block-curriculum generalization, deployment quality flags, failure modes, and a clearer treatment of missing third-party baselines.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeded; compiled PDF is 12 pages and 30 references. Log scan shows only non-blocking underfull vbox float warnings.

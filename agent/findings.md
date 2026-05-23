@@ -26,6 +26,13 @@ Block-wise imputation is a better fit than forecasting for ERA5 conditioning:
 - Does ERA5 conditioning help most for long block gaps and high-missingness regimes?
 - Which variables benefit from ERA5, and where does RH bias hurt?
 
+## Literature Expansion Notes (2026-05-23)
+
+- Journal-length revision should expand the reference frame from 9 core citations to a broader set covering polar AWS datasets, Antarctic ERA5 evaluation, time-series imputation, transformer time-series backbones, and exogenous/reanalysis conditioning.
+- Verified DOI-backed polar/AWS references: IMAU Antarctic AWS dataset (van Tiggelen et al., 2025, ESSD, 10.5194/essd-17-4933-2025), PROMICE/GC-NET AWS data (Fausto et al., 2026, ESSD, 10.5194/essd-18-2829-2026), PROMICE AWS data (Fausto et al., 2021, ESSD, 10.5194/essd-13-3819-2021).
+- Verified Antarctic ERA5/reanalysis context: Zhu et al. (2021, Atmosphere, 10.3390/atmos12020217), Tetzner et al. (2019, Geosciences, 10.3390/geosciences9070289), Caton Harrison et al. (2022, Weather Clim. Dynam., 10.5194/wcd-3-1415-2022), and Ma et al. (2025, Scientific Data, 10.1038/s41597-025-05175-6).
+- Verified ML/imputation/time-series citations: MissForest, GRU-D, CSDI, Fang & Wang survey, Wang et al. 2024 survey, PatchTST, FEDformer, TimesNet, Transformer, ST-DAN, and Li et al. 2026 ERA5 super-resolution.
+
 ## Data Asset Audit (2026-05-18)
 
 - AntAWS raw 3h CSV files exist locally at `/home/horeb/_code/microclimate_demo/data/AntAWS/3_hourly/`.
