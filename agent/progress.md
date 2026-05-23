@@ -280,3 +280,22 @@
 - Read `agent/05-23-2-peer-review.md`.
 - Verified that Mount Sidley is listed as 2123.0 m in `data/station_meta_ecbit.csv`; revised Results and Discussion to state this is the AWS installation/station metadata elevation, not the summit elevation.
 - Verified PatchTST is already cited as `nie2023patchtst` and present in `paper/main.bbl`.
+
+## Session: 2026-05-24
+
+### Peer Review Revision 05-23-3
+- Read `agent/05-23-3-peer-review.md` and started the requested P0 revisions.
+- Reframed the curriculum/ERA5 table from a standard factorial ablation to a cross-training-paradigm block-test transfer matrix. Removed the averaged main-effect claim (0.166/0.105 MAE) from the manuscript narrative and replaced it with the clean block-training ERA5 effect: 0.346 to 0.258 MAE, delta 0.088.
+- Added paired statistical tests over the matched 27 Round 2 gated configurations. Results: gated vs concat/no-cross mean diff -0.0003 MAE, paired t=-0.60, p=0.553; gated vs no-ERA5 mean diff -0.0880, paired t=-23.55, p<1e-18; concat/no-cross vs no-ERA5 mean diff -0.0877, paired t=-22.58, p<1e-18. Added `paper/tables/tab_stat_tests.tex` and referenced it in Results.
+- Clarified held-out station selection as geographic farthest-point sampling before model training, and expanded block-length sampling definitions: short 6-24 steps, medium 24-72 steps, long 72-240 steps at 3-hour resolution.
+- Started SAITS block-missing third-party baseline coverage. Initial full 27-config launch failed with PyPOTS `RuntimeError: element 0 of tensors does not require grad`, with 0/27 result files.
+- Diagnosed the SAITS failure: `src/evaluate_impute.py` wrapped all stateless evaluation in `@torch.no_grad()`, but PyPOTS `fit()` is called inside that function, disabling autograd for SAITS/BRITS training. Removed the function-level decorator and scoped `torch.no_grad()` only around the post-fit imputation loop.
+- Added default PyPOTS constructor hyperparameters to `src/baselines/saits_wrapper.py` and `src/baselines/brits_wrapper.py` so remote PyPOTS 1.5 can instantiate the models without missing required arguments.
+- Local targeted tests passed in conda `darts`: `python -m pytest -q src/tests/test_pypots_wrappers.py src/tests/test_training_framework.py` -> 9 passed, 1 warning.
+- Remote SAITS smoke test passed with a 1-epoch temporary config, producing a valid `result.json`; relaunched the full 27-config SAITS block-missing matrix with six tmux workers `ecbit_saits_w0` through `ecbit_saits_w5`.
+- Updated `scripts/make_round1_table.py` so the Round 1 baseline table will include SAITS automatically once its runs are synced and aggregated, while preserving the current four-method output when SAITS rows are absent.
+- Completed the SAITS block-missing baseline matrix: 27/27 result files on the remote server, with no final worker failures. GPU1 was slowed by an unrelated high-memory Python process, so the stalled `saits_long_r20_s43` run was safely relaunched on GPU0 via a single-config catch-up worker; no unrelated process was killed.
+- Synced SAITS metrics locally, regenerated `experiments/results/tables/round1_core_runs.csv` and `round1_core_summary.csv`, updated `paper/tables/tab_round1_baselines.tex`, and regenerated `fig_main_results` plus `fig_round1_baselines`.
+- SAITS final aggregate: overall MAE 0.3342 +/- 0.0930 over 27 runs; short 0.2516, medium 0.3406, long 0.4104. It is the strongest non-ERA5 baseline by MAE, but remains worse than ERA5-conditioned ECBIT at 0.2577.
+- Updated Results, Experimental Protocol, and Discussion to treat SAITS as a completed independent third-party baseline rather than a missing-baseline limitation.
+- Verification: `python -m pytest -q src/tests/test_pypots_wrappers.py src/tests/test_training_framework.py` passed locally (9 passed, 1 warning); `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 12-page PDF. Final log scan found no undefined references, citation warnings, overfull boxes, or underfull boxes.

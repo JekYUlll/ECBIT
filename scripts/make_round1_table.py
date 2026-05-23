@@ -11,11 +11,12 @@ import pandas as pd
 
 RUNS_CSV = Path("experiments/results/tables/round1_core_runs.csv")
 OUT_TEX = Path("paper/tables/tab_round1_baselines.tex")
-MODEL_ORDER = ["linear_interp", "locf", "era5_direct", "itransformer"]
+MODEL_ORDER = ["linear_interp", "locf", "era5_direct", "saits", "itransformer"]
 MODEL_LABELS = {
     "linear_interp": "Linear interpolation",
     "locf": "LOCF",
     "era5_direct": "ERA5 direct",
+    "saits": "SAITS",
     "itransformer": "iTransformer",
 }
 
@@ -35,6 +36,8 @@ def main() -> None:
     rows = []
     for model in MODEL_ORDER:
         part = runs[runs["model"].eq(model)]
+        if part.empty:
+            continue
         rows.append(
             {
                 "model": model,

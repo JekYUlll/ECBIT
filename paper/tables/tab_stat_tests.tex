@@ -1,0 +1,14 @@
+\begin{table}[t]
+  \centering
+  \caption{Paired tests for Round 2 block-missing ECBIT ablations. Pairs are matched by block regime, missing rate, and random seed ($n=27$). Differences are first variant minus second variant in normalized MAE.}
+  \label{tab:stat-tests}
+  \begin{tabular}{lccc}
+    \toprule
+    Comparison & Mean diff. & Paired $t$ & $p$ \\
+    \midrule
+    Gated -- concat & -0.0003 & -0.60 & 0.553 \\
+    Gated -- no ERA5 & -0.0880 & -23.55 & $<10^{-18}$ \\
+    Concat -- no ERA5 & -0.0877 & -22.58 & $<10^{-18}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}

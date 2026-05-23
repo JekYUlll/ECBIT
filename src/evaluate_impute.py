@@ -84,7 +84,6 @@ def evaluate_neural(config: dict[str, Any], checkpoint: Path, split: str) -> dic
     return masked_mae_rmse(torch.cat(preds), torch.cat(targets), torch.cat(masks))
 
 
-@torch.no_grad()
 def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
     # Stateless baselines materialize full batches on CPU and are commonly run
     # in parallel. Single-process loading avoids file descriptor exhaustion.
@@ -117,27 +116,28 @@ def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
             pypots_imputer.fit(train_x.numpy(), train_mask.numpy())
 
     preds, targets, masks = [], [], []
-    for step, batch in enumerate(loader):
-        x = batch["x"]
-        obs_mask = batch["obs_mask"]
-        artificial = artificial_mask_batch(obs_mask, missing_cfg, seed + step * 100_000)
-        model_obs = torch.clamp(obs_mask - artificial, 0.0, 1.0)
-        x_obs = apply_mask(x, 1.0 - model_obs)
-        if name == "linear_interp":
-            pred = linear_interpolate(x_obs, model_obs)
-        elif name == "locf":
-            pred = locf_impute(x_obs, model_obs)
-        elif name == "era5_direct":
-            assert era5_imputer is not None
-            pred = era5_imputer.impute(x_obs, batch["era5"], model_obs)
-        elif name in {"saits", "brits"}:
-            assert pypots_imputer is not None
-            pred = torch.from_numpy(pypots_imputer.impute(x_obs.numpy(), model_obs.numpy()))
-        else:
-            raise ValueError(f"Unsupported stateless baseline: {name}")
-        preds.append(pred.cpu())
-        targets.append(x.cpu())
-        masks.append(artificial.cpu())
+    with torch.no_grad():
+        for step, batch in enumerate(loader):
+            x = batch["x"]
+            obs_mask = batch["obs_mask"]
+            artificial = artificial_mask_batch(obs_mask, missing_cfg, seed + step * 100_000)
+            model_obs = torch.clamp(obs_mask - artificial, 0.0, 1.0)
+            x_obs = apply_mask(x, 1.0 - model_obs)
+            if name == "linear_interp":
+                pred = linear_interpolate(x_obs, model_obs)
+            elif name == "locf":
+                pred = locf_impute(x_obs, model_obs)
+            elif name == "era5_direct":
+                assert era5_imputer is not None
+                pred = era5_imputer.impute(x_obs, batch["era5"], model_obs)
+            elif name in {"saits", "brits"}:
+                assert pypots_imputer is not None
+                pred = torch.from_numpy(pypots_imputer.impute(x_obs.numpy(), model_obs.numpy()))
+            else:
+                raise ValueError(f"Unsupported stateless baseline: {name}")
+            preds.append(pred.cpu())
+            targets.append(x.cpu())
+            masks.append(artificial.cpu())
     return masked_mae_rmse(torch.cat(preds), torch.cat(targets), torch.cat(masks))
 
 

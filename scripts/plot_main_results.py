@@ -24,6 +24,7 @@ def collect_rows(round1_runs: Path, round2_runs: Path) -> pd.DataFrame:
         ("linear_interp", "Linear"),
         ("locf", "LOCF"),
         ("era5_direct", "ERA5 direct"),
+        ("saits", "SAITS"),
         ("itransformer", "iTransformer"),
     ]:
         vals = r1.loc[r1["model"].eq(model), "mae_mean"]
@@ -42,7 +43,7 @@ def collect_rows(round1_runs: Path, round2_runs: Path) -> pd.DataFrame:
 
 def plot(round1_runs: Path, round2_runs: Path, out_pdf: Path, out_png: Path) -> None:
     data = collect_rows(round1_runs, round2_runs)
-    colors = ["#9ECAE1", "#FDD0A2", "#A1D99B", "#FC9272", "#BCBDDC", "#BDBDBD", "#3182BD"]
+    colors = ["#9ECAE1", "#FDD0A2", "#A1D99B", "#C7B9E8", "#FC9272", "#BCBDDC", "#BDBDBD", "#3182BD"]
 
     plt.rcParams.update(
         {
@@ -58,9 +59,9 @@ def plot(round1_runs: Path, round2_runs: Path, out_pdf: Path, out_png: Path) -> 
     for idx, row in data.iterrows():
         ax.text(idx, row["mean"] + row["std"] + 0.01, f"{row['mean']:.3f}", ha="center", va="bottom", fontsize=7)
 
-    ax.axvline(3.5, color="#666666", linestyle="--", linewidth=0.8, alpha=0.8)
-    ax.text(1.5, 0.535, "Core baselines", ha="center", va="center", fontsize=8, color="#444444")
-    ax.text(5.0, 0.535, "ECBIT variants", ha="center", va="center", fontsize=8, color="#444444")
+    ax.axvline(4.5, color="#666666", linestyle="--", linewidth=0.8, alpha=0.8)
+    ax.text(2.0, 0.535, "Core baselines", ha="center", va="center", fontsize=8, color="#444444")
+    ax.text(6.0, 0.535, "ECBIT variants", ha="center", va="center", fontsize=8, color="#444444")
     ax.set_xticks(list(x), data["label"], rotation=22, ha="right")
     ax.set_ylabel("Mean test MAE")
     ax.set_ylim(0.22, 0.56)

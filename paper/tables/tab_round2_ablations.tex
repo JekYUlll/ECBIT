@@ -1,10 +1,10 @@
 \begin{table}[t]
   \centering
-  \caption{Round 2 ERA5-conditioning ablation results. Values are mean test MAE over all runs; the count in parentheses indicates configurations. MCAR training uses a different mask distribution and is reported separately. Lower is better.}
+  \caption{Round 2 ERA5-conditioning ablation results. Values are mean test MAE over all runs; the count in parentheses indicates configurations. Block-missing rows use block test masks. The MCAR row uses a point-wise MCAR test distribution and is reported only as an in-distribution reference for the no-blockmask variant. Lower is better.}
   \label{tab:round2-ablations}
   \begin{tabular}{lc}
     \toprule
-    Variant & Block-mask MAE \\
+    Variant & Test MAE \\
     \midrule
     Gated ERA5 injection & \textbf{0.258 $\pm$ 0.007} (27) \\
     Concat/no-cross fusion & 0.258 $\pm$ 0.006 (27) \\

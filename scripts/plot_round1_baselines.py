@@ -14,23 +14,26 @@ RUNS_CSV = Path("experiments/results/tables/round1_core_runs.csv")
 OUT_PDF = Path("paper/figures/fig_round1_baselines.pdf")
 OUT_PNG = Path("paper/figures/fig_round1_baselines.png")
 
-MODEL_ORDER = ["linear_interp", "locf", "era5_direct", "itransformer"]
+MODEL_ORDER = ["linear_interp", "locf", "era5_direct", "saits", "itransformer"]
 MODEL_LABELS = {
     "linear_interp": "Linear",
     "locf": "LOCF",
     "era5_direct": "ERA5 direct",
+    "saits": "SAITS",
     "itransformer": "iTransformer",
 }
 COLORS = {
     "linear_interp": "#56B4E9",
     "locf": "#E69F00",
     "era5_direct": "#009E73",
+    "saits": "#CC79A7",
     "itransformer": "#D55E00",
 }
 MARKERS = {
     "linear_interp": "o",
     "locf": "s",
     "era5_direct": "^",
+    "saits": "v",
     "itransformer": "D",
 }
 

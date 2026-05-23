@@ -10,7 +10,7 @@ The current benchmark contains 32 selected AntAWS stations with at least 10 year
 
 The contributions are:
 \begin{itemize}
-  \item a realistic block-missing curriculum and Antarctic AWS benchmark with sparse observation masks, aligned ERA5 inputs, block-failure simulation, and held-out station splits; the curriculum yields an average 0.166 MAE reduction and lowers long-block MAE from 0.469 to 0.266 when ERA5 is present;
-  \item quantitative evidence that ERA5 conditioning has causal value under contiguous outages, with an average 0.105 MAE reduction and a relative benefit that grows from 13.8\% for 24-hour gaps to 26.4\% for 216-hour gaps;
-  \item a factorial ablation showing that the two factors are jointly necessary: MCAR training with ERA5 remains worse than block training without ERA5, while gated and concat fusion are statistically tied.
+  \item a realistic block-missing curriculum and Antarctic AWS benchmark with sparse observation masks, aligned ERA5 inputs, block-failure simulation, and held-out station splits; MCAR-trained ERA5 models reach 0.407 MAE on block tests, while block-trained ERA5 models reach 0.258;
+  \item quantitative evidence that ERA5 conditioning has causal value under contiguous outages, reducing block-trained MAE from 0.346 to 0.258 and producing a relative benefit that grows from 13.8\% for 24-hour gaps to 26.4\% for 216-hour gaps;
+  \item a cross-training-paradigm comparison showing that both the failure-mode-matched curriculum and ERA5 prior are needed: MCAR training with ERA5 remains worse than block training without ERA5, while paired tests show gated and concat fusion are statistically indistinguishable.
 \end{itemize}

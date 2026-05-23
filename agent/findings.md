@@ -372,3 +372,12 @@ Important correction: an initial selection with only mean core completeness reta
 - Interpretation: both block curriculum and ERA5 conditioning independently matter, and their combination is the only strong regime. ERA5 access alone does not transfer well from MCAR training to block failures; block curriculum alone helps but remains far worse than block curriculum plus ERA5.
 - Factor decomposition now used in the paper: average block-curriculum main effect is 0.166 MAE, average ERA5 main effect is 0.105 MAE, and the effect-coded interaction is +0.017 MAE. The accurate wording is two strong independent main effects with a small positive synergy, not a large interaction effect.
 - Added external literature context after verification: arXiv:2603.22372 supports the caution that unconstrained auxiliary fusion can inject irrelevant information; arXiv:2605.12196 supports physically grounded selection of meteorological exogenous variables.
+
+## SAITS Block-Missing Baseline (2026-05-24)
+
+- SAITS was evaluated on the same 27 block-missing Round 1 configurations (3 patterns x 3 missing rates x 3 seeds).
+- Overall normalized MAE/RMSE: MAE 0.3342 +/- 0.0930; RMSE 0.5172 +/- 0.1107.
+- Pattern-level MAE: short 0.2516, medium 0.3406, long 0.4104.
+- Comparison to prior baselines: SAITS is the strongest non-ERA5 baseline by MAE, outperforming iTransformer MAE 0.3599, ERA5 direct 0.3811, linear interpolation 0.3955, and LOCF 0.4443. iTransformer retains the lowest baseline RMSE at 0.508.
+- Comparison to ECBIT: SAITS remains substantially worse than ERA5-conditioned ECBIT (gated full MAE 0.2577), supporting the paper's central claim that the key gain comes from ERA5-conditioned block imputation rather than only from using a transformer-style imputation backbone.
+- Implementation finding: PyPOTS SAITS/BRITS training must not run inside a global `torch.no_grad()` context. The prior `evaluate_stateless` decorator disabled autograd during `pypots_imputer.fit()` and caused `RuntimeError: element 0 of tensors does not require grad`; scoping `torch.no_grad()` only to the imputation loop resolves this.
