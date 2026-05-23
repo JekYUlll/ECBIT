@@ -54,7 +54,7 @@ def main() -> None:
     lines = [
         "\\begin{table}[t]",
         "  \\centering",
-        "  \\caption{Round 1 core baseline results averaged over block-missing patterns, missing rates, and seeds. Lower is better.}",
+        "  \\caption{Round 1 core baseline results averaged over block-missing patterns, missing rates, and seeds. SAITS is trained without ERA5 inputs. Lower is better.}",
         "  \\label{tab:round1-baselines}",
         "  \\begin{tabular}{lcc}",
         "    \\toprule",

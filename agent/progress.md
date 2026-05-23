@@ -308,3 +308,10 @@
 - Added Figure 3 caption clarification that `ECBIT + ERA5` denotes the gated injection variant and that concat fusion is shown separately with the same mean MAE.
 - Expanded the third-party baseline discussion to note that SAITS and iTransformer represent different attention designs.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed; compiled PDF is 13 pages and the warning scan found no undefined references, citation warnings, overfull boxes, or underfull boxes.
+
+### Peer Review Revision 05-24-1
+- Read `agent/05-24-1-peer-review.md`; the review judged the manuscript submission-ready and identified only three recommended one-sentence P1 cleanups.
+- Added a defensive Table I caption note that SAITS is trained without ERA5 inputs, matching the explicit Section V-B description.
+- Clarified in Section VI-C that the 216-hour block-length sensitivity setting is a representative horizon inside the long 72--240 h range, not the long-range upper bound.
+- Clarified in Section VI-D that inference-time ERA5 channel masking is used for computational efficiency because it reuses the 27 trained checkpoints and avoids retraining five channel-ablated models.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed; compiled PDF is 13 pages. Log scan shows one non-blocking underfull vbox float warning and no undefined references, citation warnings, or overfull boxes.
