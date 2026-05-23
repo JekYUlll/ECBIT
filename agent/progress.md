@@ -315,3 +315,8 @@
 - Clarified in Section VI-C that the 216-hour block-length sensitivity setting is a representative horizon inside the long 72--240 h range, not the long-range upper bound.
 - Clarified in Section VI-D that inference-time ERA5 channel masking is used for computational efficiency because it reuses the 27 trained checkpoints and avoids retraining five channel-ablated models.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed; compiled PDF is 13 pages. Log scan shows one non-blocking underfull vbox float warning and no undefined references, citation warnings, or overfull boxes.
+
+### Figure 4 Layout Cleanup
+- Removed the redundant in-figure title from `fig_imputation_case` because the figure caption already identifies the qualitative long-block imputation case.
+- Reworked the legend from a crowded single-row header to a two-row, three-column legend above the axes with reserved top margin.
+- Regenerated `paper/figures/fig_imputation_case.pdf/.png` and recompiled `paper/main.pdf`; visual check confirms the legend no longer overlaps the plot area.

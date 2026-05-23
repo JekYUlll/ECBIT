@@ -137,7 +137,7 @@ def plot_case(args: argparse.Namespace) -> None:
             "axes.titleweight": "bold",
         }
     )
-    fig, ax = plt.subplots(figsize=(7.35, 2.6), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(7.35, 2.65), constrained_layout=False)
     real_observed = obs_mask.numpy()[0, :, var_idx] > 0.5
     true_observed_line = np.where(real_observed, true, np.nan)
     ax.plot(timestamps, true_observed_line, color="#222222", linewidth=1.2, label="AWS truth")
@@ -157,13 +157,20 @@ def plot_case(args: argparse.Namespace) -> None:
             ax.axvspan(timestamps[start], timestamps[end - 1], color="#D62728", alpha=0.08, linewidth=0)
             start = None
 
-    station_id = str(station["station_id"])
-    ax.set_title(f"{args.variable} imputation case ({station_id}, long block)", fontsize=9)
     ax.set_ylabel(args.ylabel)
     ax.set_xlabel("Time")
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
     ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.85)
-    ax.legend(ncol=6, frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.08), columnspacing=0.9)
+    ax.legend(
+        ncol=3,
+        frameon=False,
+        loc="lower center",
+        bbox_to_anchor=(0.5, 1.02),
+        columnspacing=1.4,
+        handlelength=2.0,
+        borderaxespad=0.0,
+    )
+    fig.subplots_adjust(top=0.80, bottom=0.20, left=0.08, right=0.99)
 
     args.out_pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(args.out_pdf, bbox_inches="tight")
