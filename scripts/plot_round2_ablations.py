@@ -96,13 +96,25 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
     runs = runs.copy()
     runs["rate_pct"] = (runs["rate"].astype(float) * 100).astype(int)
 
-    fig, axes = plt.subplots(1, 4, figsize=(7.4, 2.45), sharey=False, constrained_layout=True)
+    fig, axes = plt.subplots(1, 4, figsize=(7.4, 2.65), sharey=False, constrained_layout=False)
     for ax, pattern in zip(axes[:3], ["short", "medium", "long"]):
         plot_block_ablations(ax, runs, pattern)
     axes[0].set_ylabel("MAE (normalized)")
     plot_mcar(axes[3], runs)
-    axes[0].legend(frameon=False, fontsize=7, loc="upper left")
-    axes[3].legend(frameon=False, fontsize=7, loc="upper left")
+    block_handles, block_labels = axes[0].get_legend_handles_labels()
+    mcar_handles, mcar_labels = axes[3].get_legend_handles_labels()
+    fig.legend(
+        block_handles + mcar_handles,
+        block_labels + mcar_labels,
+        frameon=False,
+        fontsize=7,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.99),
+        ncol=4,
+        columnspacing=1.0,
+        handlelength=1.8,
+    )
+    fig.subplots_adjust(top=0.78, bottom=0.20, left=0.07, right=0.99, wspace=0.18)
 
     out_pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_pdf, bbox_inches="tight")

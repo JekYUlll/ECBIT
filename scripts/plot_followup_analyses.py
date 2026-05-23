@@ -63,7 +63,6 @@ def plot_block_length(ax: plt.Axes, summary: pd.DataFrame) -> None:
     ax.set_ylabel("MAE")
     ax.set_xticks([24, 72, 216])
     ax.grid(axis="y", color=COLORS["grid"], linewidth=0.6, alpha=0.9)
-    ax.legend(frameon=False, fontsize=6.8, loc="upper left")
 
 
 def plot_variable_importance(ax: plt.Axes, robust: pd.DataFrame) -> None:
@@ -115,10 +114,24 @@ def plot(blocklen_csv: Path, robustness_csv: Path, out_pdf: Path, out_png: Path)
             "axes.titleweight": "bold",
         }
     )
-    fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.25), constrained_layout=True)
+    fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.45), constrained_layout=False)
     plot_block_length(axes[0], blocklen)
     plot_variable_importance(axes[1], robust)
     plot_temporal_robustness(axes[2], robust)
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labels,
+        frameon=False,
+        fontsize=6.8,
+        loc="upper left",
+        bbox_to_anchor=(0.07, 0.99),
+        ncol=2,
+        columnspacing=1.0,
+        handlelength=1.7,
+        borderaxespad=0.0,
+    )
+    fig.subplots_adjust(top=0.78, bottom=0.20, left=0.07, right=0.99, wspace=0.35)
 
     out_pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_pdf, bbox_inches="tight")

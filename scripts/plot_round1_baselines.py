@@ -47,7 +47,7 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
         .agg(mae_mean=("mae_mean", "mean"), mae_std=("mae_mean", "std"))
     )
 
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.45), sharey=True, constrained_layout=True)
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.65), sharey=True, constrained_layout=False)
     for ax, pattern in zip(axes, ["short", "medium", "long"]):
         part = summary[summary["pattern"].eq(pattern)]
         for model in MODEL_ORDER:
@@ -69,7 +69,19 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
         ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.85)
         ax.set_axisbelow(True)
     axes[0].set_ylabel("MAE (normalized)")
-    axes[0].legend(frameon=False, fontsize=7, loc="upper left")
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labels,
+        frameon=False,
+        fontsize=7,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.99),
+        ncol=5,
+        columnspacing=1.0,
+        handlelength=1.8,
+    )
+    fig.subplots_adjust(top=0.78, bottom=0.20, left=0.08, right=0.99, wspace=0.08)
 
     out_pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_pdf, bbox_inches="tight")

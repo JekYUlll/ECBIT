@@ -320,3 +320,9 @@
 - Removed the redundant in-figure title from `fig_imputation_case` because the figure caption already identifies the qualitative long-block imputation case.
 - Reworked the legend from a crowded single-row header to a two-row, three-column legend above the axes with reserved top margin.
 - Regenerated `paper/figures/fig_imputation_case.pdf/.png` and recompiled `paper/main.pdf`; visual check confirms the legend no longer overlaps the plot area.
+
+### Figure 5-7 Legend Cleanup
+- Moved the Figure 5 and Figure 6 legends from in-panel upper-left positions to global legends above the panels, preventing overlap with plotted curves.
+- Moved the Figure 7 block-length legend to a figure-level legend above the panels and adjusted the top margin so it no longer collides with the subplot title.
+- Regenerated `fig_round1_baselines`, `fig_round2_ablations`, and `fig_followup_analyses` as PDF/PNG outputs.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed; compiled PDF is 13 pages. Log scan shows only two non-blocking underfull vbox float warnings and no undefined references, citation warnings, or overfull boxes.
