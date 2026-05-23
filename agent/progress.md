@@ -275,3 +275,8 @@
 - Expanded Results with pattern-level baseline interpretation, missing-rate stability, per-variable ERA5 effects, block-length physical interpretation, ERA5 channel sensitivity, temporal downsampling implications, factorial interpretation, and station-level generalization commentary.
 - Expanded Discussion with ERA5 signal interpretation, fusion implications, block-curriculum generalization, deployment quality flags, failure modes, and a clearer treatment of missing third-party baselines.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeded; compiled PDF is 12 pages and 30 references. Log scan shows only non-blocking underfull vbox float warnings.
+
+### Peer Review Revision 05-23-2
+- Read `agent/05-23-2-peer-review.md`.
+- Verified that Mount Sidley is listed as 2123.0 m in `data/station_meta_ecbit.csv`; revised Results and Discussion to state this is the AWS installation/station metadata elevation, not the summit elevation.
+- Verified PatchTST is already cited as `nie2023patchtst` and present in `paper/main.bbl`.
