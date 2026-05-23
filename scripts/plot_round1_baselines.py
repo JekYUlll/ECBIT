@@ -67,7 +67,6 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
         ax.set_axisbelow(True)
     axes[0].set_ylabel("MAE (normalized)")
     axes[0].legend(frameon=False, fontsize=7, loc="upper left")
-    fig.suptitle("Round 1 baseline comparison across block-missing regimes", fontsize=10, fontweight="bold")
 
     out_pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_pdf, bbox_inches="tight")

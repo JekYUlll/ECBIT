@@ -262,3 +262,7 @@
 - Expanded Related Work with ExoST (`arXiv:2509.05779`) after verifying the arXiv metadata, and positioned ECBIT's fusion null result alongside constrained/selected exogenous-fusion literature.
 - Added ECBIT architecture and training details, clarified the $s_c$ gate notation, expanded the MCAR-vs-block physical explanation, clarified MCAR table comparability, and deepened held-out Mount Sidley/Zhongshan station interpretation.
 - Reframed BRITS/SAITS limitations as future block-curriculum third-party baseline coverage, added practical ERA5 deployment details, switched the Round2 ablation plot to final gated runs, regenerated `fig_round2_ablations`, and verified `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeds with no LaTeX warnings found by log scan.
+
+### Figure Title Cleanup
+- Removed redundant in-figure bold/global titles from `fig_missing_patterns`, `fig_main_results`, `fig_round1_baselines`, and `fig_round2_ablations`; retained panel titles such as Short/Medium/Long/MCAR because they are needed for reading multi-panel figures.
+- Regenerated the affected PDF/PNG figures and recompiled `paper/main.pdf` successfully with `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex`.

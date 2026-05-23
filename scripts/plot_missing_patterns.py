@@ -58,7 +58,6 @@ def plot(stats_csv: Path, out_pdf: Path, out_png: Path) -> None:
     axes[0].set_ylim(bottom=0)
     axes[1].set_ylim(bottom=0)
     axes[0].legend(frameon=False, loc="upper left")
-    fig.suptitle("Real AntAWS missingness is block-structured", fontsize=10, fontweight="bold")
 
     out_pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_pdf, bbox_inches="tight")

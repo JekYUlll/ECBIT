@@ -66,7 +66,6 @@ def plot(round1_runs: Path, round2_runs: Path, out_pdf: Path, out_png: Path) -> 
     ax.set_ylim(0.22, 0.56)
     ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.85)
     ax.set_axisbelow(True)
-    ax.set_title("Main block-imputation comparison")
 
     out_pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_pdf, bbox_inches="tight")
