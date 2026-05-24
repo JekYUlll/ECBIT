@@ -96,11 +96,26 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
     runs = runs.copy()
     runs["rate_pct"] = (runs["rate"].astype(float) * 100).astype(int)
 
-    fig, axes = plt.subplots(1, 4, figsize=(7.4, 2.65), sharey=False, constrained_layout=False)
+    fig, axes = plt.subplots(
+        1,
+        4,
+        figsize=(7.8, 2.55),
+        sharey=False,
+        constrained_layout=False,
+        gridspec_kw={"width_ratios": [1.0, 1.0, 1.0, 0.9]},
+    )
     for ax, pattern in zip(axes[:3], ["short", "medium", "long"]):
         plot_block_ablations(ax, runs, pattern)
     axes[0].set_ylabel("MAE (normalized)")
+    block_part = runs[runs["pattern"].isin(["short", "medium", "long"]) & runs["variant"].isin(VARIANT_ORDER)]
+    y_min = float(block_part["mae_mean"].min()) - 0.010
+    y_max = float(block_part["mae_mean"].max()) + 0.015
+    for ax in axes[:3]:
+        ax.set_ylim(y_min, y_max)
+    for ax in axes[1:3]:
+        ax.tick_params(labelleft=False)
     plot_mcar(axes[3], runs)
+    axes[3].tick_params(axis="y", labelsize=6.6, pad=1)
     block_handles, block_labels = axes[0].get_legend_handles_labels()
     mcar_handles, mcar_labels = axes[3].get_legend_handles_labels()
     fig.legend(
@@ -114,7 +129,9 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
         columnspacing=1.0,
         handlelength=1.8,
     )
-    fig.subplots_adjust(top=0.78, bottom=0.20, left=0.07, right=0.99, wspace=0.18)
+    for ax in axes:
+        ax.tick_params(axis="both", labelsize=6.8)
+    fig.subplots_adjust(top=0.78, bottom=0.20, left=0.07, right=0.99, wspace=0.28)
 
     out_pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_pdf, bbox_inches="tight")

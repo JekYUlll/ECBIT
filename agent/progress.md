@@ -278,6 +278,14 @@
 - Added environment snapshots under `experiments/results/analysis/environment/`: local analysis/LaTeX environment and remote GPU training environment. The remote snapshot records Python 3.12.12, PyTorch 2.9.0+cu128, PyPOTS 1.5, CUDA availability, and six RTX 4090 GPUs; the local snapshot records Python 3.12.11, NumPy/Pandas/PyTorch/SciPy/Matplotlib/Seaborn, latexmk, and pdfTeX versions.
 - Updated the reproducibility inventory to include both environment snapshots and marked the reproducibility-artifacts task complete.
 - Compile note: one `latexmk` attempt was accidentally run from the repository root and failed with `Could not find file 'main.tex'`; reran from `paper/` and compilation succeeded, with the final log scan showing no overfull boxes, undefined references, or undefined citations.
+
+### Figure and Table Visual Check
+- Recompiled `paper/main.tex`, rendered the 14-page PDF to PNG with `pdftoppm`, and inspected the page contact sheet plus pages 3--10 where the figures and tables appear.
+- Checked independent figure PNGs for `fig_main_results`, `fig_imputation_case`, `fig_round1_baselines`, `fig_round2_ablations`, `fig_followup_analyses`, and `fig_missing_patterns`.
+- Found and fixed a real visual issue in `fig_round2_ablations`: the multi-panel y-axis tick labels were too crowded and bled across neighboring panels. Updated `scripts/plot_round2_ablations.py` to use wider spacing, shared block-panel y limits, hidden repeated y tick labels on the middle/long block panels, and smaller MCAR tick labels. Regenerated the PDF/PNG figure.
+- Recompiled after the fix and re-rendered page 9. The revised Fig. 6 no longer has overlapping y tick labels; the legend is above the panels and does not obscure curves.
+- Table/number spot checks: Round2 ablation values match `round2_gated_final_runs.csv`; paired-test values match `round2_gated_paired_tests.csv`; raw-unit table values match `round2_raw_unit_variable_summary.csv`.
+- Final log scan after the figure fix shows only minor underfull warnings from monospace reproducibility filenames; no overfull boxes, undefined references, or undefined citations were found.
 - Neutralized architecture wording in the Introduction from a specific gated-layer contribution to a lightweight ERA5 conditioning mechanism, and reordered contributions around block-missing curriculum, ERA5 causal value, and the completed factorial ablation.
 - Expanded Related Work with ExoST (`arXiv:2509.05779`) after verifying the arXiv metadata, and positioned ECBIT's fusion null result alongside constrained/selected exogenous-fusion literature.
 - Added ECBIT architecture and training details, clarified the $s_c$ gate notation, expanded the MCAR-vs-block physical explanation, clarified MCAR table comparability, and deepened held-out Mount Sidley/Zhongshan station interpretation.
