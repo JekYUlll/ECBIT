@@ -25,6 +25,8 @@ ARTIFACTS = [
     ("round3_heldout_runs", "experiments/results/tables/round3_final_runs.csv", "Held-out station per-run test metrics."),
     ("curriculum_factorial", "experiments/results/tables/curriculum_era5_factorial.csv", "Block-vs-MCAR and ERA5-vs-no-ERA5 factorial summary."),
     ("raw_unit_variables", "experiments/results/tables/round2_raw_unit_variable_summary.csv", "Variable-level physical-unit error summary."),
+    ("local_environment", "experiments/results/analysis/environment/local_environment.txt", "Local preprocessing, plotting, and LaTeX environment summary."),
+    ("remote_environment", "experiments/results/analysis/environment/remote_environment.txt", "Remote GPU training and evaluation environment summary."),
 ]
 
 

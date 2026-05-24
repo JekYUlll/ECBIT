@@ -39,6 +39,7 @@ Block-wise imputation is a better fit than forecasting for ERA5 conditioning:
 - The original observed-consistency default audit for Round2 gated checkpoints could not be run because those older `best.pt` files are no longer retained on the remote server. The script now supports missing-checkpoint reporting; future long-running batches should retain checkpoints until all secondary audits are complete.
 - Reproducibility inventory now exists at `experiments/results/tables/reproducibility_inventory.csv`. It records station metadata, ERA5/preprocessing manifests, full window index, realized block-length diagnostics, calibration/real-gap analyses, result CSVs, configuration directories, and result JSON counts with file sizes and checksums where applicable.
 - Expanded Round2 paired statistics confirm the fusion-null result and the ERA5 effect. Gated minus concat mean difference is -0.00025 MAE with 95% CI [-0.00113, 0.00062], paired $d_z=-0.12$, and Holm p=0.553. Gated minus no-ERA5 is -0.08799 MAE with 95% CI [-0.09568, -0.08032], paired $d_z=-4.53$, and Holm p<1e-4.
+- Environment snapshots are now captured locally and remotely. Local analysis uses Python 3.12.11 with NumPy 2.2.6, Pandas 2.3.2, PyTorch 2.6.0, SciPy 1.15.2, Matplotlib 3.10.6, Seaborn 0.13.2, latexmk 4.83, and pdfTeX 1.40.25. Remote training uses Python 3.12.12 with NumPy 2.4.3, Pandas 2.3.3, PyTorch 2.9.0+cu128, SciPy 1.15.3, PyPOTS 1.5, and six RTX 4090 GPUs.
 
 ## Metadata Check (2026-05-23)
 

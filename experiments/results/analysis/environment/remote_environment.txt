@@ -1,0 +1,17 @@
+# Remote training environment
+2026-05-24T10:53:08+08:00
+
+Python 3.12.12
+numpy==2.4.3
+pandas==2.3.3
+torch==2.9.0+cu128
+scipy==1.15.3
+pypots==1.5
+cuda_available=True
+cuda_device_count=6
+gpu_0=NVIDIA GeForce RTX 4090
+gpu_1=NVIDIA GeForce RTX 4090
+gpu_2=NVIDIA GeForce RTX 4090
+gpu_3=NVIDIA GeForce RTX 4090
+gpu_4=NVIDIA GeForce RTX 4090
+gpu_5=NVIDIA GeForce RTX 4090

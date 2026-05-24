@@ -73,7 +73,7 @@ Active Follow-up: 05-24-2 major-review revision is active. The highest-priority 
 - [x] Add real-gap plausibility diagnostics and case figures for historical gaps without treating them as supervised labels
 - [ ] Add non-overlap or strict chronological split sensitivity if feasible under remote budget
 - [x] Add station x variable and raw-unit error tables
-- [ ] Update reproducibility artifacts: station metadata, split/window index, configs, raw result inventory, environment notes
+- [x] Update reproducibility artifacts: station metadata, split/window index, configs, raw result inventory, environment notes
 - [ ] Compile, visually check figures/tables, and commit each completed atomic task
 
 ## Blocked Issues

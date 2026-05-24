@@ -13,6 +13,8 @@ round2_gated_runs,experiments/results/tables/round2_gated_final_runs.csv,True,40
 round3_heldout_runs,experiments/results/tables/round3_final_runs.csv,True,17581,009e3d0a056f,Held-out station per-run test metrics.
 curriculum_factorial,experiments/results/tables/curriculum_era5_factorial.csv,True,476,83319f84dbff,Block-vs-MCAR and ERA5-vs-no-ERA5 factorial summary.
 raw_unit_variables,experiments/results/tables/round2_raw_unit_variable_summary.csv,True,1204,7db8fced40c5,Variable-level physical-unit error summary.
+local_environment,experiments/results/analysis/environment/local_environment.txt,True,267,d1696e294c11,"Local preprocessing, plotting, and LaTeX environment summary."
+remote_environment,experiments/results/analysis/environment/remote_environment.txt,True,364,296275317c38,Remote GPU training and evaluation environment summary.
 configs_fair_era5_baselines,experiments/configs/fair_era5_baselines,True,0,,54 YAML experiment configurations.
 configs_followup_blocklen,experiments/configs/followup_blocklen,True,0,,18 YAML experiment configurations.
 configs_followup_mcar_noera5,experiments/configs/followup_mcar_noera5,True,0,,27 YAML experiment configurations.
