@@ -65,7 +65,7 @@ Active Follow-up: 05-24-2 major-review revision is active. The highest-priority 
 - [x] Add mask-generator pseudocode and realized block-length diagnostics for short/medium/long regimes
 - [x] Disclose window generation details: stride, chronological split fractions, minimum observation thresholds, and per-station window counts
 - [x] Clarify specific humidity derivation, missingness propagation, and normalization
-- [ ] Clarify final inference rule for preserving observed AWS values; add observed-position consistency audit
+- [x] Clarify final inference rule for preserving observed AWS values; add observed-position consistency audit
 - [x] Expand ERA5 direct bias-correction definition and add no-bias / mean-bias / linear-calibration ablation if feasible
 - [x] Generate and submit SAITS+ERA5 and iTransformer+ERA5 fair-baseline configs on remote GPUs
 - [ ] Monitor fair ERA5 baseline batch, sync results, aggregate tables, and update manuscript

@@ -28,10 +28,33 @@ def checkpoint_for_config(config: dict[str, Any]) -> Path:
 
 
 @torch.no_grad()
-def audit_config(config_path: Path, device: torch.device) -> dict[str, float | str]:
+def missing_checkpoint_row(config_path: Path, config: dict[str, Any], checkpoint: Path) -> dict[str, float | str | int]:
+    missing_cfg = config.get("missing", {})
+    return {
+        "config": str(config_path),
+        "run_name": str(config.get("run_name", config_path.stem)),
+        "variant": str(config.get("model", {}).get("variant", "")),
+        "pattern": str(missing_cfg.get("target_pattern", missing_cfg.get("pattern", ""))),
+        "rate": float(missing_cfg.get("rate", float("nan"))),
+        "seed": int(config.get("seed", -1)),
+        "checkpoint": str(checkpoint),
+        "status": "missing_checkpoint",
+        "visible_positions": 0,
+        "pre_copy_mae": float("nan"),
+        "pre_copy_rmse": float("nan"),
+        "post_copy_mae": float("nan"),
+    }
+
+
+@torch.no_grad()
+def audit_config(config_path: Path, device: torch.device, allow_missing: bool = False) -> dict[str, float | str | int]:
     config = load_config(config_path)
     model = build_model(config).to(device)
     checkpoint = checkpoint_for_config(config)
+    if not checkpoint.exists():
+        if allow_missing:
+            return missing_checkpoint_row(config_path, config, checkpoint)
+        raise FileNotFoundError(f"Checkpoint not found for {config_path}: {checkpoint}")
     state = torch.load(checkpoint, map_location=device)
     model.load_state_dict(state["model"])
     model.eval()
@@ -71,6 +94,8 @@ def audit_config(config_path: Path, device: torch.device) -> dict[str, float | s
         "pattern": str(config.get("missing", {}).get("pattern", "")),
         "rate": float(config.get("missing", {}).get("rate", float("nan"))),
         "seed": int(seed),
+        "checkpoint": str(checkpoint),
+        "status": "ok",
         "visible_positions": int(count),
         "pre_copy_mae": pre_abs_sum / max(count, 1.0),
         "pre_copy_rmse": (pre_sq_sum / max(count, 1.0)) ** 0.5,
@@ -83,24 +108,36 @@ def main() -> None:
     parser.add_argument("--config-glob", default=CONFIG_GLOB)
     parser.add_argument("--out-dir", type=Path, default=OUT_DIR)
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
+    parser.add_argument("--allow-missing", action="store_true", help="Record missing checkpoints instead of failing.")
     args = parser.parse_args()
 
     configs = sorted(Path().glob(args.config_glob))
     if not configs:
         raise FileNotFoundError(f"No configs matched {args.config_glob}")
     device = torch.device(args.device)
-    rows = [audit_config(path, device) for path in configs]
+    rows = [audit_config(path, device, allow_missing=args.allow_missing) for path in configs]
     runs = pd.DataFrame(rows)
-    summary = (
-        runs.groupby("variant", as_index=False)
-        .agg(
-            pre_copy_mae=("pre_copy_mae", "mean"),
-            pre_copy_rmse=("pre_copy_rmse", "mean"),
-            post_copy_mae=("post_copy_mae", "mean"),
-            runs=("run_name", "count"),
+    ok_runs = runs[runs["status"] == "ok"]
+    missing_counts = runs[runs["status"] != "ok"].groupby("variant").size()
+    if ok_runs.empty:
+        summary = (
+            missing_counts.rename("missing_checkpoints")
+            .reset_index()
+            .assign(pre_copy_mae=float("nan"), pre_copy_rmse=float("nan"), post_copy_mae=float("nan"), runs=0)
+            [["variant", "pre_copy_mae", "pre_copy_rmse", "post_copy_mae", "runs", "missing_checkpoints"]]
         )
-        .sort_values("variant")
-    )
+    else:
+        summary = (
+            ok_runs.groupby("variant", as_index=False)
+            .agg(
+                pre_copy_mae=("pre_copy_mae", "mean"),
+                pre_copy_rmse=("pre_copy_rmse", "mean"),
+                post_copy_mae=("post_copy_mae", "mean"),
+                runs=("run_name", "count"),
+            )
+            .sort_values("variant")
+        )
+        summary["missing_checkpoints"] = summary["variant"].map(missing_counts).fillna(0).astype(int)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     runs.to_csv(args.out_dir / "observed_consistency_runs.csv", index=False)

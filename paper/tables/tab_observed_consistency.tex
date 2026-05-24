@@ -1,0 +1,13 @@
+\begin{table}[t]
+  \centering
+  \caption{Observed-position consistency audit on retained neural checkpoints. Errors are computed on input positions visible to the model; copy-back is the final imputed-series rule in Eq.~\eqref{eq:copy-back}.}
+  \label{tab:observed-consistency}
+  \scriptsize
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    Set & Pre MAE & Pre RMSE & Post MAE \\
+    \midrule
+    MCAR no-ERA5, 27 runs & 0.161 & 0.252 & 0.000 \\
+    \bottomrule
+  \end{tabular}
+\end{table}

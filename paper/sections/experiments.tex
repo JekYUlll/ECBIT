@@ -60,6 +60,10 @@ The same ablation also prevents an over-interpretation of the architecture. Gate
 
 \input{tables/tab_stat_tests}
 
+Because the decoder emits a full reconstructed trajectory, we separately audit whether visible input values are modified before final post-processing. Table~\ref{tab:observed-consistency} uses the retained MCAR no-ERA5 ECBIT checkpoints as a direct check. The decoded trajectory can deviate from visible inputs before post-processing, but the final copy-back rule sets observed-position error to exactly zero. This confirms that the operational imputed series fills unavailable entries while preserving AWS values that remain visible in the input.
+
+\input{tables/tab_observed_consistency}
+
 The per-variable ablation reinforces this conclusion. With ERA5, temperature, wind speed, pressure, and specific humidity MAE are approximately 0.159, 0.424, 0.055, and 0.215. Removing ERA5 increases these values to 0.254, 0.576, 0.097, and 0.292. Relative humidity also improves, though less dramatically, from 0.510 without ERA5 to 0.436 with ERA5. The largest absolute improvements occur in physically coherent background variables: temperature, wind, and moisture. This pattern is more important than the small numerical difference between gated and concat fusion.
 
 Table~\ref{tab:raw-unit-errors} reports the same gated ERA5 result in physical units. The normalized aggregate corresponds to mean absolute errors of 2.14 deg C for temperature, 2.25 m s$^{-1}$ for wind speed, 4.91 hPa for pressure, 8.85 percentage points for relative humidity, and 0.15 g kg$^{-1}$ for specific humidity. These values are intended as scale interpretation rather than a replacement for normalized comparisons, because the benchmark optimizes a multi-variable objective.

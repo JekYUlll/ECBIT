@@ -33,6 +33,12 @@ Block-wise imputation is a better fit than forecasting for ERA5 conditioning:
 - Verified Antarctic ERA5/reanalysis context: Zhu et al. (2021, Atmosphere, 10.3390/atmos12020217), Tetzner et al. (2019, Geosciences, 10.3390/geosciences9070289), Caton Harrison et al. (2022, Weather Clim. Dynam., 10.5194/wcd-3-1415-2022), and Ma et al. (2025, Scientific Data, 10.1038/s41597-025-05175-6).
 - Verified ML/imputation/time-series citations: MissForest, GRU-D, CSDI, Fang & Wang survey, Wang et al. 2024 survey, PatchTST, FEDformer, TimesNet, Transformer, ST-DAN, and Li et al. 2026 ERA5 super-resolution.
 
+## Major Revision Diagnostics (2026-05-24)
+
+- Observed-position preservation is enforced by the final copy-back rule: visible AWS inputs are copied into the final imputed output after decoding. A remote CPU audit on retained `followup_mcar_noera5` ECBIT checkpoints found that decoded visible-position outputs have nonzero pre-copy deviation (MAE 0.1608, RMSE 0.2517 over 27 runs), but post-copy visible-position MAE is exactly 0.0. The audit confirms the operational output preserves observed AWS values even though the decoder itself emits a full trajectory.
+- The original observed-consistency default audit for Round2 gated checkpoints could not be run because those older `best.pt` files are no longer retained on the remote server. The script now supports missing-checkpoint reporting; future long-running batches should retain checkpoints until all secondary audits are complete.
+- Reproducibility inventory now exists at `experiments/results/tables/reproducibility_inventory.csv`. It records station metadata, ERA5/preprocessing manifests, full window index, realized block-length diagnostics, calibration/real-gap analyses, result CSVs, configuration directories, and result JSON counts with file sizes and checksums where applicable.
+
 ## Metadata Check (2026-05-23)
 
 - Mount Sidley elevation in `data/station_meta_ecbit.csv` is 2123.0 m for the selected AWS installation (`station_id=mount_sidley`, POLENET, lat -77.13, lon -125.97). Manuscript wording should say "AWS installation elevation" or "station metadata elevation" to avoid confusion with the Mount Sidley summit elevation.

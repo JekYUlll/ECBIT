@@ -1,0 +1,9 @@
+[
+  {
+    "variant": "no_era5",
+    "pre_copy_mae": 0.1607947549518827,
+    "pre_copy_rmse": 0.2517341601541066,
+    "post_copy_mae": 0.0,
+    "runs": 27
+  }
+]

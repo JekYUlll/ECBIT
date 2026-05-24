@@ -69,5 +69,6 @@ All neural experiments use AdamW with learning rate $10^{-4}$, weight decay $10^
 For a deployed imputed series, observed input values are copied back after decoding:
 \begin{equation}
 X^{out}_{t,c} = (1-M_{t,c})X_{t,c} + M_{t,c}\hat{X}_{t,c}.
+\label{eq:copy-back}
 \end{equation}
 This post-processing rule is shared conceptually with the stateless baselines, which preserve observed inputs by construction. Reported MAE/RMSE on artificial labels are unaffected by this copy-back because $A_{t,c}=1$ implies $M_{t,c}=1$, but the rule is important for the task definition: imputation fills missing entries without modifying values that remain observed in the input context.

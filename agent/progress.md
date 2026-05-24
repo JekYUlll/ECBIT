@@ -258,6 +258,20 @@
 
 ### Peer Review Revision 05-23-1
 - Read `agent/05-23-1-peer-review.md` and applied the P0/P1/P2 manuscript revisions that do not require new training.
+
+## Session: 2026-05-24
+
+### Major Revision 05-24-2 Continuation
+- Committed the parent ECAFT submodule pointer for the ECBIT real-gap/raw-unit diagnostics commit.
+- Checked the fair ERA5-augmented baseline batch on the remote server. Status remained healthy at 3/54 completed results, with no Traceback, RuntimeError, CUDA OOM, Killed, or worker exception lines in the active logs.
+- Started an observed-position consistency audit on the remote server. The first default run failed because old Round2 gated checkpoints are no longer retained as `best.pt` files; the failure was logged and the audit script was patched to support missing-checkpoint reporting.
+- Re-ran observed-position consistency on retained `followup_mcar_noera5` ECBIT checkpoints on the remote CPU path so it did not compete with active GPU training. Result over 27 runs: pre-copy visible-position MAE 0.1608, pre-copy RMSE 0.2517, post-copy MAE 0.0. This verifies the final copy-back rule preserves visible AWS inputs exactly.
+- Added `paper/tables/tab_observed_consistency.tex` and inserted the observed-position consistency audit into the Results section.
+- Labeled the copy-back equation in `paper/sections/methodology.tex` and referenced it from the new table caption.
+- Added `scripts/make_reproducibility_inventory.py` and generated `experiments/results/tables/reproducibility_inventory.csv` with artifact paths, sizes, and checksums for station metadata, ERA5 manifests, window index, diagnostics, configs, metrics, and result tables.
+- Added a `Reproducibility Artifacts` subsection to `paper/sections/experimental_protocol.tex` documenting the station metadata, ERA5 manifest, preprocessing manifest, full window index, config directory, metrics directory, result summaries, and inventory script.
+- Validation after the observed-consistency/reproducibility changes: targeted local tests passed (`12 passed, 1 warning`), and `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeded with no overfull boxes, undefined references, or undefined citations in the final log scan.
+- Latest remote fair ERA5 baseline check advanced to 4/54 completed results with no active-log Traceback, RuntimeError, CUDA OOM, Killed, or worker exception lines.
 - Neutralized architecture wording in the Introduction from a specific gated-layer contribution to a lightweight ERA5 conditioning mechanism, and reordered contributions around block-missing curriculum, ERA5 causal value, and the completed factorial ablation.
 - Expanded Related Work with ExoST (`arXiv:2509.05779`) after verifying the arXiv metadata, and positioned ECBIT's fusion null result alongside constrained/selected exogenous-fusion literature.
 - Added ECBIT architecture and training details, clarified the $s_c$ gate notation, expanded the MCAR-vs-block physical explanation, clarified MCAR table comparability, and deepened held-out Mount Sidley/Zhongshan station interpretation.

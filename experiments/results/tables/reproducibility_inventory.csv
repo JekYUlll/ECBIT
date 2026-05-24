@@ -1,0 +1,28 @@
+artifact,path,exists,bytes,sha256_12,description
+station_metadata,data/station_meta_ecbit.csv,True,89595,43ec47b62202,"Selected station metadata, completeness, and held-out flag."
+preprocess_manifest,data/antaws_impute_manifest.csv,True,6498,38ffce3ca120,Per-station preprocessed window counts and file paths.
+era5_manifest,data/era5_3h_manifest.csv,True,2821,ed264ffebfef,Validation manifest for aligned station-level ERA5 files.
+window_index,experiments/results/analysis/benchmark_protocol/window_index.csv,True,3701340,7c2ae7c207d8,"Station, split, and timestamp index for every retained window."
+station_window_summary,experiments/results/analysis/benchmark_protocol/station_window_summary.csv,True,8164,2a9b8d9bcf96,Per-station train/validation/test window counts.
+block_length_diagnostics,experiments/results/analysis/benchmark_protocol/realized_block_length_summary.csv,True,3192,268769a2f4d5,"Requested, clipped, and label-segment block-length diagnostics."
+era5_direct_calibration,experiments/results/analysis/era5_direct_calibration/era5_direct_calibration_runs.csv,True,27265,ff75758913c6,"No-bias, mean-bias, and linear train-only ERA5-direct calibration runs."
+real_gap_plausibility,experiments/results/analysis/real_gap_plausibility/real_gap_plausibility_gaps.csv,True,362733,b73a9e8dccbf,Historical-gap boundary plausibility metrics.
+observed_consistency,experiments/results/analysis/observed_consistency_mcar_noera5/observed_consistency_summary.csv,True,107,ec47b23820d7,Visible-position pre-copy and post-copy consistency audit.
+round1_runs,experiments/results/tables/round1_core_runs.csv,True,47786,e3a1097130f5,Core baseline per-run test metrics.
+round2_gated_runs,experiments/results/tables/round2_gated_final_runs.csv,True,40888,cbdc7cda62b2,"ECBIT gated, concat, no-ERA5, and MCAR per-run test metrics."
+round3_heldout_runs,experiments/results/tables/round3_final_runs.csv,True,17581,009e3d0a056f,Held-out station per-run test metrics.
+curriculum_factorial,experiments/results/tables/curriculum_era5_factorial.csv,True,476,83319f84dbff,Block-vs-MCAR and ERA5-vs-no-ERA5 factorial summary.
+raw_unit_variables,experiments/results/tables/round2_raw_unit_variable_summary.csv,True,1204,7db8fced40c5,Variable-level physical-unit error summary.
+configs_fair_era5_baselines,experiments/configs/fair_era5_baselines,True,0,,54 YAML experiment configurations.
+configs_followup_blocklen,experiments/configs/followup_blocklen,True,0,,18 YAML experiment configurations.
+configs_followup_mcar_noera5,experiments/configs/followup_mcar_noera5,True,0,,27 YAML experiment configurations.
+configs_round1,experiments/configs/round1,True,0,,162 YAML experiment configurations.
+configs_round2,experiments/configs/round2,True,0,,108 YAML experiment configurations.
+configs_round2_gated,experiments/configs/round2_gated,True,0,,108 YAML experiment configurations.
+configs_round3,experiments/configs/round3,True,0,,45 YAML experiment configurations.
+metrics_followup_blocklen,experiments/results/metrics/followup_blocklen,True,0,,18 per-run result JSON files.
+metrics_followup_mcar_noera5,experiments/results/metrics/followup_mcar_noera5,True,0,,27 per-run result JSON files.
+metrics_round1,experiments/results/metrics/round1,True,0,,135 per-run result JSON files.
+metrics_round2,experiments/results/metrics/round2,True,0,,108 per-run result JSON files.
+metrics_round2_gated,experiments/results/metrics/round2_gated,True,0,,108 per-run result JSON files.
+metrics_round3,experiments/results/metrics/round3,True,0,,45 per-run result JSON files.
