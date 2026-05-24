@@ -375,3 +375,13 @@
 - Inserted `paper/tables/tab_real_gap_plausibility.tex` and a Results paragraph explaining that the real-gap audit checks boundary plausibility around natural gaps but does not claim supervised accuracy inside historically unobserved intervals.
 - Updated Limitations to distinguish the new real-gap boundary audit from the artificial-mask supervised MAE/RMSE metrics.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed; compiled PDF is 14 pages. Log scan shows only three non-blocking underfull vbox float warnings, with no undefined references, citation warnings, or overfull boxes.
+
+### Fair ERA5 Baseline Completion
+- Checked the remote fair ERA5 baseline batch and confirmed all 54 configurations completed successfully: SAITS+ERA5 and iTransformer+ERA5 over 3 block regimes, 3 missing rates, and 3 seeds.
+- Synced local fair-baseline result JSON files and regenerated aggregate tables: `fair_era5_baselines_runs.csv`, `fair_era5_baselines_summary.csv`, `fair_era5_comparison_summary.csv`, and `fair_era5_paired_tests.csv`.
+- Added `scripts/make_fair_baseline_table.py`, which generates the fair baseline summary table and the paired-test table with 95% CIs, paired effect sizes, and Holm correction.
+- Updated `fig_main_results` to include SAITS+ERA5 and iTransformer+ERA5 alongside core baselines and ECBIT variants.
+- Revised the manuscript narrative in the abstract, Introduction, Experimental Protocol, Results, Discussion, and Conclusion. The new conclusion is conservative: ERA5 and block-missing training explain the main gain; SAITS+ERA5, iTransformer+ERA5, concat ECBIT, and gated ECBIT do not support a unique ECBIT architecture-dominance claim.
+- Added the fair-baseline artifacts to the reproducibility inventory.
+- Error note: one inventory command was accidentally run from `paper/` and failed with `can't open file .../paper/scripts/make_reproducibility_inventory.py`; reran the same script from the repository root successfully.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 15-page PDF. Final log scan found no undefined references, citation warnings, fatal errors, or overfull boxes; remaining underfull warnings are non-blocking. Visual checks of pages 7--9 confirmed the updated main figure and fair-baseline tables render legibly.

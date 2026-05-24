@@ -399,3 +399,17 @@ Important correction: an initial selection with only mean core completeness reta
 - ERA5 direct calibration ablation over the 27 Round 1 block configurations: no correction MAE 0.3874/RMSE 0.5687; train-only mean-bias correction MAE 0.3811/RMSE 0.5477; train-only linear calibration MAE 0.3782/RMSE 0.5375. The calibration choice has a small effect relative to the gap between ERA5 direct and ERA5-conditioned block training.
 - Raw-unit conversion for gated ERA5 over 27 block configurations: temperature MAE 2.14 deg C, RH MAE 8.85 percentage points, wind speed MAE 2.25 m/s, pressure MAE 4.91 hPa, and specific humidity MAE 0.15 g/kg. No-ERA5 raw errors are larger for all variables, especially temperature, wind speed, and pressure.
 - Historical real-gap plausibility audit over retained test windows with natural gaps of at least 72 hours and observed values on both sides found 1881 qualifying gaps across all selected stations. Wind-speed gaps dominate (1423 gaps) and have the largest boundary jumps (mean 6.73 m/s), while pressure and temperature boundary jumps are smaller (mean 1.48 hPa and 2.43 deg C). This supports the limitation wording: real-gap diagnostics can check boundary plausibility but cannot provide supervised accuracy inside historical gaps.
+
+## Fair ERA5-Augmented Baselines (2026-05-25)
+
+- The fair ERA5 baseline matrix is complete: 54/54 result JSON files for SAITS+ERA5 and iTransformer+ERA5 across 3 block regimes x 3 missing rates x 3 seeds, with no worker failures in final logs.
+- Overall normalized MAE:
+  - SAITS+ERA5: 0.2449 +/- 0.0621.
+  - iTransformer+ERA5: 0.2581 +/- 0.0056.
+  - ECBIT gated: 0.2577 +/- 0.0074.
+  - ECBIT concat: 0.2580 +/- 0.0062.
+  - SAITS without ERA5: 0.3342 +/- 0.0930.
+  - iTransformer without ERA5: 0.3599 +/- 0.0401.
+- Adding ERA5 strongly improves both independent baselines: SAITS+ERA5 vs SAITS mean paired difference -0.0893 MAE, 95% CI [-0.1060, -0.0725], Holm p < 1e-4; iTransformer+ERA5 vs iTransformer mean paired difference -0.1018 MAE, 95% CI [-0.1160, -0.0876], Holm p < 1e-4.
+- The architecture dominance claim is not supported. SAITS+ERA5 has the lowest aggregate mean, but its paired advantage over gated ECBIT is not significant after Holm correction (mean diff -0.0128, 95% CI [-0.0358, 0.0102], Holm p = 1.000). iTransformer+ERA5, concat ECBIT, and gated ECBIT are effectively tied near 0.258 MAE.
+- Pattern-level behavior: SAITS+ERA5 is strong on short and medium/easier settings but has much larger cross-configuration variance and degrades at long/high-rate settings. The safest paper claim is now: aligned ERA5 covariates plus block-missing training are the decisive ingredients; gated ECBIT is a reproducible conditioning framework, not a uniquely superior architecture.

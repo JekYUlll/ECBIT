@@ -9,6 +9,9 @@ era5_direct_calibration,experiments/results/analysis/era5_direct_calibration/era
 real_gap_plausibility,experiments/results/analysis/real_gap_plausibility/real_gap_plausibility_gaps.csv,True,362733,b73a9e8dccbf,Historical-gap boundary plausibility metrics.
 observed_consistency,experiments/results/analysis/observed_consistency_mcar_noera5/observed_consistency_summary.csv,True,107,ec47b23820d7,Visible-position pre-copy and post-copy consistency audit.
 round1_runs,experiments/results/tables/round1_core_runs.csv,True,47786,e3a1097130f5,Core baseline per-run test metrics.
+fair_era5_runs,experiments/results/tables/fair_era5_baselines_runs.csv,True,21459,83e3765e5293,SAITS+ERA5 and iTransformer+ERA5 per-run test metrics.
+fair_era5_comparison,experiments/results/tables/fair_era5_comparison_summary.csv,True,992,5559c41a83c4,Fair ERA5-augmented baseline summary table.
+fair_era5_tests,experiments/results/tables/fair_era5_paired_tests.csv,True,1057,87be4d8044e0,Paired tests for fair ERA5-augmented baselines.
 round2_gated_runs,experiments/results/tables/round2_gated_final_runs.csv,True,40888,cbdc7cda62b2,"ECBIT gated, concat, no-ERA5, and MCAR per-run test metrics."
 round3_heldout_runs,experiments/results/tables/round3_final_runs.csv,True,17581,009e3d0a056f,Held-out station per-run test metrics.
 curriculum_factorial,experiments/results/tables/curriculum_era5_factorial.csv,True,476,83319f84dbff,Block-vs-MCAR and ERA5-vs-no-ERA5 factorial summary.
@@ -22,6 +25,7 @@ configs_round1,experiments/configs/round1,True,0,,162 YAML experiment configurat
 configs_round2,experiments/configs/round2,True,0,,108 YAML experiment configurations.
 configs_round2_gated,experiments/configs/round2_gated,True,0,,108 YAML experiment configurations.
 configs_round3,experiments/configs/round3,True,0,,45 YAML experiment configurations.
+metrics_fair_era5_baselines,experiments/results/metrics/fair_era5_baselines,True,0,,54 per-run result JSON files.
 metrics_followup_blocklen,experiments/results/metrics/followup_blocklen,True,0,,18 per-run result JSON files.
 metrics_followup_mcar_noera5,experiments/results/metrics/followup_mcar_noera5,True,0,,27 per-run result JSON files.
 metrics_round1,experiments/results/metrics/round1,True,0,,135 per-run result JSON files.

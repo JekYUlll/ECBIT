@@ -1,0 +1,81 @@
+{
+  "best": {
+    "mae_T": 0.16691595315933228,
+    "rmse_T": 0.21887487173080444,
+    "mae_RH": 0.47104546427726746,
+    "rmse_RH": 0.6090807318687439,
+    "mae_wspd": 0.41312554478645325,
+    "rmse_wspd": 0.6472504734992981,
+    "mae_P": 0.07495022565126419,
+    "rmse_P": 0.09939272701740265,
+    "mae_q": 0.21652467548847198,
+    "rmse_q": 0.31252607703208923,
+    "mae_mean": 0.2685123682022095,
+    "rmse_mean": 0.3774249851703644,
+    "train_loss": 0.1731037738276463,
+    "epoch": 30
+  },
+  "test": {
+    "mae_T": 0.16875869035720825,
+    "rmse_T": 0.22686846554279327,
+    "mae_RH": 0.46290114521980286,
+    "rmse_RH": 0.6046887040138245,
+    "mae_wspd": 0.42952603101730347,
+    "rmse_wspd": 0.6857454776763916,
+    "mae_P": 0.07496673613786697,
+    "rmse_P": 0.10126771777868271,
+    "mae_q": 0.22438551485538483,
+    "rmse_q": 0.32460227608680725,
+    "mae_mean": 0.27210763096809387,
+    "rmse_mean": 0.38863450288772583
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/fair_era5_baselines/itransformer_era5_long_r20_s43",
+    "runner": "train",
+    "model": {
+      "name": "itransformer_era5",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1
+    },
+    "missing": {
+      "pattern": "long",
+      "rate": 0.2,
+      "min_block": 72,
+      "max_block": 240,
+      "variable_wise": true
+    },
+    "run_name": "itransformer_era5_long_r20_s43"
+  }
+}

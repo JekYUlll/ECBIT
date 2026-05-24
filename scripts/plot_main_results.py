@@ -11,13 +11,15 @@ import pandas as pd
 
 
 ROUND1_RUNS = Path("experiments/results/tables/round1_core_runs.csv")
+FAIR_RUNS = Path("experiments/results/tables/fair_era5_baselines_runs.csv")
 ROUND2_RUNS = Path("experiments/results/tables/round2_gated_final_runs.csv")
 OUT_PDF = Path("paper/figures/fig_main_results.pdf")
 OUT_PNG = Path("paper/figures/fig_main_results.png")
 
 
-def collect_rows(round1_runs: Path, round2_runs: Path) -> pd.DataFrame:
+def collect_rows(round1_runs: Path, fair_runs: Path, round2_runs: Path) -> pd.DataFrame:
     r1 = pd.read_csv(round1_runs)
+    fair = pd.read_csv(fair_runs)
     r2 = pd.read_csv(round2_runs)
     rows = []
     for model, label in [
@@ -38,12 +40,30 @@ def collect_rows(round1_runs: Path, round2_runs: Path) -> pd.DataFrame:
     ]:
         vals = block.loc[block["variant"].eq(variant), "mae_mean"]
         rows.append({"label": label, "mean": vals.mean(), "std": vals.std(), "count": len(vals), "group": "ECBIT"})
+
+    for model, label in [
+        ("saits_era5_concat", "SAITS+ERA5"),
+        ("itransformer_era5", "iTrans.+ERA5"),
+    ]:
+        vals = fair.loc[fair["model"].eq(model), "mae_mean"]
+        rows.append({"label": label, "mean": vals.mean(), "std": vals.std(), "count": len(vals), "group": "Fair ERA5"})
     return pd.DataFrame(rows)
 
 
-def plot(round1_runs: Path, round2_runs: Path, out_pdf: Path, out_png: Path) -> None:
-    data = collect_rows(round1_runs, round2_runs)
-    colors = ["#9ECAE1", "#FDD0A2", "#A1D99B", "#C7B9E8", "#FC9272", "#BCBDDC", "#BDBDBD", "#3182BD"]
+def plot(round1_runs: Path, fair_runs: Path, round2_runs: Path, out_pdf: Path, out_png: Path) -> None:
+    data = collect_rows(round1_runs, fair_runs, round2_runs)
+    colors = [
+        "#9ECAE1",
+        "#FDD0A2",
+        "#A1D99B",
+        "#C7B9E8",
+        "#FC9272",
+        "#BCBDDC",
+        "#BDBDBD",
+        "#3182BD",
+        "#7FC97F",
+        "#BEAED4",
+    ]
 
     plt.rcParams.update(
         {
@@ -53,15 +73,17 @@ def plot(round1_runs: Path, round2_runs: Path, out_pdf: Path, out_png: Path) -> 
             "axes.titleweight": "bold",
         }
     )
-    fig, ax = plt.subplots(figsize=(7.35, 2.65), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(7.35, 3.0), constrained_layout=True)
     x = range(len(data))
     ax.bar(x, data["mean"], yerr=data["std"], capsize=2.5, color=colors, edgecolor="#333333", linewidth=0.4)
     for idx, row in data.iterrows():
         ax.text(idx, row["mean"] + row["std"] + 0.01, f"{row['mean']:.3f}", ha="center", va="bottom", fontsize=7)
 
     ax.axvline(4.5, color="#666666", linestyle="--", linewidth=0.8, alpha=0.8)
-    ax.text(2.0, 0.535, "Core baselines", ha="center", va="center", fontsize=8, color="#444444")
+    ax.axvline(7.5, color="#666666", linestyle="--", linewidth=0.8, alpha=0.8)
+    ax.text(2.0, 0.535, "No-ERA5 baselines", ha="center", va="center", fontsize=8, color="#444444")
     ax.text(6.0, 0.535, "ECBIT variants", ha="center", va="center", fontsize=8, color="#444444")
+    ax.text(8.5, 0.535, "Fair ERA5", ha="center", va="center", fontsize=8, color="#444444")
     ax.set_xticks(list(x), data["label"], rotation=22, ha="right")
     ax.set_ylabel("Mean test MAE")
     ax.set_ylim(0.22, 0.56)
@@ -78,11 +100,12 @@ def plot(round1_runs: Path, round2_runs: Path, out_pdf: Path, out_png: Path) -> 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--round1-runs", type=Path, default=ROUND1_RUNS)
+    parser.add_argument("--fair-runs", type=Path, default=FAIR_RUNS)
     parser.add_argument("--round2-runs", type=Path, default=ROUND2_RUNS)
     parser.add_argument("--out-pdf", type=Path, default=OUT_PDF)
     parser.add_argument("--out-png", type=Path, default=OUT_PNG)
     args = parser.parse_args()
-    plot(args.round1_runs, args.round2_runs, args.out_pdf, args.out_png)
+    plot(args.round1_runs, args.fair_runs, args.round2_runs, args.out_pdf, args.out_png)
 
 
 if __name__ == "__main__":
