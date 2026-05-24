@@ -25,6 +25,10 @@ Because ERA5 direct substitution is an important physical-reference baseline, Ta
 
 Figure~\ref{fig:imputation-case} illustrates why long contiguous outages require external context. When observations are absent for multiple days, local interpolation becomes a low-frequency bridge between endpoints, while ERA5 retains synoptic-scale temperature evolution within the missing interval. The figure is a qualitative diagnostic; the model comparisons below use aggregate test metrics over all stations, missing rates, seeds, and block regimes.
 
+We also audit naturally occurring historical gaps, where no AWS labels exist inside the gap and supervised MAE cannot be computed. Table~\ref{tab:real-gap-plausibility} reports a plausibility check over test windows containing real gaps of at least 72 h with observed AWS values on both sides. The diagnostic does not claim ground-truth accuracy inside the historical gaps. Instead, it measures whether a train-only calibrated ERA5 trajectory connects to the available station boundaries at a plausible scale. Pressure and temperature have comparatively small boundary discrepancies, whereas wind speed and relative humidity show larger jumps, consistent with the failure-mode discussion that local wind and humidity are harder for point-sampled ERA5 to represent.
+
+\input{tables/tab_real_gap_plausibility}
+
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_round1_baselines.pdf}
@@ -57,6 +61,10 @@ The same ablation also prevents an over-interpretation of the architecture. Gate
 \input{tables/tab_stat_tests}
 
 The per-variable ablation reinforces this conclusion. With ERA5, temperature, wind speed, pressure, and specific humidity MAE are approximately 0.159, 0.424, 0.055, and 0.215. Removing ERA5 increases these values to 0.254, 0.576, 0.097, and 0.292. Relative humidity also improves, though less dramatically, from 0.510 without ERA5 to 0.436 with ERA5. The largest absolute improvements occur in physically coherent background variables: temperature, wind, and moisture. This pattern is more important than the small numerical difference between gated and concat fusion.
+
+Table~\ref{tab:raw-unit-errors} reports the same gated ERA5 result in physical units. The normalized aggregate corresponds to mean absolute errors of 2.14 deg C for temperature, 2.25 m s$^{-1}$ for wind speed, 4.91 hPa for pressure, 8.85 percentage points for relative humidity, and 0.15 g kg$^{-1}$ for specific humidity. These values are intended as scale interpretation rather than a replacement for normalized comparisons, because the benchmark optimizes a multi-variable objective.
+
+\input{tables/tab_raw_unit_errors}
 
 The MCAR row in Table~\ref{tab:round2-ablations} is included only as a distributional reference. Its MAE is not directly comparable to the block-missing rows because the model is trained and evaluated under a point-wise MCAR mask distribution, whereas the block variants are evaluated under contiguous outage blocks.
 

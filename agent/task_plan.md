@@ -70,9 +70,9 @@ Active Follow-up: 05-24-2 major-review revision is active. The highest-priority 
 - [x] Generate and submit SAITS+ERA5 and iTransformer+ERA5 fair-baseline configs on remote GPUs
 - [ ] Monitor fair ERA5 baseline batch, sync results, aggregate tables, and update manuscript
 - [ ] Add paired statistics with effect size, 95% CI, and Holm correction for expanded comparisons
-- [ ] Add real-gap plausibility diagnostics and case figures for historical gaps without treating them as supervised labels
+- [x] Add real-gap plausibility diagnostics and case figures for historical gaps without treating them as supervised labels
 - [ ] Add non-overlap or strict chronological split sensitivity if feasible under remote budget
-- [ ] Add station x variable and raw-unit error tables
+- [x] Add station x variable and raw-unit error tables
 - [ ] Update reproducibility artifacts: station metadata, split/window index, configs, raw result inventory, environment notes
 - [ ] Compile, visually check figures/tables, and commit each completed atomic task
 

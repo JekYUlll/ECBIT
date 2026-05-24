@@ -340,3 +340,10 @@
 - Synced fair-baseline code/configs to the remote server. Remote smoke tests passed for one-epoch `itransformer_era5` training and one-epoch `saits_era5_concat` evaluation.
 - Launched 54 fair ERA5 baseline configs on remote GPUs 0/2/3/4/5 in tmux sessions `ecbit_fair_era5_w0` through `ecbit_fair_era5_w4`; GPU1 was already busy and was not used. Initial health check: 0/54 complete, all workers entered their first `itransformer_era5` configs, no immediate Traceback/RuntimeError/OOM/Killed/WORKER_EXCEPTION lines.
 - Added `scripts/evaluate_observed_consistency.py` for the observed-position consistency audit. The script computes decoder deviation on visible observed positions before copy-back and verifies post-copy MAE on those positions. Help/syntax check passed locally; remote execution is pending until fair-baseline GPUs free up.
+
+### Major Revision Local Analyses
+- Added `scripts/make_raw_unit_tables.py`, generated `round2_raw_unit_variable_summary.csv` and `round3_raw_unit_station_variable_summary.csv`, and inserted `paper/tables/tab_raw_unit_errors.tex` into Results.
+- Added `scripts/analyze_real_gap_plausibility.py`, generated `real_gap_plausibility_gaps.csv`, `real_gap_plausibility_summary.csv`, and real-gap case PNGs under `paper/figures/real_gap_cases`.
+- Inserted `paper/tables/tab_real_gap_plausibility.tex` and a Results paragraph explaining that the real-gap audit checks boundary plausibility around natural gaps but does not claim supervised accuracy inside historically unobserved intervals.
+- Updated Limitations to distinguish the new real-gap boundary audit from the artificial-mask supervised MAE/RMSE metrics.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed; compiled PDF is 14 pages. Log scan shows only three non-blocking underfull vbox float warnings, with no undefined references, citation warnings, or overfull boxes.
