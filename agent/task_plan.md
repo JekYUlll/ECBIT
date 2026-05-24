@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 5 — Journal Manuscript Refinement / Format Checks
+Current Phase: Phase 6 — Major Revision Experiments and Reproducibility Package
 Last Updated: 2026-05-24
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: 05-23-3 peer-review revision is complete; SAITS block-missing third-party baseline finished 27/27 and has been integrated into tables/figures.
+Active Follow-up: 05-24-2 major-review revision is active. The highest-priority gaps are ERA5-augmented fair baselines, real-gap plausibility, mask/split transparency, ERA5-direct calibration disclosure, observed-position consistency, and a stronger reproducibility package.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -58,6 +58,23 @@ Active Follow-up: 05-23-3 peer-review revision is complete; SAITS block-missing 
 - [x] Journal-style experimental protocol section
 - [x] Journal-style discussion and limitations section
 - [ ] Format and submission checks
+
+## Phase 6 · Major Revision 05-24-2
+- [x] Plan and triage major-review tasks into local analysis, remote GPU experiments, and manuscript-only edits
+- [x] Replace strong causal/fusion novelty wording with controlled predictive-value and benchmark/curriculum framing
+- [x] Add mask-generator pseudocode and realized block-length diagnostics for short/medium/long regimes
+- [x] Disclose window generation details: stride, chronological split fractions, minimum observation thresholds, and per-station window counts
+- [x] Clarify specific humidity derivation, missingness propagation, and normalization
+- [ ] Clarify final inference rule for preserving observed AWS values; add observed-position consistency audit
+- [x] Expand ERA5 direct bias-correction definition and add no-bias / mean-bias / linear-calibration ablation if feasible
+- [x] Generate and submit SAITS+ERA5 and iTransformer+ERA5 fair-baseline configs on remote GPUs
+- [ ] Monitor fair ERA5 baseline batch, sync results, aggregate tables, and update manuscript
+- [ ] Add paired statistics with effect size, 95% CI, and Holm correction for expanded comparisons
+- [ ] Add real-gap plausibility diagnostics and case figures for historical gaps without treating them as supervised labels
+- [ ] Add non-overlap or strict chronological split sensitivity if feasible under remote budget
+- [ ] Add station x variable and raw-unit error tables
+- [ ] Update reproducibility artifacts: station metadata, split/window index, configs, raw result inventory, environment notes
+- [ ] Compile, visually check figures/tables, and commit each completed atomic task
 
 ## Blocked Issues
 | Issue | Status | Action |

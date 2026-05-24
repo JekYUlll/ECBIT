@@ -326,3 +326,16 @@
 - Moved the Figure 7 block-length legend to a figure-level legend above the panels and adjusted the top margin so it no longer collides with the subplot title.
 - Regenerated `fig_round1_baselines`, `fig_round2_ablations`, and `fig_followup_analyses` as PDF/PNG outputs.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed; compiled PDF is 13 pages. Log scan shows only two non-blocking underfull vbox float warnings and no undefined references, citation warnings, or overfull boxes.
+
+### Major Revision 05-24-2 Kickoff
+- Created an explicit goal for the new major-review revision and updated `agent/task_plan.md` to Phase 6.
+- Read `agent/05-24-2-peer-review.md` and triaged the high-priority work into immediate local manuscript/protocol fixes and remote-GPU experiment needs.
+- Added `scripts/analyze_benchmark_protocol.py` and generated benchmark transparency artifacts under `experiments/results/analysis/benchmark_protocol`: `window_index.csv`, `station_window_summary.csv`, and `realized_block_length_summary.csv`.
+- The protocol audit records sampled, clipped, and final supervised-label block lengths. It confirms that long blocks are sampled up to 240 steps before clipping, but a 168-step window bounds the within-window interval and original AWS gaps can split the final label segment.
+- Started `scripts/evaluate_era5_direct_calibration.py` to compare ERA5 direct no-correction, train-only mean-bias, and train-only linear calibration on the 27 Round 1 masks.
+- Completed ERA5 direct calibration ablation and added `paper/tables/tab_era5_direct_calibration.tex`. Results: no correction MAE 0.387, mean bias 0.381, linear calibration 0.378.
+- Added `ITransformerERA5Imputer`, SAITS+ERA5 concat evaluation support, and generated 54 fair ERA5 baseline configs under `experiments/configs/fair_era5_baselines`.
+- Revised the manuscript to remove the over-strong "causal value" wording, clarify specific humidity derivation, disclose window stride/split/retention thresholds, state the block clipping behavior, define observed-value copy-back, define ERA5 direct mean-bias correction, and remove stale cross-attention wording.
+- Local verification passed: `python -m pytest -q src/tests/test_training_framework.py src/tests/test_pypots_wrappers.py src/tests/test_era5_direct.py` -> 12 passed, 1 warning; `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed with a 13-page PDF and no warning matches in the log scan.
+- Synced fair-baseline code/configs to the remote server. Remote smoke tests passed for one-epoch `itransformer_era5` training and one-epoch `saits_era5_concat` evaluation.
+- Launched 54 fair ERA5 baseline configs on remote GPUs 0/2/3/4/5 in tmux sessions `ecbit_fair_era5_w0` through `ecbit_fair_era5_w4`; GPU1 was already busy and was not used. Initial health check: 0/54 complete, all workers entered their first `itransformer_era5` configs, no immediate Traceback/RuntimeError/OOM/Killed/WORKER_EXCEPTION lines.

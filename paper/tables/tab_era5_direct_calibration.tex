@@ -1,0 +1,14 @@
+\begin{table}[t]
+  \centering
+  \caption{ERA5 direct calibration ablation. All calibration parameters are estimated from training windows only and evaluated on the same 27 block-missing Round 1 configurations.}
+  \label{tab:era5-direct-calibration}
+  \begin{tabular}{lcc}
+    \toprule
+    Calibration & MAE & RMSE \\
+    \midrule
+    None & 0.387 $\pm$ 0.001 & 0.569 $\pm$ 0.001 \\
+    Mean bias & 0.381 $\pm$ 0.001 & 0.548 $\pm$ 0.001 \\
+    Linear & \textbf{0.378} $\pm$ 0.001 & \textbf{0.538} $\pm$ 0.001 \\
+    \bottomrule
+  \end{tabular}
+\end{table}

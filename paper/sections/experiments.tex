@@ -12,6 +12,10 @@ Figure~\ref{fig:main-results} summarizes the main comparison across completed ba
 
 The pattern-level behavior in Fig.~\ref{fig:round1-baselines} is more informative than the aggregate ranking alone. Linear interpolation has mean MAE 0.303 on short blocks but deteriorates to 0.483 on long blocks, because its only information source is the boundary behavior around the gap. ERA5 direct substitution is nearly flat across gap regimes, with MAE about 0.38 for short, medium, and long blocks. This is worse than interpolation on short gaps but better than interpolation on long gaps, which is exactly the regime where a physically coherent background field should help. SAITS is the strongest non-ERA5 baseline by MAE, with overall MAE 0.334, but it still rises from 0.252 on short blocks to 0.410 on long blocks. iTransformer achieves the lowest mean baseline RMSE, although the difference from SAITS is within one standard deviation. Both learned baselines indicate that temporal structure helps but does not close the gap to ERA5-conditioned block imputation.
 
+Because ERA5 direct substitution is an important physical-reference baseline, Table~\ref{tab:era5-direct-calibration} audits its calibration. The reported main baseline uses train-only mean-bias correction. Removing calibration degrades MAE from 0.381 to 0.387, while a train-only per-variable linear calibration improves it slightly to 0.378. The ranking is therefore not sensitive to this implementation choice: even the strongest calibrated ERA5 direct variant remains well above ERA5-conditioned block training.
+
+\input{tables/tab_era5_direct_calibration}
+
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_imputation_case.pdf}

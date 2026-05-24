@@ -93,12 +93,15 @@ def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
     name = config["model"]["name"]
     era5_imputer = ERA5DirectImputer() if name == "era5_direct" else None
     pypots_imputer = None
-    if name in {"saits", "brits"}:
+    if name in {"saits", "brits", "saits_era5_concat"}:
         model_cls = SAITSImputer if name == "saits" else BRITSImputer
+        if name == "saits_era5_concat":
+            model_cls = SAITSImputer
         model_cfg = config.get("model", {})
+        n_features = int(model_cfg.get("n_features", model_cfg.get("n_vars", 5)))
         pypots_imputer = model_cls(
             n_steps=int(model_cfg.get("seq_len", 168)),
-            n_features=int(model_cfg.get("n_vars", 5)),
+            n_features=n_features,
             **model_cfg.get("model_kwargs", {}),
         )
     if era5_imputer is not None or pypots_imputer is not None:
@@ -113,7 +116,13 @@ def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
         if era5_imputer is not None:
             era5_imputer.fit(train_x, torch.cat(es), train_mask)
         if pypots_imputer is not None:
-            pypots_imputer.fit(train_x.numpy(), train_mask.numpy())
+            if name == "saits_era5_concat":
+                train_era5 = torch.cat(es)
+                train_x_aug = torch.cat([train_x, train_era5], dim=-1)
+                train_mask_aug = torch.cat([train_mask.float(), torch.ones_like(train_mask, dtype=torch.float32)], dim=-1)
+                pypots_imputer.fit(train_x_aug.numpy(), train_mask_aug.numpy())
+            else:
+                pypots_imputer.fit(train_x.numpy(), train_mask.numpy())
 
     preds, targets, masks = [], [], []
     with torch.no_grad():
@@ -130,9 +139,14 @@ def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
             elif name == "era5_direct":
                 assert era5_imputer is not None
                 pred = era5_imputer.impute(x_obs, batch["era5"], model_obs)
-            elif name in {"saits", "brits"}:
+            elif name in {"saits", "brits", "saits_era5_concat"}:
                 assert pypots_imputer is not None
-                pred = torch.from_numpy(pypots_imputer.impute(x_obs.numpy(), model_obs.numpy()))
+                if name == "saits_era5_concat":
+                    x_aug = torch.cat([x_obs, batch["era5"]], dim=-1)
+                    obs_aug = torch.cat([model_obs, torch.ones_like(model_obs)], dim=-1)
+                    pred = torch.from_numpy(pypots_imputer.impute(x_aug.numpy(), obs_aug.numpy()))[:, :, : x.shape[-1]]
+                else:
+                    pred = torch.from_numpy(pypots_imputer.impute(x_obs.numpy(), model_obs.numpy()))
             else:
                 raise ValueError(f"Unsupported stateless baseline: {name}")
             preds.append(pred.cpu())
@@ -143,7 +157,7 @@ def evaluate_stateless(config: dict[str, Any], split: str) -> dict[str, float]:
 
 def evaluate(config: dict[str, Any], split: str, checkpoint: Path | None = None) -> dict[str, float]:
     name = config["model"]["name"]
-    if name in {"linear_interp", "locf", "era5_direct", "saits", "brits"}:
+    if name in {"linear_interp", "locf", "era5_direct", "saits", "brits", "saits_era5_concat"}:
         return evaluate_stateless(config, split)
     if checkpoint is None:
         checkpoint = Path(config.get("checkpoint", "experiments/results/metrics/best.pt"))

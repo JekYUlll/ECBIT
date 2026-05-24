@@ -18,6 +18,8 @@ Real AntAWS missingness is block-structured. We therefore sample contiguous outa
 
 For a given window, missing-rate target, and block-length regime, the simulator repeatedly samples a variable and a contiguous interval until the target number of artificially hidden observed positions is reached or no additional valid positions are available. Candidate labels are intersected with $O$ so that artificial labels never include truly missing raw observations. This procedure creates a controlled block-missing test set while preserving the original sparse context of each station window.
 
+The implementation is deterministic given a seed and follows this procedure. First, compute the target label count as $\mathrm{round}(r\sum_{t,c}O_{t,c})$ for missing rate $r$. Second, while the accumulated artificial labels are below this target, sample a start time $u\sim\mathrm{Uniform}\{0,\ldots,T-1\}$, a requested block length $\ell\sim\mathrm{Uniform}\{\ell_{\min},\ldots,\ell_{\max}\}$, and a variable $c\sim\mathrm{Uniform}\{1,\ldots,C\}$. Third, clip the interval to the current window, $[u,\min(u+\ell,T))$, and add labels only where $O_{t,c}=1$. Thus the long-regime upper bound of 240 steps is a sampled outage horizon before within-window clipping; in a 168-step window, the clipped interval cannot exceed 168 steps, and pre-existing AWS gaps can further split the final supervised label mask into shorter observed segments. We report both the sampled and clipped length diagnostics in the reproducibility artifacts.
+
 The curriculum used in the main experiments is not a temporal schedule over epochs; instead, each training configuration fixes a target block regime and missing rate, and the mask generator samples fresh block positions online for each batch. The model therefore sees many outage realizations under the same failure-mode distribution. Follow-up experiments vary the outage horizon directly, using 24 h, 72 h, and 216 h block settings to test whether ERA5 gains increase as the station-only context weakens.
 
 \subsection{ECBIT Architecture}
@@ -50,7 +52,7 @@ Here $s_c$ denotes the slice of $s$ corresponding to variable $c$. A missing-var
 \begin{equation}
 Z_c = \mathrm{LayerNorm}(Z^{aws}_c + g_c\, s_c \odot \Delta^{era5}_c).
 \end{equation}
-The reconstruction head maps each variable token back to a length-$T$ sequence. If a variable has no missing positions, its output is independent of ERA5 after fusion. This is a deliberate bias-control mechanism: ERA5 is allowed to help where AWS evidence is absent, but observed variables are not forced to absorb reanalysis bias. Cross-attention and concat/no-cross fusion are retained as ablations to test whether a more complex fusion mechanism is actually necessary.
+The reconstruction head maps each variable token back to a length-$T$ sequence. If a variable has no missing positions, its output is independent of ERA5 after fusion. This is a deliberate bias-control mechanism: ERA5 is allowed to help where AWS evidence is absent, but observed variables are not forced to absorb reanalysis bias. A concat/no-cross fusion variant is retained as an ablation to test whether this gated injection mechanism is actually necessary.
 
 \subsection{Training and Evaluation Procedure}
 The full training loop is summarized as follows.
@@ -63,3 +65,9 @@ The full training loop is summarized as follows.
   \item Optimize mean squared error on $A$ only; select checkpoints by validation loss and report test MAE/RMSE on the same artificial-label support.
 \end{enumerate}
 All neural experiments use AdamW with learning rate $10^{-4}$, weight decay $10^{-4}$, batch size 32, and early stopping with patience 10. The evaluation code uses the same mask generator settings as the corresponding test configuration, making the reported differences attributable to model variant, ERA5 conditioning, and training-mask distribution rather than to changes in metric support.
+
+For a deployed imputed series, observed input values are copied back after decoding:
+\begin{equation}
+X^{out}_{t,c} = (1-M_{t,c})X_{t,c} + M_{t,c}\hat{X}_{t,c}.
+\end{equation}
+This post-processing rule is shared conceptually with the stateless baselines, which preserve observed inputs by construction. Reported MAE/RMSE on artificial labels are unaffected by this copy-back because $A_{t,c}=1$ implies $M_{t,c}=1$, but the rule is important for the task definition: imputation fills missing entries without modifying values that remain observed in the input context.

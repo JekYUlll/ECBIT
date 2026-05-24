@@ -14,15 +14,17 @@ ROOT = Path.home() / "ecbit"
 METRICS = ROOT / "experiments/results/metrics"
 LOGS = ROOT / "experiments/logs"
 
-STATELESS_MODELS = {"linear_interp", "locf", "era5_direct", "saits", "brits"}
-NEURAL_MODELS = {"itransformer", "ecbit"}
+STATELESS_MODELS = {"linear_interp", "locf", "era5_direct", "saits", "brits", "saits_era5_concat"}
+NEURAL_MODELS = {"itransformer", "itransformer_era5", "ecbit"}
 MODEL_PRIORITY = {
     "linear_interp": 0,
     "locf": 1,
     "era5_direct": 2,
     "itransformer": 3,
+    "itransformer_era5": 4,
     "ecbit": 4,
     "saits": 8,
+    "saits_era5_concat": 8,
     "brits": 9,
 }
 

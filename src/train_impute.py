@@ -17,7 +17,7 @@ from torch.utils.data import DataLoader
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.baselines.itransformer_impute import ITransformerImputer, masked_mse_loss
+from src.baselines.itransformer_impute import ITransformerERA5Imputer, ITransformerImputer, masked_mse_loss
 from src.data.impute_dataset import ImputationWindowDataset
 from src.metrics import masked_mae_rmse
 from src.models.ecbit import ECBIT
@@ -52,7 +52,7 @@ def build_model(config: dict[str, Any]) -> torch.nn.Module:
     name = str(model_cfg["name"])
 
     # Stateless / non-trainable baselines — must be evaluated, not trained
-    STATELESS = {"linear_interp", "locf", "era5_direct", "saits", "brits"}
+    STATELESS = {"linear_interp", "locf", "era5_direct", "saits", "brits", "saits_era5_concat"}
     if name in STATELESS:
         raise RuntimeError(
             f"Model '{name}' is a stateless/non-trainable baseline. "
@@ -68,6 +68,8 @@ def build_model(config: dict[str, Any]) -> torch.nn.Module:
         )
     if name == "itransformer":
         return ITransformerImputer(**common)
+    if name == "itransformer_era5":
+        return ITransformerERA5Imputer(**common)
     raise ValueError(f"Unsupported neural model: {name}")
 
 
@@ -108,6 +110,8 @@ def forward_model(model: torch.nn.Module, batch: dict[str, Any], missing_cfg: di
     model_missing = torch.clamp((1.0 - obs_mask) + artificial, 0.0, 1.0)
     x_obs = apply_mask(x, model_missing)
     if isinstance(model, ECBIT):
+        pred = model(x_obs, model_missing, era5, time_enc)
+    elif isinstance(model, ITransformerERA5Imputer):
         pred = model(x_obs, model_missing, era5, time_enc)
     else:
         pred = model(x_obs, model_missing, time_enc)
