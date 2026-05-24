@@ -56,7 +56,7 @@ The effect is stable across missing rates. For the gated model, mean MAE remains
 
 \input{tables/tab_round2_ablations}
 
-The same ablation also prevents an over-interpretation of the architecture. Gated injection and concat/no-cross fusion are essentially tied, with mean MAE 0.258 in both cases. Table~\ref{tab:stat-tests} reports paired tests over the matched 27 configurations. Gated and concat fusion do not differ significantly ($p=0.553$), whereas both ERA5-conditioned variants strongly outperform the no-ERA5 model ($p<10^{-18}$). Therefore, the evidence supports ERA5-conditioned block imputation, but it does not support the stronger claim that a particular fusion layer is necessary.
+The same ablation also prevents an over-interpretation of the architecture. Gated injection and concat/no-cross fusion are essentially tied, with mean MAE 0.258 in both cases. Table~\ref{tab:stat-tests} reports paired tests over the matched 27 configurations, including 95\% confidence intervals, paired standardized effects, and Holm correction over the three comparisons. Gated and concat fusion do not differ significantly (Holm $p=0.553$; 95\% CI includes zero), whereas both ERA5-conditioned variants strongly outperform the no-ERA5 model with large paired effects. Therefore, the evidence supports ERA5-conditioned block imputation, but it does not support the stronger claim that a particular fusion layer is necessary.
 
 \input{tables/tab_stat_tests}
 

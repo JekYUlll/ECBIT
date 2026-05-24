@@ -69,7 +69,7 @@ Active Follow-up: 05-24-2 major-review revision is active. The highest-priority 
 - [x] Expand ERA5 direct bias-correction definition and add no-bias / mean-bias / linear-calibration ablation if feasible
 - [x] Generate and submit SAITS+ERA5 and iTransformer+ERA5 fair-baseline configs on remote GPUs
 - [ ] Monitor fair ERA5 baseline batch, sync results, aggregate tables, and update manuscript
-- [ ] Add paired statistics with effect size, 95% CI, and Holm correction for expanded comparisons
+- [x] Add paired statistics with effect size, 95% CI, and Holm correction for expanded comparisons
 - [x] Add real-gap plausibility diagnostics and case figures for historical gaps without treating them as supervised labels
 - [ ] Add non-overlap or strict chronological split sensitivity if feasible under remote budget
 - [x] Add station x variable and raw-unit error tables
