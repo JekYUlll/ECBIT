@@ -440,3 +440,5 @@
 - The fair ERA5 baseline directory retains 27 iTransformer+ERA5 checkpoints. Generated 27 evaluation-only configs under `experiments/configs/revision/non_overlap_eval/` using `scripts/generate_non_overlap_eval_configs.py`.
 - The generated configs set `runner: evaluate`, point `checkpoint` to the retained fair-baseline `best.pt`, set `data.test_window_subset_csv` to the deterministic non-overlap subset, and write results to `experiments/results/metrics/non_overlap_eval/`.
 - This advances the split-sensitivity item without pretending that ECBIT-gated non-overlap metrics are available; a full ECBIT-gated strict subset check would require checkpoint recovery or retraining.
+- Remote smoke attempt for `itransformer_era5_short_r20_s42` initially failed because `src/evaluate_impute.py` routed all non-ECBIT neural models through the no-ERA5 iTransformer forward signature. Patched the evaluator to pass ERA5 into both `ecbit` and `itransformer_era5`.
+- Verification after the evaluator patch: `conda run -n darts python -m pytest -q src/tests/test_training_framework.py src/tests/test_era5_direct.py` passed with 10 tests and 1 warning.
