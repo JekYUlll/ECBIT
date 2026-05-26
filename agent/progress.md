@@ -385,3 +385,28 @@
 - Added the fair-baseline artifacts to the reproducibility inventory.
 - Error note: one inventory command was accidentally run from `paper/` and failed with `can't open file .../paper/scripts/make_reproducibility_inventory.py`; reran the same script from the repository root successfully.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 15-page PDF. Final log scan found no undefined references, citation warnings, fatal errors, or overfull boxes; remaining underfull warnings are non-blocking. Visual checks of pages 7--9 confirmed the updated main figure and fair-baseline tables render legibly.
+
+## Session: 2026-05-26
+
+### Medium Revision 05-26-01 Kickoff
+- Read `agent/05-26-01-codex.md`. The requested revision further shifts the manuscript toward a benchmark/protocol plus controlled empirical study, with ECBIT treated as a lightweight controlled architecture rather than a uniquely superior model.
+- Re-read the active planning files using `planning-with-files` and added Phase 7 to `agent/task_plan.md`.
+- Started local-only analyses required by the review:
+  - station metadata table generation,
+  - stronger ERA5 direct station-month bias calibration,
+  - held-out station detail and ERA5-AWS mismatch diagnostics.
+- Added initial scripts/patches:
+  - `scripts/make_station_metadata_table.py`,
+  - `scripts/analyze_heldout_station_bias.py`,
+  - extended `scripts/evaluate_era5_direct_calibration.py` to include `station_month_bias`,
+  - extended `ImputationWindowDataset` to expose per-window month indices for calibration diagnostics.
+
+### Medium Revision 05-26-01 Completion
+- Completed the benchmark/protocol reframing requested by `agent/05-26-01-codex.md`: Abstract, Introduction contributions, Results, Discussion, Limitations, and Conclusion now emphasize ERA5 access plus block-missing curriculum rather than gated ECBIT architecture dominance.
+- Generated and inserted the station metadata table. The table now includes T, RH, wind, pressure, and derived specific-humidity completeness, plus lat/lon/elevation, temporal coverage, and split assignment for all 32 selected stations.
+- Expanded ERA5 alignment details in the manuscript: single-level station point time series, no local grid interpolation after CDS point extraction, 3-hour interpolation, unit conversion, RH/q derivation, and train-only normalization excluding held-out stations.
+- Recomputed ERA5 direct calibration over all 27 Round 1 masks. Station-month train-only mean-bias correction gives MAE 0.270 +/- 0.001 versus 0.381 +/- 0.001 for the global mean-bias direct baseline.
+- Generated held-out station detail artifacts: `heldout_per_station_results.csv`, `heldout_per_station_regime_results.csv`, `heldout_era5_bias_correlation.csv`, `tab_heldout_station_detail.tex`, and `fig_heldout_bias_vs_mae.pdf/.png`. The text reports the five-station Pearson r=0.66 only as a diagnostic.
+- Added revision config descriptors under `experiments/configs/revision/`; ridge calibration and realistic-gap surrogate are documented as deferred optional follow-ups, while station-month ERA5 and held-out bias analyses are completed.
+- Refreshed `experiments/results/tables/reproducibility_inventory.csv`.
+- Verification: `conda run -n darts python -m pytest -q src/tests/test_training_framework.py src/tests/test_era5_direct.py` passed with 9 tests and 1 warning. `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 20-page PDF. Log scan found no undefined references, undefined citations, overfull boxes, fatal errors, or emergency stops. Visual contact-sheet checks found no obvious overlap or clipping in the new station metadata/calibration table and held-out bias figure.

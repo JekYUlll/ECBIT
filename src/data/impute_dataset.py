@@ -42,11 +42,16 @@ class ImputationWindowDataset(Dataset):
             keep = np.isin(window_split, list(splits))
             if not keep.any():
                 continue
+            if "timestamps" in data.files:
+                month = data["timestamps"][keep].astype("datetime64[M]").astype(int) % 12 + 1
+            else:
+                month = np.ones(data["X"][keep].shape[:2], dtype=np.int64)
             item = {
                 "X": data["X"][keep].astype(np.float32),
                 "obs_mask": data["obs_mask"][keep].astype(np.float32),
                 "E_3h": data["E_3h"][keep].astype(np.float32),
                 "T_enc": data["T_enc"][keep].astype(np.float32),
+                "month": month,
                 "station_id": str(row["station_id"]),
                 "station_group": str(row["station_group"]),
                 "window_split": window_split[keep],
@@ -72,6 +77,7 @@ class ImputationWindowDataset(Dataset):
             "obs_mask": torch.from_numpy(item["obs_mask"][local_idx]),
             "era5": torch.from_numpy(item["E_3h"][local_idx]),
             "time_enc": torch.from_numpy(item["T_enc"][local_idx]),
+            "month": torch.from_numpy(item["month"][local_idx].astype(np.int64)),
             "station_id": item["station_id"],
             "station_group": item["station_group"],
             "window_split": str(item["window_split"][local_idx]),

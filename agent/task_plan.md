@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 6 — Major Revision Experiments and Reproducibility Package
-Last Updated: 2026-05-24
+Current Phase: Phase 7 — 05-26 Medium Revision and Benchmark Strengthening
+Last Updated: 2026-05-26
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: 05-24-2 major-review revision is active. The highest-priority gaps are ERA5-augmented fair baselines, real-gap plausibility, mask/split transparency, ERA5-direct calibration disclosure, observed-position consistency, and a stronger reproducibility package.
+Active Follow-up: 05-26-01 medium-revision task is active. The highest-priority gaps are benchmark/protocol transparency, station metadata, stronger ERA5 direct calibration, held-out station bias analysis, and consistent positioning of ECBIT as a controlled architecture rather than an architecture-dominant solution.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -75,6 +75,19 @@ Active Follow-up: 05-24-2 major-review revision is active. The highest-priority 
 - [x] Add station x variable and raw-unit error tables
 - [x] Update reproducibility artifacts: station metadata, split/window index, configs, raw result inventory, environment notes
 - [ ] Compile, visually check figures/tables, and commit each completed atomic task
+
+## Phase 7 · Medium Revision 05-26-01
+- [x] Read `agent/05-26-01-codex.md` and triage requested edits into local analysis, manuscript changes, and optional experiments
+- [x] Reframe Abstract, Contributions, Results, Discussion, and Conclusion around benchmark/protocol evidence rather than ECBIT architecture superiority
+- [x] Add station-level metadata table and cite it from Data/Benchmark and reproducibility text
+- [x] Expand ERA5 extraction/alignment details: single-level time-series source, point extraction, temporal interpolation, unit conversion, q/RH derivation, and train-only normalization
+- [x] Add station-month ERA5 direct calibration baseline and update ERA5 calibration table/results
+- [x] Add held-out station detail table with per-variable MAE/RMSE and ERA5-AWS mismatch diagnostic
+- [x] Add held-out MAE vs ERA5-AWS mismatch figure and cautious interpretation
+- [x] Strengthen historical real-gap audit wording so it cannot be read as supervised historical-gap accuracy
+- [x] Expand Limitations with architecture, ERA5 bias, artificial-mask, station coverage, variable coverage, and operational constraints
+- [x] Add/update revision output artifacts under `experiments/results/revision/`
+- [x] Compile, visually check new tables/figures, update planning files, and commit atomic changes
 
 ## Blocked Issues
 | Issue | Status | Action |

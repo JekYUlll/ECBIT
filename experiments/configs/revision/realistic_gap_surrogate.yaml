@@ -1,0 +1,11 @@
+analysis: realistic_gap_surrogate
+status: not_run
+reason: optional follow-up; no new remote evaluation launched in the current local-only revision pass
+proposed_protocol:
+  gap_distribution_source: naturally missing AntAWS blocks in selected station records
+  labels: originally observed positions only
+  mask_sampling: sample artificial contiguous gaps from observed spans using the empirical real-gap length distribution
+  compare_against:
+    - current uniform short/medium/long block regimes
+outputs_if_run:
+  results_csv: experiments/results/revision/realistic_gap_surrogate_results.csv

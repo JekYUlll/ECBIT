@@ -1,0 +1,11 @@
+analysis: era5_ridge_calibration
+status: not_run
+reason: deferred because the medium-revision pass adds the required stronger train-only station-month ERA5 baseline first
+proposed_features:
+  - ERA5 variables
+  - time encodings
+  - month or day-of-year sin-cos
+  - variable indicator
+training_scope: train windows only
+outputs_if_run:
+  results_csv: experiments/results/revision/era5_ridge_calibration.csv

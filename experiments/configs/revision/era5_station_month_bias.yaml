@@ -1,0 +1,18 @@
+analysis: era5_station_month_bias
+script: scripts/evaluate_era5_direct_calibration.py
+inputs:
+  config_dir: experiments/configs/round1
+outputs:
+  runs_csv: experiments/results/revision/era5_calibration_comparison.csv
+  table: paper/tables/tab_era5_direct_calibration.tex
+calibration:
+  method: station_month_mean_bias
+  fitted_on: train windows only
+  grouping:
+    - station
+    - month
+    - variable
+  fallback:
+    - station_variable_mean_bias
+    - global_variable_mean_bias
+  min_samples_per_station_month_variable: 24

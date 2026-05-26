@@ -1,0 +1,14 @@
+analysis: heldout_station_bias_analysis
+script: scripts/analyze_heldout_station_bias.py
+inputs:
+  manifest_csv: data/antaws_impute_manifest.csv
+  round3_runs: experiments/results/tables/round3_final_runs.csv
+outputs:
+  station_results: experiments/results/revision/heldout_per_station_results.csv
+  station_regime_results: experiments/results/revision/heldout_per_station_regime_results.csv
+  bias_correlation: experiments/results/revision/heldout_era5_bias_correlation.csv
+  figure: paper/figures/fig_heldout_bias_vs_mae.pdf
+diagnostic:
+  x_axis: mean absolute AWS-minus-ERA5 mismatch on held-out station training-segment observed positions
+  y_axis: held-out ECBIT imputation MAE at 40 percent block missingness
+  interpretation: small-sample diagnostic only; not a formal correlation claim

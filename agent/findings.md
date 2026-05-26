@@ -41,6 +41,15 @@ Block-wise imputation is a better fit than forecasting for ERA5 conditioning:
 - Expanded Round2 paired statistics confirm the fusion-null result and the ERA5 effect. Gated minus concat mean difference is -0.00025 MAE with 95% CI [-0.00113, 0.00062], paired $d_z=-0.12$, and Holm p=0.553. Gated minus no-ERA5 is -0.08799 MAE with 95% CI [-0.09568, -0.08032], paired $d_z=-4.53$, and Holm p<1e-4.
 - Environment snapshots are now captured locally and remotely. Local analysis uses Python 3.12.11 with NumPy 2.2.6, Pandas 2.3.2, PyTorch 2.6.0, SciPy 1.15.2, Matplotlib 3.10.6, Seaborn 0.13.2, latexmk 4.83, and pdfTeX 1.40.25. Remote training uses Python 3.12.12 with NumPy 2.4.3, Pandas 2.3.3, PyTorch 2.9.0+cu128, SciPy 1.15.3, PyPOTS 1.5, and six RTX 4090 GPUs.
 
+## Medium Revision Diagnostics (2026-05-26)
+
+- The 05-26 medium revision reframes the manuscript as a benchmark/protocol and controlled empirical study. The text now explicitly says the evidence supports ERA5-conditioned block imputation but does not support a unique gated-fusion architecture advantage.
+- Station-level metadata is now exported to `experiments/results/revision/station_metadata_table.csv` and `paper/tables/tab_station_metadata.tex`. The table includes lat/lon/elevation, start/end years, split assignment, and completeness for T, RH, wind, pressure, and derived q.
+- ERA5 extraction/alignment text now states that ERA5 single-level point time series are requested at station coordinates, hourly values are linearly interpolated to AntAWS 3-hourly timestamps, variables are converted to T/RH/wind/P/q, and normalization uses main-station chronological training segments only.
+- ERA5 direct calibration now includes train-only station-month-variable mean-bias correction with fallback to station-variable and global variable bias. On the 27 Round 1 block masks it improves ERA5-direct MAE from 0.381 for global mean bias to 0.270, confirming that station-season ERA5 bias is a major component of the direct-baseline error.
+- Held-out station analysis now exports per-station/per-variable results and an ERA5-AWS mismatch diagnostic. Mean held-out MAE ranges from 0.173 at Nico to 0.350 at Mount Sidley. The five-station mismatch-vs-MAE diagnostic has Pearson r=0.66, which is reported cautiously as a small-sample diagnostic rather than a formal statistical claim.
+- Historical real-gap language now explicitly says the audit is not supervised accuracy evaluation because ground truth is unavailable inside natural gaps.
+
 ## Metadata Check (2026-05-23)
 
 - Mount Sidley elevation in `data/station_meta_ecbit.csv` is 2123.0 m for the selected AWS installation (`station_id=mount_sidley`, POLENET, lat -77.13, lon -125.97). Manuscript wording should say "AWS installation elevation" or "station metadata elevation" to avoid confusion with the Mount Sidley summit elevation.

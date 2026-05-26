@@ -1,14 +1,15 @@
-\begin{table}[t]
+\begin{table*}[t]
   \centering
-  \caption{ERA5 direct calibration ablation. All calibration parameters are estimated from training windows only and evaluated on the same 27 block-missing Round 1 configurations.}
+  \caption{ERA5 direct calibration ablation. All calibration parameters are estimated from training windows only and evaluated on the same 27 block-missing Round 1 configurations. The station-month variant estimates station-, month-, and variable-specific mean AWS-minus-ERA5 bias, with fallback to station-variable and then global variable bias when training samples are insufficient.}
   \label{tab:era5-direct-calibration}
-  \begin{tabular}{lcc}
+  \begin{tabular}{lccccc}
     \toprule
-    Calibration & MAE & RMSE \\
+    Calibration & Overall MAE & RMSE & Short MAE & Medium MAE & Long MAE \\
     \midrule
-    None & 0.387 $\pm$ 0.001 & 0.569 $\pm$ 0.001 \\
-    Mean bias & 0.381 $\pm$ 0.001 & 0.548 $\pm$ 0.001 \\
-    Linear & \textbf{0.378} $\pm$ 0.001 & \textbf{0.538} $\pm$ 0.001 \\
+    Station-month mean bias & \textbf{0.270 $\pm$ 0.001} & \textbf{0.392 $\pm$ 0.001} & 0.270 & 0.270 & 0.269 \\
+    Global linear & 0.378 $\pm$ 0.001 & 0.537 $\pm$ 0.001 & 0.379 & 0.378 & 0.378 \\
+    Global mean bias & 0.381 $\pm$ 0.001 & 0.548 $\pm$ 0.001 & 0.382 & 0.381 & 0.381 \\
+    None & 0.387 $\pm$ 0.001 & 0.569 $\pm$ 0.001 & 0.388 & 0.388 & 0.387 \\
     \bottomrule
   \end{tabular}
-\end{table}
+\end{table*}

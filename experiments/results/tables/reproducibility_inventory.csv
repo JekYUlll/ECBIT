@@ -5,9 +5,13 @@ era5_manifest,data/era5_3h_manifest.csv,True,2821,ed264ffebfef,Validation manife
 window_index,experiments/results/analysis/benchmark_protocol/window_index.csv,True,3701340,7c2ae7c207d8,"Station, split, and timestamp index for every retained window."
 station_window_summary,experiments/results/analysis/benchmark_protocol/station_window_summary.csv,True,8164,2a9b8d9bcf96,Per-station train/validation/test window counts.
 block_length_diagnostics,experiments/results/analysis/benchmark_protocol/realized_block_length_summary.csv,True,3192,268769a2f4d5,"Requested, clipped, and label-segment block-length diagnostics."
-era5_direct_calibration,experiments/results/analysis/era5_direct_calibration/era5_direct_calibration_runs.csv,True,27265,ff75758913c6,"No-bias, mean-bias, and linear train-only ERA5-direct calibration runs."
+era5_direct_calibration,experiments/results/analysis/era5_direct_calibration/era5_direct_calibration_runs.csv,True,36726,02332e495bfb,"No-bias, mean-bias, and linear train-only ERA5-direct calibration runs."
 real_gap_plausibility,experiments/results/analysis/real_gap_plausibility/real_gap_plausibility_gaps.csv,True,362733,b73a9e8dccbf,Historical-gap boundary plausibility metrics.
 observed_consistency,experiments/results/analysis/observed_consistency_mcar_noera5/observed_consistency_summary.csv,True,107,ec47b23820d7,Visible-position pre-copy and post-copy consistency audit.
+station_metadata_revision,experiments/results/revision/station_metadata_table.csv,True,4642,4e28a8040e30,Selected station metadata table used by the revision.
+era5_calibration_revision,experiments/results/revision/era5_calibration_comparison.csv,True,36726,02332e495bfb,ERA5 direct calibration comparison including station-month train-only bias correction.
+heldout_station_revision,experiments/results/revision/heldout_per_station_results.csv,True,1544,e13784c62e34,Held-out station and per-variable imputation results.
+heldout_bias_revision,experiments/results/revision/heldout_era5_bias_correlation.csv,True,1544,e13784c62e34,Held-out ERA5-AWS mismatch diagnostic by station.
 round1_runs,experiments/results/tables/round1_core_runs.csv,True,47786,e3a1097130f5,Core baseline per-run test metrics.
 fair_era5_runs,experiments/results/tables/fair_era5_baselines_runs.csv,True,21459,83e3765e5293,SAITS+ERA5 and iTransformer+ERA5 per-run test metrics.
 fair_era5_comparison,experiments/results/tables/fair_era5_comparison_summary.csv,True,992,5559c41a83c4,Fair ERA5-augmented baseline summary table.
@@ -21,6 +25,7 @@ remote_environment,experiments/results/analysis/environment/remote_environment.t
 configs_fair_era5_baselines,experiments/configs/fair_era5_baselines,True,0,,54 YAML experiment configurations.
 configs_followup_blocklen,experiments/configs/followup_blocklen,True,0,,18 YAML experiment configurations.
 configs_followup_mcar_noera5,experiments/configs/followup_mcar_noera5,True,0,,27 YAML experiment configurations.
+configs_revision,experiments/configs/revision,True,0,,4 YAML experiment configurations.
 configs_round1,experiments/configs/round1,True,0,,162 YAML experiment configurations.
 configs_round2,experiments/configs/round2,True,0,,108 YAML experiment configurations.
 configs_round2_gated,experiments/configs/round2_gated,True,0,,108 YAML experiment configurations.
