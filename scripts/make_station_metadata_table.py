@@ -12,6 +12,7 @@ import pandas as pd
 META_CSV = Path("data/station_meta_ecbit.csv")
 OUT_CSV = Path("experiments/results/revision/station_metadata_table.csv")
 OUT_TEX = Path("paper/tables/tab_station_metadata.tex")
+OUT_FULL_TEX = Path("paper/tables/tab_station_metadata_full.tex")
 VALUE_COLS = {
     "T": "Temperature(℃)",
     "RH": "Relative Humidity(%)",
@@ -46,6 +47,7 @@ def main() -> None:
     parser.add_argument("--meta-csv", type=Path, default=META_CSV)
     parser.add_argument("--out-csv", type=Path, default=OUT_CSV)
     parser.add_argument("--out-tex", type=Path, default=OUT_TEX)
+    parser.add_argument("--out-full-tex", type=Path, default=OUT_FULL_TEX)
     args = parser.parse_args()
 
     meta = pd.read_csv(args.meta_csv)
@@ -74,12 +76,48 @@ def main() -> None:
     args.out_csv.parent.mkdir(parents=True, exist_ok=True)
     table.to_csv(args.out_csv, index=False)
 
+    summary = (
+        table.groupby("split", as_index=False)
+        .agg(
+            stations=("station", "count"),
+            start_year=("start_year", "min"),
+            end_year=("end_year", "max"),
+            elev_m_median=("elev_m", "median"),
+            T_mean=("temperature_completeness", "mean"),
+            RH_mean=("relative_humidity_completeness", "mean"),
+            wind_mean=("wind_speed_completeness", "mean"),
+            P_mean=("pressure_completeness", "mean"),
+            q_mean=("specific_humidity_completeness", "mean"),
+        )
+        .sort_values("split")
+    )
+    summary_lines = [
+        "\\begin{table}[t]",
+        "  \\centering",
+        "  \\caption{Benchmark station summary. Completeness values are mean observed fractions over retained raw 3-hourly station records; full station metadata are reported in Appendix Table~\\ref{tab:station-metadata-full}.}",
+        "  \\label{tab:station-metadata}",
+        "  \\begin{tabular}{lrrrrrr}",
+        "    \\toprule",
+        "    Split & Stations & Years & Elev. & T & RH & q \\\\",
+        "    & & & (m) & (\\%) & (\\%) & (\\%) \\\\",
+        "    \\midrule",
+    ]
+    for row in summary.itertuples(index=False):
+        split = "held-out" if row.split == "heldout" else "main"
+        summary_lines.append(
+            f"    {split} & {int(row.stations)} & {int(row.start_year)}--{int(row.end_year)} & "
+            f"{row.elev_m_median:.0f} & {pct(row.T_mean)} & {pct(row.RH_mean)} & {pct(row.q_mean)} \\\\"
+        )
+    summary_lines.extend(["    \\bottomrule", "  \\end{tabular}", "\\end{table}", ""])
+    args.out_tex.parent.mkdir(parents=True, exist_ok=True)
+    args.out_tex.write_text("\n".join(summary_lines), encoding="utf-8")
+
     lines = [
         "\\begin{table*}[p]",
         "  \\centering",
         "  \\tiny",
         "  \\caption{Selected station metadata for the AntAWS-derived benchmark. Completeness columns report the fraction of observed 3-hourly values in the retained raw station record before sparse-window construction.}",
-        "  \\label{tab:station-metadata}",
+        "  \\label{tab:station-metadata-full}",
         "  \\begin{tabular}{lrrrrrrrrrrl}",
         "    \\toprule",
         "    Station & Lat. & Lon. & Elev. & Start & End & T & RH & Wind & P & q & Split \\\\",
@@ -97,10 +135,11 @@ def main() -> None:
             f"{pct(row.specific_humidity_completeness)} & {split} \\\\"
         )
     lines.extend(["    \\bottomrule", "  \\end{tabular}", "\\end{table*}", ""])
-    args.out_tex.parent.mkdir(parents=True, exist_ok=True)
-    args.out_tex.write_text("\n".join(lines), encoding="utf-8")
+    args.out_full_tex.parent.mkdir(parents=True, exist_ok=True)
+    args.out_full_tex.write_text("\n".join(lines), encoding="utf-8")
     print(f"wrote {args.out_csv}")
     print(f"wrote {args.out_tex}")
+    print(f"wrote {args.out_full_tex}")
 
 
 if __name__ == "__main__":

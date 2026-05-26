@@ -410,3 +410,14 @@
 - Added revision config descriptors under `experiments/configs/revision/`; ridge calibration and realistic-gap surrogate are documented as deferred optional follow-ups, while station-month ERA5 and held-out bias analyses are completed.
 - Refreshed `experiments/results/tables/reproducibility_inventory.csv`.
 - Verification: `conda run -n darts python -m pytest -q src/tests/test_training_framework.py src/tests/test_era5_direct.py` passed with 9 tests and 1 warning. `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 20-page PDF. Log scan found no undefined references, undefined citations, overfull boxes, fatal errors, or emergency stops. Visual contact-sheet checks found no obvious overlap or clipping in the new station metadata/calibration table and held-out bias figure.
+
+### Post-Review Cleanup 05-26
+- Addressed the new review concern that station-month ERA5 direct calibration is too close to neural ERA5 models to treat neural conditioning as a large replacement effect.
+- Added `scripts/make_station_month_neural_tests.py`, `experiments/results/revision/station_month_vs_neural_paired_tests.csv`, and `paper/tables/tab_station_month_vs_neural_tests.tex`.
+- Paired test results over the 27 matched block-missing configurations: SAITS+ERA5 beats station-month ERA5 by -0.0249 MAE (Holm p=0.048); iTransformer+ERA5 by -0.0117 (Holm p<1e-4); ECBIT concat by -0.0119 (Holm p<1e-4); ECBIT gated by -0.0121 (Holm p<1e-4). The manuscript now describes this as a modest but statistically supported neural gain over a strong calibrated ERA5 baseline.
+- Updated the title to `Block-Missing Imputation of Antarctic Automatic Weather Station Records with ERA5 Reanalysis Conditioning`.
+- Corrected the Abstract phrase to `specific-humidity channels`.
+- Clarified CDS point-series wording: the returned CDS point series is treated as the station-location ERA5 series; no additional local grid-cell interpolation is applied after download.
+- Revised `scripts/make_station_metadata_table.py` to generate a compact main-text station summary table and a full appendix metadata table. Added `paper/sections/appendix.tex`.
+- Refreshed `experiments/results/tables/reproducibility_inventory.csv` to include the new station-month-vs-neural paired-test artifact.
+- Verification: `conda run -n darts python -m pytest -q src/tests/test_training_framework.py src/tests/test_era5_direct.py` passed with 9 tests and 1 warning. `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 17-page PDF. Log scan found no undefined references, undefined citations, overfull boxes, fatal errors, or emergency stops. Visual checks of the main station summary, station-month paired-test table, and appendix metadata table found no clipping or obvious overlap.

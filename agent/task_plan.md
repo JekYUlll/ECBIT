@@ -3,7 +3,7 @@ Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS b
 Current Phase: Phase 7 — 05-26 Medium Revision and Benchmark Strengthening
 Last Updated: 2026-05-26
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: 05-26-01 medium-revision task is active. The highest-priority gaps are benchmark/protocol transparency, station metadata, stronger ERA5 direct calibration, held-out station bias analysis, and consistent positioning of ECBIT as a controlled architecture rather than an architecture-dominant solution.
+Active Follow-up: Post-05-26 review cleanup is complete. The latest high-priority fix is the station-month ERA5 direct baseline interpretation: calibrated ERA5 is now treated as a strong operational baseline, and neural variants are compared against it with paired tests.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -88,6 +88,15 @@ Active Follow-up: 05-26-01 medium-revision task is active. The highest-priority 
 - [x] Expand Limitations with architecture, ERA5 bias, artificial-mask, station coverage, variable coverage, and operational constraints
 - [x] Add/update revision output artifacts under `experiments/results/revision/`
 - [x] Compile, visually check new tables/figures, update planning files, and commit atomic changes
+
+## Phase 8 · Post-Review Cleanup 05-26
+- [x] Add paired tests comparing station-month calibrated ERA5 direct substitution against SAITS+ERA5, iTransformer+ERA5, ECBIT concat, and ECBIT gated
+- [x] Reframe station-month ERA5 direct as a strong operational baseline and neural ERA5 conditioning as a modest additional gain from sparse AWS context
+- [x] Update title toward application-oriented AWS records wording
+- [x] Correct Abstract wording from generic humidity channels to specific-humidity channels
+- [x] Clarify CDS point extraction and local interpolation wording
+- [x] Move full 32-station metadata table to appendix and keep only a compact benchmark summary table in the main text
+- [x] Check Discussion B continuity and compile/visual-check the revised PDF
 
 ## Blocked Issues
 | Issue | Status | Action |

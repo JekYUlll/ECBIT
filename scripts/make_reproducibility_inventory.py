@@ -22,6 +22,7 @@ ARTIFACTS = [
     ("observed_consistency", "experiments/results/analysis/observed_consistency_mcar_noera5/observed_consistency_summary.csv", "Visible-position pre-copy and post-copy consistency audit."),
     ("station_metadata_revision", "experiments/results/revision/station_metadata_table.csv", "Selected station metadata table used by the revision."),
     ("era5_calibration_revision", "experiments/results/revision/era5_calibration_comparison.csv", "ERA5 direct calibration comparison including station-month train-only bias correction."),
+    ("station_month_neural_tests", "experiments/results/revision/station_month_vs_neural_paired_tests.csv", "Paired tests comparing station-month calibrated ERA5 direct substitution against ERA5-augmented neural models."),
     ("heldout_station_revision", "experiments/results/revision/heldout_per_station_results.csv", "Held-out station and per-variable imputation results."),
     ("heldout_bias_revision", "experiments/results/revision/heldout_era5_bias_correlation.csv", "Held-out ERA5-AWS mismatch diagnostic by station."),
     ("round1_runs", "experiments/results/tables/round1_core_runs.csv", "Core baseline per-run test metrics."),
