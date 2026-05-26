@@ -5,6 +5,8 @@ era5_manifest,data/era5_3h_manifest.csv,True,2821,ed264ffebfef,Validation manife
 window_index,experiments/results/analysis/benchmark_protocol/window_index.csv,True,3701340,7c2ae7c207d8,"Station, split, and timestamp index for every retained window."
 station_window_summary,experiments/results/analysis/benchmark_protocol/station_window_summary.csv,True,8164,2a9b8d9bcf96,Per-station train/validation/test window counts.
 block_length_diagnostics,experiments/results/analysis/benchmark_protocol/realized_block_length_summary.csv,True,3192,268769a2f4d5,"Requested, clipped, and label-segment block-length diagnostics."
+split_overlap_audit,experiments/results/analysis/split_overlap/split_overlap_station_summary.csv,True,5027,ea343f165706,Per-station chronological split boundary gaps and sliding-window overlap diagnostics.
+nonoverlap_test_subset,experiments/results/analysis/split_overlap/non_overlap_test_windows.csv,True,144597,5f40aa550b5e,Deterministic non-overlapping test-window subset for strict evaluation sensitivity checks.
 era5_direct_calibration,experiments/results/analysis/era5_direct_calibration/era5_direct_calibration_runs.csv,True,36726,02332e495bfb,"No-bias, mean-bias, and linear train-only ERA5-direct calibration runs."
 real_gap_plausibility,experiments/results/analysis/real_gap_plausibility/real_gap_plausibility_gaps.csv,True,362733,b73a9e8dccbf,Historical-gap boundary plausibility metrics.
 observed_consistency,experiments/results/analysis/observed_consistency_mcar_noera5/observed_consistency_summary.csv,True,107,ec47b23820d7,Visible-position pre-copy and post-copy consistency audit.
@@ -26,7 +28,7 @@ remote_environment,experiments/results/analysis/environment/remote_environment.t
 configs_fair_era5_baselines,experiments/configs/fair_era5_baselines,True,0,,54 YAML experiment configurations.
 configs_followup_blocklen,experiments/configs/followup_blocklen,True,0,,18 YAML experiment configurations.
 configs_followup_mcar_noera5,experiments/configs/followup_mcar_noera5,True,0,,27 YAML experiment configurations.
-configs_revision,experiments/configs/revision,True,0,,4 YAML experiment configurations.
+configs_revision,experiments/configs/revision,True,0,,5 YAML experiment configurations.
 configs_round1,experiments/configs/round1,True,0,,162 YAML experiment configurations.
 configs_round2,experiments/configs/round2,True,0,,108 YAML experiment configurations.
 configs_round2_gated,experiments/configs/round2_gated,True,0,,108 YAML experiment configurations.

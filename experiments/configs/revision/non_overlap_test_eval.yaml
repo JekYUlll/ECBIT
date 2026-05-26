@@ -1,0 +1,9 @@
+analysis: non_overlap_test_eval
+status: ready_for_remote_evaluation
+purpose: Re-evaluate completed trained checkpoints on a deterministic non-overlapping test-window subset.
+subset_csv: experiments/results/analysis/split_overlap/non_overlap_test_windows.csv
+dataset_config_key: data.test_window_subset_csv
+notes:
+  - The subset keeps test windows separated by at least one 168-step window length within each station.
+  - Existing configs can be reused by adding data.test_window_subset_csv with the subset path.
+  - This is an evaluation-only sensitivity check; no local model training is required.

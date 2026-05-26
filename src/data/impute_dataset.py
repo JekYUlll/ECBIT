@@ -20,11 +20,23 @@ class ImputationWindowDataset(Dataset):
         station_groups: Iterable[str] = ("main",),
         window_splits: Iterable[str] = ("train",),
         station_ids: Iterable[str] | None = None,
+        window_subset_csv: str | Path | None = None,
     ) -> None:
         self.manifest_csv = Path(manifest_csv)
         manifest = pd.read_csv(self.manifest_csv)
         groups = set(station_groups)
         splits = set(window_splits)
+        subset_by_station: dict[str, set[int]] | None = None
+        if window_subset_csv is not None:
+            subset = pd.read_csv(window_subset_csv)
+            required = {"station_id", "window_local_index"}
+            missing = required.difference(subset.columns)
+            if missing:
+                raise ValueError(f"window subset CSV is missing columns: {sorted(missing)}")
+            subset_by_station = {
+                str(station): set(group["window_local_index"].astype(int).tolist())
+                for station, group in subset.groupby("station_id")
+            }
         if station_ids is not None:
             station_ids = set(station_ids)
             manifest = manifest[manifest["station_id"].isin(station_ids)]
@@ -40,8 +52,12 @@ class ImputationWindowDataset(Dataset):
             data = np.load(path, allow_pickle=True)
             window_split = data["window_split"].astype(str)
             keep = np.isin(window_split, list(splits))
+            if subset_by_station is not None:
+                station_subset = subset_by_station.get(str(row["station_id"]), set())
+                keep &= np.isin(np.arange(len(window_split)), list(station_subset))
             if not keep.any():
                 continue
+            original_indices = np.flatnonzero(keep).astype(np.int64)
             if "timestamps" in data.files:
                 month = data["timestamps"][keep].astype("datetime64[M]").astype(int) % 12 + 1
             else:
@@ -55,6 +71,7 @@ class ImputationWindowDataset(Dataset):
                 "station_id": str(row["station_id"]),
                 "station_group": str(row["station_group"]),
                 "window_split": window_split[keep],
+                "window_local_index": original_indices,
             }
             arrays.append(item)
             n = item["X"].shape[0]
@@ -81,4 +98,5 @@ class ImputationWindowDataset(Dataset):
             "station_id": item["station_id"],
             "station_group": item["station_group"],
             "window_split": str(item["window_split"][local_idx]),
+            "window_local_index": int(item["window_local_index"][local_idx]),
         }

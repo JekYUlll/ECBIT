@@ -23,6 +23,10 @@ Strictly complete windows are rare in Antarctic AWS records. Requiring every var
 
 Each window contains $T=168$ 3-hourly steps, corresponding to three weeks. The preprocessing stride is 42 steps, or one quarter of the window length. Windows are retained when at least 25\% of all variable-time positions are observed, at least three variables have at least 12 observed steps inside the window, and the station belongs to the selected main or held-out split. Within each station, retained windows are ordered chronologically and assigned to 70\% train, 10\% validation, and 20\% test segments. The final preprocessing output contains 41,388 windows with normalized AWS values, binary observation masks, aligned ERA5 sequences, timestamp encodings, start indices, start timestamps, and split identifiers. Artificial missing labels are sampled only from positions where the original station value is observed, so evaluation never treats truly unobserved values as ground truth.
 
+Table~\ref{tab:split-overlap-audit} audits the chronological split boundaries and sliding-window overlap. The train and test segments are separated by the validation segment for every station, with a minimum train--test gap of 2268 steps; hence no train-window context directly overlaps test windows. Adjacent validation and test windows do overlap because the stride is shorter than the 168-step window length. To support stricter sensitivity checks, we also export a deterministic non-overlapping test subset that retains 2102 windows, 25.3\% of the original test windows, with at least one full window length between retained test starts.
+
+\input{tables/tab_split_overlap_audit}
+
 \subsection{Observed Missingness}
 The selected station records show strongly structured missingness. Wind speed and relative humidity have the largest missing burden, and high-percentile gaps persist for multiple days. This observed pattern motivates block-wise imputation: point-wise MCAR missingness is an inadequate proxy for Antarctic station failures caused by icing, power interruptions, and maintenance gaps.
 

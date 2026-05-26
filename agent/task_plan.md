@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
 Current Phase: Phase 7 — 05-26 Medium Revision and Benchmark Strengthening
-Last Updated: 2026-05-26
+Last Updated: 2026-05-27
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Post-05-26 review cleanup is complete. The latest high-priority fix is the station-month ERA5 direct baseline interpretation: calibrated ERA5 is now treated as a strong operational baseline, and neural variants are compared against it with paired tests.
+Active Follow-up: Post-05-26 review cleanup is complete. The remaining 05-24-2 split-overlap concern now has a strict chronological audit, a deterministic non-overlapping test-window subset, and remote-evaluation plumbing. The actual non-overlap subset metric comparison remains the next optional remote evaluation step.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -71,10 +71,11 @@ Active Follow-up: Post-05-26 review cleanup is complete. The latest high-priorit
 - [x] Monitor fair ERA5 baseline batch, sync results, aggregate tables, and update manuscript
 - [x] Add paired statistics with effect size, 95% CI, and Holm correction for expanded comparisons
 - [x] Add real-gap plausibility diagnostics and case figures for historical gaps without treating them as supervised labels
-- [ ] Add non-overlap or strict chronological split sensitivity if feasible under remote budget
+- [x] Add strict chronological split-overlap audit and deterministic non-overlap test subset/config for sensitivity evaluation
+- [ ] Run remote non-overlap test subset evaluation and report sensitivity delta if feasible under remote budget
 - [x] Add station x variable and raw-unit error tables
 - [x] Update reproducibility artifacts: station metadata, split/window index, configs, raw result inventory, environment notes
-- [ ] Compile, visually check figures/tables, and commit each completed atomic task
+- [x] Compile, visually check figures/tables, and commit each completed atomic task
 
 ## Phase 7 · Medium Revision 05-26-01
 - [x] Read `agent/05-26-01-codex.md` and triage requested edits into local analysis, manuscript changes, and optional experiments

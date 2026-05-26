@@ -423,3 +423,11 @@ Important correction: an initial selection with only mean core completeness reta
 - Adding ERA5 strongly improves both independent baselines: SAITS+ERA5 vs SAITS mean paired difference -0.0893 MAE, 95% CI [-0.1060, -0.0725], Holm p < 1e-4; iTransformer+ERA5 vs iTransformer mean paired difference -0.1018 MAE, 95% CI [-0.1160, -0.0876], Holm p < 1e-4.
 - The architecture dominance claim is not supported. SAITS+ERA5 has the lowest aggregate mean, but its paired advantage over gated ECBIT is not significant after Holm correction (mean diff -0.0128, 95% CI [-0.0358, 0.0102], Holm p = 1.000). iTransformer+ERA5, concat ECBIT, and gated ECBIT are effectively tied near 0.258 MAE.
 - Pattern-level behavior: SAITS+ERA5 is strong on short and medium/easier settings but has much larger cross-configuration variance and degrades at long/high-rate settings. The safest paper claim is now: aligned ERA5 covariates plus block-missing training are the decisive ingredients; gated ECBIT is a reproducible conditioning framework, not a uniquely superior architecture.
+
+## Split-Overlap Audit (2026-05-27)
+
+- The retained sliding windows use a 168-step context and 42-step stride, so adjacent windows within a split overlap by construction.
+- Chronological train/test leakage through direct context overlap is not present in the current benchmark: all 32 stations have a non-overlapping train-test boundary, with minimum train-test gap 2268 steps and median gap 4767 steps after accounting for the 168-step window length.
+- Validation/test windows do overlap at the boundary for all 32 stations because the validation and test splits are adjacent and the stride is shorter than the window length. The measured validation-test gap is -126 steps, matching 42-step stride minus 168-step context.
+- A deterministic non-overlapping test subset retains 2102 of 8307 test windows (25.3%) by greedily keeping test starts separated by at least one full 168-step context window within each station.
+- Interpretation for the paper: the existing headline test metrics are not contaminated by train/test context overlap, but a stricter non-overlap test subset is now available for remote evaluation-only sensitivity checks. This should be reported as a transparency/sensitivity artifact unless the remote subset evaluation is completed and aggregated.

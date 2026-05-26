@@ -1,0 +1,2 @@
+stations,test_windows,nonoverlap_test_windows,nonoverlap_fraction,train_test_overlap_stations,val_test_overlap_stations,min_train_test_gap_steps,median_train_test_gap_steps,min_val_test_gap_steps,median_val_test_gap_steps
+32,8307,2102,0.2530396051522812,0,32,2268,4767,-126,-126

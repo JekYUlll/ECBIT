@@ -1,0 +1,18 @@
+\begin{table}[t]
+  \centering
+  \caption{Chronological split-overlap audit. Gaps are measured between the end of the earlier split window and the start of the later split window within each station. Negative values indicate context overlap. The non-overlap subset greedily retains test windows separated by at least one 168-step window length.}
+  \label{tab:split-overlap-audit}
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{}p{0.36\linewidth}p{0.39\linewidth}p{0.18\linewidth}@{}}
+    \toprule
+    Quantity & Value & Stations \\
+    \midrule
+    Test windows & 8307 & 32 \\
+    Non-overlap subset & 2102 (25.3\%) & 32 \\
+    Test stride & median 42 steps & 32 \\
+    Train--test gap & min 2268; median 4767 steps & 0 overlap \\
+    Val--test gap & min -126; median -126 steps & 32 overlap \\
+    \bottomrule
+  \end{tabular}
+\end{table}

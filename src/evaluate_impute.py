@@ -40,6 +40,7 @@ def make_loader(config: dict[str, Any], split: str, force_num_workers: int | Non
         station_groups=groups,
         window_splits=[split],
         station_ids=station_ids_for_split(data_cfg, split),
+        window_subset_csv=data_cfg.get(f"{split}_window_subset_csv", data_cfg.get("window_subset_csv")),
     )
     num_workers = int(config.get("eval", {}).get("num_workers", 2))
     if force_num_workers is not None:

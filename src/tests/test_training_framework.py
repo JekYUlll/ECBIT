@@ -70,6 +70,22 @@ def test_imputation_window_dataset_filters_station_id_and_group(tmp_path) -> Non
     assert float(item["x"].mean()) == 3.0
 
 
+def test_imputation_window_dataset_filters_window_subset(tmp_path) -> None:
+    manifest = make_tiny_dataset(tmp_path)
+    subset = tmp_path / "subset.csv"
+    pd.DataFrame([{"station_id": "tiny", "window_local_index": 1}]).to_csv(subset, index=False)
+
+    ds = ImputationWindowDataset(
+        manifest,
+        station_groups=["main"],
+        window_splits=["train"],
+        window_subset_csv=subset,
+    )
+
+    assert len(ds) == 1
+    assert ds[0]["window_local_index"] == 1
+
+
 def test_artificial_mask_batch_respects_obs_mask() -> None:
     obs = torch.ones(2, 24, 3)
     obs[:, 5:10, 1] = 0

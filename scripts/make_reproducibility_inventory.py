@@ -17,6 +17,8 @@ ARTIFACTS = [
     ("window_index", "experiments/results/analysis/benchmark_protocol/window_index.csv", "Station, split, and timestamp index for every retained window."),
     ("station_window_summary", "experiments/results/analysis/benchmark_protocol/station_window_summary.csv", "Per-station train/validation/test window counts."),
     ("block_length_diagnostics", "experiments/results/analysis/benchmark_protocol/realized_block_length_summary.csv", "Requested, clipped, and label-segment block-length diagnostics."),
+    ("split_overlap_audit", "experiments/results/analysis/split_overlap/split_overlap_station_summary.csv", "Per-station chronological split boundary gaps and sliding-window overlap diagnostics."),
+    ("nonoverlap_test_subset", "experiments/results/analysis/split_overlap/non_overlap_test_windows.csv", "Deterministic non-overlapping test-window subset for strict evaluation sensitivity checks."),
     ("era5_direct_calibration", "experiments/results/analysis/era5_direct_calibration/era5_direct_calibration_runs.csv", "No-bias, mean-bias, and linear train-only ERA5-direct calibration runs."),
     ("real_gap_plausibility", "experiments/results/analysis/real_gap_plausibility/real_gap_plausibility_gaps.csv", "Historical-gap boundary plausibility metrics."),
     ("observed_consistency", "experiments/results/analysis/observed_consistency_mcar_noera5/observed_consistency_summary.csv", "Visible-position pre-copy and post-copy consistency audit."),

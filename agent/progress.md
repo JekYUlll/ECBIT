@@ -421,3 +421,15 @@
 - Revised `scripts/make_station_metadata_table.py` to generate a compact main-text station summary table and a full appendix metadata table. Added `paper/sections/appendix.tex`.
 - Refreshed `experiments/results/tables/reproducibility_inventory.csv` to include the new station-month-vs-neural paired-test artifact.
 - Verification: `conda run -n darts python -m pytest -q src/tests/test_training_framework.py src/tests/test_era5_direct.py` passed with 9 tests and 1 warning. `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 17-page PDF. Log scan found no undefined references, undefined citations, overfull boxes, fatal errors, or emergency stops. Visual checks of the main station summary, station-month paired-test table, and appendix metadata table found no clipping or obvious overlap.
+
+## Session: 2026-05-27
+
+### Split-Overlap Audit and Non-Overlap Test Subset
+- Resumed the 05-24-2 major-revision goal using `planning-with-files`; the remaining high-priority local gap was the split/window-overlap concern.
+- Added `scripts/analyze_split_overlap.py`, which audits per-station chronological train/validation/test window boundaries and exports a deterministic non-overlapping test-window subset.
+- Audit result: 32 stations, 8307 original test windows, 2102 non-overlapping test windows retained (25.3%), 0 train-test overlap stations, 32 validation-test overlap stations, minimum train-test gap 2268 steps, median train-test gap 4767 steps, and validation-test gap -126 steps because the stride is shorter than the 168-step context window.
+- Added `paper/tables/tab_split_overlap_audit.tex` and manuscript text in `paper/sections/data_benchmark.tex` explaining that train/test contexts do not overlap directly, while adjacent validation/test windows can overlap by design.
+- Added `window_subset_csv` support to `ImputationWindowDataset`, `train_impute.py`, and `evaluate_impute.py`, plus a regression test, so completed remote checkpoints can be re-evaluated on the non-overlapping test subset with `data.test_window_subset_csv`.
+- Added `experiments/configs/revision/non_overlap_test_eval.yaml` as the descriptor for remote evaluation-only sensitivity checks; no local model training or evaluation was run.
+- Updated the reproducibility inventory with `split_overlap_audit` and `nonoverlap_test_subset`.
+- Verification: `conda run -n darts python -m pytest -q src/tests/test_training_framework.py src/tests/test_era5_direct.py` passed with 10 tests and 1 warning. `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced an 18-page PDF. Log scan found no undefined references, undefined citations, overfull boxes, fatal errors, emergency stops, or rerun warnings. Visual check of PDF page 4 confirmed the split-overlap table renders without clipping or overlap.

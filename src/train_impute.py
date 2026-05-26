@@ -140,18 +140,21 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
         station_groups=data_cfg.get("train_station_groups", ["main"]),
         window_splits=["train"],
         station_ids=station_ids_for_split(data_cfg, "train"),
+        window_subset_csv=data_cfg.get("train_window_subset_csv", data_cfg.get("window_subset_csv")),
     )
     val_ds = ImputationWindowDataset(
         data_cfg.get("manifest_csv", "data/antaws_impute_manifest.csv"),
         station_groups=data_cfg.get("val_station_groups", ["main"]),
         window_splits=["val"],
         station_ids=station_ids_for_split(data_cfg, "val"),
+        window_subset_csv=data_cfg.get("val_window_subset_csv", data_cfg.get("window_subset_csv")),
     )
     test_ds = ImputationWindowDataset(
         data_cfg.get("manifest_csv", "data/antaws_impute_manifest.csv"),
         station_groups=data_cfg.get("test_station_groups", ["main"]),
         window_splits=["test"],
         station_ids=station_ids_for_split(data_cfg, "test"),
+        window_subset_csv=data_cfg.get("test_window_subset_csv", data_cfg.get("window_subset_csv")),
     )
     num_workers = min(int(config["training"].get("num_workers", 2)), 2)
     train_loader = DataLoader(
