@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 7 — 05-26 Medium Revision and Benchmark Strengthening
+Current Phase: Phase 9 — Post-review verification and submission hardening
 Last Updated: 2026-05-27
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Post-05-26 review cleanup is complete. The 05-24-2 split-overlap concern now has a strict chronological audit, a deterministic non-overlapping test-window subset, and a completed remote iTransformer+ERA5 non-overlap sensitivity check. ECBIT-gated strict re-evaluation would require checkpoint recovery or retraining because the Round 2 gated checkpoint files were not retained.
+Active Follow-up: Latest re-review concerns are addressed in the manuscript. The station-month ERA5 baseline is framed as a strong operational baseline, neural gains are reported as modest paired-test improvements, full station metadata are in the appendix, and compile/test/log checks pass. ECBIT-gated strict non-overlap re-evaluation would still require checkpoint recovery or retraining because the Round 2 gated checkpoint files were not retained.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -57,7 +57,7 @@ Active Follow-up: Post-05-26 review cleanup is complete. The 05-24-2 split-overl
 - [x] Journal-style data/benchmark section
 - [x] Journal-style experimental protocol section
 - [x] Journal-style discussion and limitations section
-- [ ] Format and submission checks
+- [x] Format and submission checks
 
 ## Phase 6 · Major Revision 05-24-2
 - [x] Plan and triage major-review tasks into local analysis, remote GPU experiments, and manuscript-only edits
@@ -98,6 +98,13 @@ Active Follow-up: Post-05-26 review cleanup is complete. The 05-24-2 split-overl
 - [x] Clarify CDS point extraction and local interpolation wording
 - [x] Move full 32-station metadata table to appendix and keep only a compact benchmark summary table in the main text
 - [x] Check Discussion B continuity and compile/visual-check the revised PDF
+
+## Phase 9 · Post-Review Verification 05-27
+- [x] Re-read planning files and verify latest re-review items against actual LaTeX/table artifacts
+- [x] Regenerate station-month calibrated ERA5 vs neural paired-test table and confirm values match the manuscript
+- [x] Harmonize specific-humidity wording in the contribution list and Abstract
+- [x] Re-run LaTeX compile, log scan, reference count, placeholder scan, and targeted local tests
+- [x] Record residual constraints: gated ECBIT strict non-overlap re-evaluation is not available from retained artifacts
 
 ## Blocked Issues
 | Issue | Status | Action |
