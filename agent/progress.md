@@ -442,3 +442,12 @@
 - This advances the split-sensitivity item without pretending that ECBIT-gated non-overlap metrics are available; a full ECBIT-gated strict subset check would require checkpoint recovery or retraining.
 - Remote smoke attempt for `itransformer_era5_short_r20_s42` initially failed because `src/evaluate_impute.py` routed all non-ECBIT neural models through the no-ERA5 iTransformer forward signature. Patched the evaluator to pass ERA5 into both `ecbit` and `itransformer_era5`.
 - Verification after the evaluator patch: `conda run -n darts python -m pytest -q src/tests/test_training_framework.py src/tests/test_era5_direct.py` passed with 10 tests and 1 warning.
+
+### Non-Overlap Evaluation Completion
+- Synced the evaluator fix and non-overlap configs to the remote server. The corrected smoke run for `itransformer_era5_short_r20_s42` succeeded and produced MAE 0.2550 on the deterministic non-overlapping test subset.
+- Launched four remote evaluation-only workers on GPUs 2--5 in tmux sessions `ecbit_nonoverlap_0527_w0` through `ecbit_nonoverlap_0527_w3`; GPU1 was left to unrelated running work.
+- Remote batch completed 27/27 iTransformer+ERA5 non-overlap result JSON files with no Traceback, RuntimeError, OOM, Killed, WORKER_EXCEPTION, `rc=1`, or nonzero fail counts in worker logs.
+- Synced `experiments/results/metrics/non_overlap_eval/`, generated `non_overlap_eval_runs.csv`, `non_overlap_eval_summary.csv`, `experiments/results/revision/non_overlap_itransformer_sensitivity.csv`, and `paper/tables/tab_non_overlap_sensitivity.tex`.
+- Result: iTransformer+ERA5 full-test MAE 0.2581 +/- 0.0056 versus non-overlap MAE 0.2587 +/- 0.0062 over the same 27 matched configurations. The paired mean shift is +0.0006 MAE, 95% CI [0.0000, 0.0012], p=0.047; the magnitude is negligible relative to ERA5/no-ERA5 and block/MCAR effects.
+- Updated Results to report this as a split/window-overlap sensitivity check for retained iTransformer+ERA5 checkpoints only, not as a new gated ECBIT result.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced an 18-page PDF. Log scan found no undefined references, undefined citations, overfull boxes, fatal errors, emergency stops, or rerun warnings. Visual checks of pages 7--10 confirmed the new non-overlap table and surrounding text render without clipping or overlap.

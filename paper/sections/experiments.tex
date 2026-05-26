@@ -53,6 +53,10 @@ Table~\ref{tab:fair-era5-baselines} gives the fair comparison requested by the b
 
 \input{tables/tab_fair_era5_tests}
 
+\input{tables/tab_non_overlap_sensitivity}
+
+Table~\ref{tab:non-overlap-sensitivity} reports a strict test-window sensitivity check for the retained iTransformer+ERA5 checkpoints. This check is limited to iTransformer+ERA5 because the Round 2 gated ECBIT checkpoint files were not retained in the result artifacts; it therefore audits the split/window-overlap concern for a strong ERA5-augmented neural baseline rather than introducing a new gated-ECBIT result. Restricting evaluation to the deterministic non-overlapping test subset changes the overall iTransformer+ERA5 MAE from 0.2581 to 0.2587, a paired shift of only +0.0006. This magnitude is negligible relative to the ERA5/no-ERA5 and block/MCAR curriculum effects, indicating that overlapping test windows are not driving the ERA5-augmented baseline conclusion.
+
 These results change the interpretation of the architecture claim. SAITS+ERA5 has the lowest aggregate mean MAE (0.245), but its configuration-to-configuration standard deviation is much larger than the variate-token models, and its paired difference from gated ECBIT is not significant after Holm correction. iTransformer+ERA5, concat ECBIT, and gated ECBIT are effectively tied near 0.258 MAE. Table~\ref{tab:station-month-neural-tests} adds the complementary comparison against station-month calibrated ERA5 direct substitution. The neural variants are significantly better than the calibrated direct baseline in matched tests, but the mean differences are small for the variate-token models. Thus, the completed fair baselines do not support a claim that ECBIT's gated injection is uniquely superior to all ERA5-augmented imputation architectures. They instead show that calibrated ERA5 is already a strong operational baseline, while ERA5-augmented neural models provide a smaller additional gain when they can use the remaining AWS context.
 
 \subsection{Does ERA5 Conditioning Improve Block Imputation?}

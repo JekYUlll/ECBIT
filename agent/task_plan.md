@@ -3,7 +3,7 @@ Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS b
 Current Phase: Phase 7 — 05-26 Medium Revision and Benchmark Strengthening
 Last Updated: 2026-05-27
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Post-05-26 review cleanup is complete. The remaining 05-24-2 split-overlap concern now has a strict chronological audit, a deterministic non-overlapping test-window subset, and remote-evaluation plumbing. The actual non-overlap subset metric comparison remains the next optional remote evaluation step.
+Active Follow-up: Post-05-26 review cleanup is complete. The 05-24-2 split-overlap concern now has a strict chronological audit, a deterministic non-overlapping test-window subset, and a completed remote iTransformer+ERA5 non-overlap sensitivity check. ECBIT-gated strict re-evaluation would require checkpoint recovery or retraining because the Round 2 gated checkpoint files were not retained.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -72,7 +72,7 @@ Active Follow-up: Post-05-26 review cleanup is complete. The remaining 05-24-2 s
 - [x] Add paired statistics with effect size, 95% CI, and Holm correction for expanded comparisons
 - [x] Add real-gap plausibility diagnostics and case figures for historical gaps without treating them as supervised labels
 - [x] Add strict chronological split-overlap audit and deterministic non-overlap test subset/config for sensitivity evaluation
-- [ ] Run remote non-overlap test subset evaluation and report sensitivity delta if feasible under remote budget
+- [x] Run remote non-overlap iTransformer+ERA5 checkpoint evaluation and report sensitivity delta; document ECBIT-gated checkpoint limitation
 - [x] Add station x variable and raw-unit error tables
 - [x] Update reproducibility artifacts: station metadata, split/window index, configs, raw result inventory, environment notes
 - [x] Compile, visually check figures/tables, and commit each completed atomic task

@@ -1,0 +1,17 @@
+\begin{table}[t]
+  \centering
+  \caption{Non-overlap test-window sensitivity for retained iTransformer+ERA5 checkpoints. Full-test and non-overlap scores use the same trained checkpoints and matched block-missing configurations; differences are non-overlap minus full-test normalized MAE.}
+  \label{tab:non-overlap-sensitivity}
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{lcccc}
+    \toprule
+    Split & Full MAE & Non-overlap MAE & $\Delta$ & $p$ \\
+    \midrule
+    Overall & 0.2581 $\pm$ 0.0056 & 0.2587 $\pm$ 0.0062 & +0.0006 & 0.047 \\
+    Short & 0.2513 $\pm$ 0.0012 & 0.2520 $\pm$ 0.0015 & +0.0007 & 0.007 \\
+    Medium & 0.2603 $\pm$ 0.0017 & 0.2607 $\pm$ 0.0021 & +0.0004 & 0.360 \\
+    Long & 0.2627 $\pm$ 0.0041 & 0.2634 $\pm$ 0.0063 & +0.0007 & 0.392 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
