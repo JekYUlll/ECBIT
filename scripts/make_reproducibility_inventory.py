@@ -49,7 +49,7 @@ def sha256_12(path: Path) -> str:
 
 
 def count_files(path: Path, pattern: str) -> int:
-    return sum(1 for _ in path.glob(pattern)) if path.exists() else 0
+    return sum(1 for _ in path.rglob(pattern)) if path.exists() else 0
 
 
 def main() -> None:

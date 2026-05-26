@@ -433,3 +433,10 @@
 - Added `experiments/configs/revision/non_overlap_test_eval.yaml` as the descriptor for remote evaluation-only sensitivity checks; no local model training or evaluation was run.
 - Updated the reproducibility inventory with `split_overlap_audit` and `nonoverlap_test_subset`.
 - Verification: `conda run -n darts python -m pytest -q src/tests/test_training_framework.py src/tests/test_era5_direct.py` passed with 10 tests and 1 warning. `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced an 18-page PDF. Log scan found no undefined references, undefined citations, overfull boxes, fatal errors, emergency stops, or rerun warnings. Visual check of PDF page 4 confirmed the split-overlap table renders without clipping or overlap.
+- Commit: subrepo `7ab3b0e` (`[paper] add split overlap audit`); parent submodule pointer `68ed0d7`.
+
+### Non-Overlap Evaluation Preparation
+- Checked the remote server via `microclimate-experiment-server`. The remote `round2_gated` ECBIT result directories contain `result.json` only and no retained `best.pt` checkpoint files, so strict ECBIT-gated re-evaluation cannot be run from existing artifacts.
+- The fair ERA5 baseline directory retains 27 iTransformer+ERA5 checkpoints. Generated 27 evaluation-only configs under `experiments/configs/revision/non_overlap_eval/` using `scripts/generate_non_overlap_eval_configs.py`.
+- The generated configs set `runner: evaluate`, point `checkpoint` to the retained fair-baseline `best.pt`, set `data.test_window_subset_csv` to the deterministic non-overlap subset, and write results to `experiments/results/metrics/non_overlap_eval/`.
+- This advances the split-sensitivity item without pretending that ECBIT-gated non-overlap metrics are available; a full ECBIT-gated strict subset check would require checkpoint recovery or retraining.

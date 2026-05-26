@@ -28,7 +28,7 @@ remote_environment,experiments/results/analysis/environment/remote_environment.t
 configs_fair_era5_baselines,experiments/configs/fair_era5_baselines,True,0,,54 YAML experiment configurations.
 configs_followup_blocklen,experiments/configs/followup_blocklen,True,0,,18 YAML experiment configurations.
 configs_followup_mcar_noera5,experiments/configs/followup_mcar_noera5,True,0,,27 YAML experiment configurations.
-configs_revision,experiments/configs/revision,True,0,,5 YAML experiment configurations.
+configs_revision,experiments/configs/revision,True,0,,32 YAML experiment configurations.
 configs_round1,experiments/configs/round1,True,0,,162 YAML experiment configurations.
 configs_round2,experiments/configs/round2,True,0,,108 YAML experiment configurations.
 configs_round2_gated,experiments/configs/round2_gated,True,0,,108 YAML experiment configurations.

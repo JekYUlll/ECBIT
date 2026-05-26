@@ -1,9 +1,14 @@
 analysis: non_overlap_test_eval
-status: ready_for_remote_evaluation
+status: generated_configs_ready_for_remote_evaluation
 purpose: Re-evaluate completed trained checkpoints on a deterministic non-overlapping test-window subset.
 subset_csv: experiments/results/analysis/split_overlap/non_overlap_test_windows.csv
+generated_config_dir: experiments/configs/revision/non_overlap_eval
+generated_scope:
+  - 27 iTransformer+ERA5 fair-baseline checkpoints
 dataset_config_key: data.test_window_subset_csv
 notes:
   - The subset keeps test windows separated by at least one 168-step window length within each station.
-  - Existing configs can be reused by adding data.test_window_subset_csv with the subset path.
+  - Generated configs reuse retained fair-baseline iTransformer+ERA5 checkpoints and set runner=evaluate.
+  - Existing configs can also be reused by adding data.test_window_subset_csv with the subset path.
   - This is an evaluation-only sensitivity check; no local model training is required.
+  - ECBIT gated checkpoints are not present in round2_gated result directories; strict ECBIT-gated non-overlap re-evaluation would require checkpoint recovery or retraining.
