@@ -459,3 +459,13 @@
 - Harmonized the Introduction contribution wording to `specific-humidity channels`, matching the Abstract and Results wording.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed; log scan found no undefined references, undefined citations, overfull boxes, fatal errors, emergency stops, rerun warnings, or LaTeX warnings. The remaining underfull hbox/vbox messages are non-blocking IEEE layout artifacts. `paper/main.pdf` has 18 pages and 30 compiled references. Placeholder scan found no TODO/FIXME/PLACEHOLDER/CITATION NEEDED markers in `paper/`.
 - Local targeted tests passed: `conda run -n darts python -m pytest -q src/tests/test_training_framework.py src/tests/test_era5_direct.py src/tests/test_pypots_wrappers.py src/tests/test_block_missing.py src/tests/test_ecbit.py src/tests/test_generate_configs.py` -> 25 passed, 5 known PyTorch transformer warnings.
+
+### Reference Audit 05-27
+- Performed online verification of the 30 entries in `paper/references.bib` using publisher pages, DOI landing pages, arXiv pages, OpenReview, NeurIPS, AAAI proceedings, and PMLR.
+- Corrected four bibliography issues:
+  - `wang2023antaws`: fixed author first names to match ESSD (`Yetang Wang`, `Wentao Ning`, `David Mikolajczyk`, `Lee J. Welhouse`, `Zhaosheng Zhai`, `Yuqi Sun`).
+  - `vantiggelen2025imau`: fixed page range from `4933--4960` to `4933--4955`.
+  - `fausto2026promicegcnet`: fixed `Razan Bahbah` to `Rasmus Bahbah`.
+  - `zhou2021informer`: replaced arXiv DOI with official AAAI DOI `10.1609/aaai.v35i12.17325` and added volume 35(12), pages 11106--11115.
+- Added `agent/reference_audit_2026-05-27.md` summarizing the audit.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` reran BibTeX and LaTeX successfully; `paper/main.bbl` contains 30 references. Log scan found no undefined references, undefined citations, overfull boxes, fatal errors, emergency stops, rerun warnings, LaTeX warnings, or BibTeX `Warning--` lines. Remaining underfull hbox/vbox messages are non-blocking layout artifacts.

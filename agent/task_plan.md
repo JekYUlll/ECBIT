@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 9 — Post-review verification and submission hardening
+Current Phase: Phase 10 — Reference audit and citation hardening
 Last Updated: 2026-05-27
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Latest re-review concerns are addressed in the manuscript. The station-month ERA5 baseline is framed as a strong operational baseline, neural gains are reported as modest paired-test improvements, full station metadata are in the appendix, and compile/test/log checks pass. ECBIT-gated strict non-overlap re-evaluation would still require checkpoint recovery or retraining because the Round 2 gated checkpoint files were not retained.
+Active Follow-up: Latest re-review concerns are addressed and the bibliography has been checked online. Four reference metadata issues were corrected: AntAWS author names, IMAU page range, PROMICE/GC-NET author name, and Informer official AAAI DOI/volume/pages. ECBIT-gated strict non-overlap re-evaluation would still require checkpoint recovery or retraining because the Round 2 gated checkpoint files were not retained.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -105,6 +105,12 @@ Active Follow-up: Latest re-review concerns are addressed in the manuscript. The
 - [x] Harmonize specific-humidity wording in the contribution list and Abstract
 - [x] Re-run LaTeX compile, log scan, reference count, placeholder scan, and targeted local tests
 - [x] Record residual constraints: gated ECBIT strict non-overlap re-evaluation is not available from retained artifacts
+
+## Phase 10 · Reference Audit 05-27
+- [x] Perform online verification of all 30 BibTeX entries against publisher, DOI, arXiv, OpenReview, NeurIPS, AAAI, and PMLR pages
+- [x] Correct AntAWS author names, IMAU page range, PROMICE/GC-NET author name, and Informer official proceedings metadata
+- [x] Add `agent/reference_audit_2026-05-27.md` with audit scope, corrections, and verified-without-change categories
+- [x] Re-run BibTeX/LaTeX and verify `paper/main.bbl` contains 30 references with no BibTeX or LaTeX citation warnings
 
 ## Blocked Issues
 | Issue | Status | Action |

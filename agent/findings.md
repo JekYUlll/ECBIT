@@ -440,3 +440,10 @@ Important correction: an initial selection with only mean core completeness reta
 - The station-month-vs-neural paired table is reproducible from `scripts/make_station_month_neural_tests.py` and shows all four neural ERA5 variants beating the calibrated direct baseline on matched configurations, with variate-token gains near 0.012 normalized MAE.
 - The manuscript now matches the requested application-oriented framing: benchmark/protocol evidence first, ERA5 conditioning and block curriculum second, and gated ECBIT only as a controlled architecture. The title, Abstract, CDS point-series wording, appendix metadata placement, and conclusion all reflect this framing.
 - Residual constraint: strict non-overlap re-evaluation is available for retained iTransformer+ERA5 checkpoints only. Gated ECBIT checkpoint files were not retained, so a gated strict-subset run would require checkpoint recovery or retraining and should not be implied as completed.
+
+## Reference Audit (2026-05-27)
+
+- Online bibliography verification found four correctable metadata issues. The most important was the AntAWS citation: the current BibTeX had several incorrect author first names, while the ESSD source lists Yetang Wang, Wentao Ning, David Mikolajczyk, Lee J. Welhouse, Zhaosheng Zhai, and Yuqi Sun.
+- The IMAU Antarctic AWS citation page range is 4933--4955, not 4933--4960.
+- The PROMICE/GC-NET AWS author is Rasmus Bahbah, not Razan Bahbah.
+- Informer has an official AAAI proceedings DOI and page range; use `10.1609/aaai.v35i12.17325`, volume 35(12), pages 11106--11115, rather than only the arXiv DOI.
