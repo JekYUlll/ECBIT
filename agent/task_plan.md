@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 10 — Reference audit and citation hardening
+Current Phase: Phase 11 — Experiment-gap review
 Last Updated: 2026-05-27
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Latest re-review concerns are addressed and the bibliography has been checked online. Four reference metadata issues were corrected: AntAWS author names, IMAU page range, PROMICE/GC-NET author name, and Informer official AAAI DOI/volume/pages. ECBIT-gated strict non-overlap re-evaluation would still require checkpoint recovery or retraining because the Round 2 gated checkpoint files were not retained.
+Active Follow-up: Latest re-review concerns and bibliography checks are addressed. A 2026-05-28 reviewer-style experiment-gap review found no submission-blocking GPU experiments. The highest-value optional hardening experiment is a local stateless station-month calibrated ERA5 plus endpoint/interpolation hybrid baseline.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -111,6 +111,12 @@ Active Follow-up: Latest re-review concerns are addressed and the bibliography h
 - [x] Correct AntAWS author names, IMAU page range, PROMICE/GC-NET author name, and Informer official proceedings metadata
 - [x] Add `agent/reference_audit_2026-05-27.md` with audit scope, corrections, and verified-without-change categories
 - [x] Re-run BibTeX/LaTeX and verify `paper/main.bbl` contains 30 references with no BibTeX or LaTeX citation warnings
+
+## Phase 11 · Experiment-Gap Review 05-28
+- [x] Re-check manuscript evidence coverage and compile/log state from a reviewer perspective
+- [x] Decide whether additional experiments are submission-blocking
+- [x] Rank optional experiments by reviewer-risk reduction
+- [x] Add `agent/05-28-review-experiment-gap.md`
 
 ## Blocked Issues
 | Issue | Status | Action |

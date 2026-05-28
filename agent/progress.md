@@ -469,3 +469,13 @@
   - `zhou2021informer`: replaced arXiv DOI with official AAAI DOI `10.1609/aaai.v35i12.17325` and added volume 35(12), pages 11106--11115.
 - Added `agent/reference_audit_2026-05-27.md` summarizing the audit.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` reran BibTeX and LaTeX successfully; `paper/main.bbl` contains 30 references. Log scan found no undefined references, undefined citations, overfull boxes, fatal errors, emergency stops, rerun warnings, LaTeX warnings, or BibTeX `Warning--` lines. Remaining underfull hbox/vbox messages are non-blocking layout artifacts.
+
+## Session: 2026-05-28
+
+### Experiment-Gap Review
+- Re-read the planning files and current manuscript state for a reviewer-style experiment-gap assessment.
+- Verified compile/log state: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` is up to date; log scan found no undefined references/citations, BibTeX warnings, overfull boxes, fatal errors, emergency stops, or rerun warnings.
+- Checked the current empirical coverage: fair ERA5-augmented SAITS/iTransformer baselines, station-month calibrated ERA5 paired tests, block-vs-MCAR transfer matrix, outage-length/variable/downsampling analyses, held-out station detail, real-gap plausibility, split-overlap/non-overlap sensitivity, observed-position audit, raw-unit errors, and reference audit are all present.
+- Reviewer judgment: no submission-blocking GPU experiment remains for an application-oriented polar/meteorological journal.
+- Highest-value optional pre-submission experiment is a local stateless station-month calibrated ERA5 + endpoint/interpolation hybrid baseline, because it directly tests whether a simple operational method can close the remaining gap to neural ERA5 models.
+- Added `agent/05-28-review-experiment-gap.md` with the risk-ranked experiment recommendation.

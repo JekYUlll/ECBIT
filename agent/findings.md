@@ -447,3 +447,9 @@ Important correction: an initial selection with only mean core completeness reta
 - The IMAU Antarctic AWS citation page range is 4933--4955, not 4933--4960.
 - The PROMICE/GC-NET AWS author is Rasmus Bahbah, not Razan Bahbah.
 - Informer has an official AAAI proceedings DOI and page range; use `10.1609/aaai.v35i12.17325`, volume 35(12), pages 11106--11115, rather than only the arXiv DOI.
+
+## Experiment-Gap Review (2026-05-28)
+
+- No mandatory new GPU experiment is needed for the current application-oriented framing. The empirical matrix already addresses the major reviewer risks: fair baselines, calibrated ERA5, missingness curriculum, held-out station heterogeneity, real-gap plausibility, non-overlap sensitivity, and observed-position preservation.
+- The highest-value optional experiment is not another neural architecture. It is a stateless operational hybrid baseline that combines station-month calibrated ERA5 with endpoint anchoring or interpolation. This directly tests whether simple calibrated ERA5 plus local continuity can match the neural ERA5 models.
+- Seasonal/month-level error analysis, multiple held-out splits, BRITS/CSDI block retraining, probabilistic uncertainty, and gated ECBIT non-overlap re-evaluation are useful but not submission-blocking. The last item would require checkpoint recovery or retraining because gated checkpoints were not retained.
