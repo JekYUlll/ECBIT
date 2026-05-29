@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 11 — Experiment-gap review
-Last Updated: 2026-05-27
+Current Phase: Phase 12 — Figure/table audit
+Last Updated: 2026-05-29
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Latest re-review concerns and bibliography checks are addressed. A 2026-05-28 reviewer-style experiment-gap review found no submission-blocking GPU experiments. The highest-value optional hardening experiment is a local stateless station-month calibrated ERA5 plus endpoint/interpolation hybrid baseline.
+Active Follow-up: Latest re-review concerns, bibliography checks, experiment-gap review, and figure/table audit are addressed. A 2026-05-29 audit found and fixed several figure/table labeling and regeneration-source issues; no remaining factual figure/table mismatch is known.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -117,6 +117,15 @@ Active Follow-up: Latest re-review concerns and bibliography checks are addresse
 - [x] Decide whether additional experiments are submission-blocking
 - [x] Rank optional experiments by reviewer-risk reduction
 - [x] Add `agent/05-28-review-experiment-gap.md`
+
+
+## Phase 12 · Figure/Table Audit 05-29
+- [x] Inventory all manuscript figures and tables and map them to source scripts/artifacts
+- [x] Re-run local non-training table and figure generation scripts
+- [x] Cross-check headline numbers against CSV artifacts and manuscript claims
+- [x] Fix factual or potentially misleading labels in Fig. 3, station metadata, raw-unit q errors, and generation-script captions
+- [x] Render and visually inspect the figure/table pages for overlaps, clipping, and legend placement
+- [x] Add `agent/05-29-figure-table-audit.md`
 
 ## Blocked Issues
 | Issue | Status | Action |

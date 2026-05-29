@@ -479,3 +479,20 @@
 - Reviewer judgment: no submission-blocking GPU experiment remains for an application-oriented polar/meteorological journal.
 - Highest-value optional pre-submission experiment is a local stateless station-month calibrated ERA5 + endpoint/interpolation hybrid baseline, because it directly tests whether a simple operational method can close the remaining gap to neural ERA5 models.
 - Added `agent/05-28-review-experiment-gap.md` with the risk-ranked experiment recommendation.
+
+## Session: 2026-05-29
+
+### Figure/Table Audit
+- Used `planning-with-files`, `ml-paper-writing`, and `academic-plotting` guidance for a detailed figure/table verification pass.
+- Inventoried all 8 figures and 17 manuscript tables, then re-ran local non-training table and plot generation scripts. Local neural model training/evaluation was not run.
+- Recomputed ERA5 direct calibration locally; rounded manuscript values remain unchanged: station-month mean-bias MAE 0.270, global linear MAE 0.378, global mean-bias MAE 0.381, no calibration MAE 0.387.
+- Reconfirmed station-month calibrated ERA5 vs neural paired-test values and the block/MCAR transfer matrix values.
+- Fixed `scripts/make_round2_table.py` to use `round2_gated_final_runs.csv` instead of stale `round2_partial_runs.csv`; regenerated `tab_round2_ablations.tex` with a caption that distinguishes the in-distribution MCAR-test row from MCAR-on-block transfer rows.
+- Fixed `scripts/make_curriculum_factorial_table.py` so regenerated Table XIV preserves the out-of-distribution MCAR-on-block interpretation.
+- Fixed Fig. 3's misleading group label from `No-ERA5 baselines` to `Core baselines` and clarified its y-axis as normalized MAE.
+- Fixed station metadata table wording: the main-text elevation column is now explicitly `Median elev.`, and appendix station names are stripped so `aws11` no longer has a trailing-space artifact.
+- Fixed raw-unit q error formatting to three decimals, avoiding the misleading `0.00` standard deviation.
+- Adjusted Fig. 7 panel (a)'s first gap annotation away from the y-axis.
+- Rendered and visually inspected PDF pages containing figures/tables. Fig. 4 and Fig. 5/6 legends do not overlap curves; no obvious table clipping or factual label mismatch remains.
+- Verification: final `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced an 18-page PDF. Log scan found no undefined refs/cites, BibTeX warnings, overfull boxes, fatal errors, emergency stops, or rerun warnings; only non-blocking underfull messages remain.
+- Added `agent/05-29-figure-table-audit.md`.

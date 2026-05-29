@@ -453,3 +453,11 @@ Important correction: an initial selection with only mean core completeness reta
 - No mandatory new GPU experiment is needed for the current application-oriented framing. The empirical matrix already addresses the major reviewer risks: fair baselines, calibrated ERA5, missingness curriculum, held-out station heterogeneity, real-gap plausibility, non-overlap sensitivity, and observed-position preservation.
 - The highest-value optional experiment is not another neural architecture. It is a stateless operational hybrid baseline that combines station-month calibrated ERA5 with endpoint anchoring or interpolation. This directly tests whether simple calibrated ERA5 plus local continuity can match the neural ERA5 models.
 - Seasonal/month-level error analysis, multiple held-out splits, BRITS/CSDI block retraining, probabilistic uncertainty, and gated ECBIT non-overlap re-evaluation are useful but not submission-blocking. The last item would require checkpoint recovery or retraining because gated checkpoints were not retained.
+
+### Figure/Table Audit 2026-05-29
+- Audited all 8 figures and 17 tables against their generation scripts and CSV/result artifacts.
+- Found and fixed a factual Fig. 3 label issue: the first group included ERA5 direct but was labeled `No-ERA5 baselines`; it is now `Core baselines`.
+- Found and fixed table-label clarity issues: station summary elevation is a split median, appendix `aws11` had a trailing-space artifact, and raw-unit q errors needed three decimals to avoid displaying q standard deviation as `0.00`.
+- Found and fixed two regeneration-source/caption risks: `make_round2_table.py` defaulted to stale partial Round 2 runs, and `make_curriculum_factorial_table.py` would regenerate a weaker MCAR-on-block caption.
+- Confirmed key regenerated values: station-month ERA5 MAE 0.269853, block+ERA5 MAE 0.258, block/no-ERA5 MAE 0.346, MCAR+ERA5-on-block MAE 0.407, MCAR/no-ERA5-on-block MAE 0.529.
+- Visual PDF inspection found no remaining obvious legend overlap, table clipping, or figure-caption/data mismatch. Final compile remains 18 pages with no undefined refs/cites, BibTeX warnings, overfull boxes, fatal errors, or rerun warnings.

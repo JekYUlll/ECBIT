@@ -73,7 +73,7 @@ def write_tex(table: pd.DataFrame, out_tex: Path) -> None:
     lines = [
         "\\begin{table*}[t]",
         "  \\centering",
-        "  \\caption{Factorial check of block-missing curriculum and ERA5 conditioning. Values are mean test MAE when evaluated on block-missing masks; lower is better.}",
+        "  \\caption{Cross-training-paradigm comparison of block-missing curriculum and ERA5 conditioning. All values are mean MAE on block-missing test masks; lower is better. MCAR rows are MCAR-trained models evaluated out-of-distribution on block-missing test masks, so row differences measure block-test transfer rather than standard factorial main effects.}",
         "  \\label{tab:curriculum-era5-factorial}",
         "  \\begin{tabular}{llcccc}",
         "    \\toprule",

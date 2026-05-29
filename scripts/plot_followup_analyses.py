@@ -48,12 +48,13 @@ def plot_block_length(ax: plt.Axes, summary: pd.DataFrame) -> None:
     for hours, row in pivot.iterrows():
         if {"full", "no_era5"}.issubset(row.index):
             gap = row["no_era5"] - row["full"]
+            is_left_edge = hours == pivot.index.min()
             ax.annotate(
                 f"+{gap:.3f}",
                 xy=(hours, row["no_era5"]),
-                xytext=(0, 7),
+                xytext=(8 if is_left_edge else 0, 7),
                 textcoords="offset points",
-                ha="center",
+                ha="left" if is_left_edge else "center",
                 fontsize=7,
                 color="#444444",
             )

@@ -9,7 +9,7 @@ from pathlib import Path
 import pandas as pd
 
 
-RUNS_CSV = Path("experiments/results/tables/round2_partial_runs.csv")
+RUNS_CSV = Path("experiments/results/tables/round2_gated_final_runs.csv")
 OUT_TEX = Path("paper/tables/tab_round2_ablations.tex")
 VARIANT_ORDER = ["full", "no_cross", "no_era5", "no_blockmask"]
 VARIANT_LABELS = {
@@ -47,11 +47,11 @@ def main() -> None:
     lines = [
         "\\begin{table}[t]",
         "  \\centering",
-        "  \\caption{Round 2 ERA5-conditioning ablation results. Values are mean test MAE over all runs; the count in parentheses indicates configurations. MCAR training uses a different mask distribution and is reported separately. Lower is better.}",
+        "  \\caption{Round 2 ERA5-conditioning ablation results. Block rows use block test masks; the MCAR row is an in-distribution MCAR-test reference and differs from Table~\\ref{tab:curriculum-era5-factorial}'s MCAR-on-block rows. Lower is better.}",
         "  \\label{tab:round2-ablations}",
         "  \\begin{tabular}{lc}",
         "    \\toprule",
-        "    Variant & Block-mask MAE \\\\",
+        "    Variant & Test MAE \\\\",
         "    \\midrule",
     ]
     for variant in [v for v in VARIANT_ORDER if v != "no_blockmask"]:

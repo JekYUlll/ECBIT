@@ -81,11 +81,11 @@ def plot(round1_runs: Path, fair_runs: Path, round2_runs: Path, out_pdf: Path, o
 
     ax.axvline(4.5, color="#666666", linestyle="--", linewidth=0.8, alpha=0.8)
     ax.axvline(7.5, color="#666666", linestyle="--", linewidth=0.8, alpha=0.8)
-    ax.text(2.0, 0.535, "No-ERA5 baselines", ha="center", va="center", fontsize=8, color="#444444")
+    ax.text(2.0, 0.535, "Core baselines", ha="center", va="center", fontsize=8, color="#444444")
     ax.text(6.0, 0.535, "ECBIT variants", ha="center", va="center", fontsize=8, color="#444444")
     ax.text(8.5, 0.535, "Fair ERA5", ha="center", va="center", fontsize=8, color="#444444")
     ax.set_xticks(list(x), data["label"], rotation=22, ha="right")
-    ax.set_ylabel("Mean test MAE")
+    ax.set_ylabel("Mean test MAE (normalized)")
     ax.set_ylim(0.22, 0.56)
     ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.85)
     ax.set_axisbelow(True)

@@ -94,11 +94,11 @@ def main() -> None:
     summary_lines = [
         "\\begin{table}[t]",
         "  \\centering",
-        "  \\caption{Benchmark station summary. Completeness values are mean observed fractions over retained raw 3-hourly station records; full station metadata are reported in Appendix Table~\\ref{tab:station-metadata-full}.}",
+        "  \\caption{Benchmark station summary. Elevation is the split median; completeness values are mean observed fractions over retained raw 3-hourly station records. Full station metadata are reported in Appendix Table~\\ref{tab:station-metadata-full}.}",
         "  \\label{tab:station-metadata}",
         "  \\begin{tabular}{lrrrrrr}",
         "    \\toprule",
-        "    Split & Stations & Years & Elev. & T & RH & q \\\\",
+        "    Split & Stations & Years & Median elev. & T & RH & q \\\\",
         "    & & & (m) & (\\%) & (\\%) & (\\%) \\\\",
         "    \\midrule",
     ]
@@ -125,7 +125,7 @@ def main() -> None:
         "    \\midrule",
     ]
     for row in table.itertuples(index=False):
-        station = str(row.station).replace("_", "\\_")
+        station = str(row.station).strip().replace("_", "\\_")
         split = "held-out" if row.split == "heldout" else "main"
         lines.append(
             f"    {station} & {row.lat:.2f} & {row.lon:.2f} & {row.elev_m:.0f} & "

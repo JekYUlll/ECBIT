@@ -74,11 +74,12 @@ def write_latex(summary: pd.DataFrame, out_tex: Path) -> None:
         "    \\midrule",
     ]
     for _, row in focus.iterrows():
+        fmt = ".3f" if row["variable"] == "q" else ".2f"
         lines.append(
             "    "
             + f"{row['variable_label']} & "
-            + f"{row['mae_raw_mean']:.2f} $\\pm$ {row['mae_raw_std']:.2f} & "
-            + f"{row['rmse_raw_mean']:.2f} $\\pm$ {row['rmse_raw_std']:.2f} \\\\"
+            + f"{row['mae_raw_mean']:{fmt}} $\\pm$ {row['mae_raw_std']:{fmt}} & "
+            + f"{row['rmse_raw_mean']:{fmt}} $\\pm$ {row['rmse_raw_std']:{fmt}} \\\\"
         )
     lines.extend(["    \\bottomrule", "  \\end{tabular}", "\\end{table}"])
     out_tex.parent.mkdir(parents=True, exist_ok=True)
