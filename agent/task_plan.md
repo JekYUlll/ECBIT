@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 13 — Narrative/prose audit
+Current Phase: Phase 14 — Citation truth/content audit
 Last Updated: 2026-05-29
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Latest re-review concerns, bibliography checks, experiment-gap review, figure/table audit, and prose/narrative audit are addressed. No known submission-blocking experiment, figure/table, citation, or narrative-coherence issue remains for an application-oriented polar/meteorological journal.
+Active Follow-up: Second-pass citation truth/content audit is complete. References now compile to 33 entries, all cited in text, with no known fabricated, uncited, or context-mismatched citation.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -133,6 +133,15 @@ Active Follow-up: Latest re-review concerns, bibliography checks, experiment-gap
 - [x] Compress repeated architecture-disclaimer passages while preserving the conservative claim
 - [x] Recompile and scan LaTeX logs
 - [x] Add `agent/05-29-prose-audit.md`
+- [x] Commit the atomic edit
+
+## Phase 14 · Citation Truth/Content Audit 05-29
+- [x] Spawn independent subagents for bibliography metadata, citation-context fit, and coverage/reasonableness
+- [x] Re-verify bibliography metadata against primary online sources
+- [x] Re-check all citation contexts against cited-paper content
+- [x] Patch BibTeX or prose if mismatches are found
+- [x] Compile and scan LaTeX/BibTeX logs
+- [x] Add `agent/05-29-citation-truth-audit.md`
 - [x] Commit the atomic edit
 
 ## Blocked Issues

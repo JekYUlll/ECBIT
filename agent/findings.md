@@ -57,6 +57,14 @@ Block-wise imputation is a better fit than forecasting for ERA5 conditioning:
 - The main remaining prose issue was redundancy: Results, Discussion, and Conclusion each repeated that gated ECBIT is not architecture-dominant. The revised text keeps this conservative claim but removes reviewer-response phrasing and redundant defensive transitions.
 - Explicit revision-history wording was removed from the Experimental Protocol. A Related Work phrase mentioning IMAU radiation-balance variables was neutralized to "additional surface-energy and surface-height variables" so it does not distract from the imputation scope.
 
+## Citation Truth/Content Audit (2026-05-29)
+
+- A subagent-assisted citation audit found that all original references were real and cited, but several core method claims needed stronger local support.
+- Added Rubin (1976) for MCAR terminology, Holm (1979) for multiple-comparison correction, and Bolton (1980) for the saturation-vapor-pressure approximation used in humidity derivation.
+- Added near-section citations for AntAWS, ERA5, SAITS, iTransformer-style baseline, and BRITS where these methods/data sources are described.
+- Corrected one context mismatch: Antarctic ERA5 temperature/wind validation papers are no longer used to support humidity-specific ERA5 bias claims. RH is now described as a benchmark-specific result unless directly supported by this study.
+- Final state: 33 BibTeX entries, 33 unique cited keys, no uncited or missing keys, and no known unsupported citation context.
+
 ## Metadata Check (2026-05-23)
 
 - Mount Sidley elevation in `data/station_meta_ecbit.csv` is 2123.0 m for the selected AWS installation (`station_id=mount_sidley`, POLENET, lat -77.13, lon -125.97). Manuscript wording should say "AWS installation elevation" or "station metadata elevation" to avoid confusion with the Mount Sidley summit elevation.

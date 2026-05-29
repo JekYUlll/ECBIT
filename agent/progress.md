@@ -505,3 +505,12 @@
 - Added `agent/05-29-prose-audit.md`.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 17-page PDF. Log scan found no undefined refs/cites, BibTeX warnings, overfull boxes, fatal errors, emergency stops, rerun warnings, or LaTeX warnings; remaining underfull messages are non-blocking IEEE layout artifacts.
 - Commit: subrepo `[paper] revise: tighten manuscript narrative`.
+
+### Citation Truth and Content Audit
+- User requested a subagent-assisted audit to ensure all references are real, reasonable, and used according to their actual content. Attempted to create a new API goal, but the goal tool rejected it because an existing completed goal is still attached to the thread; continued by adding Phase 14 to `agent/task_plan.md`.
+- Spawned subagents for coverage/reasonableness, metadata verification, and citation-context matching. The coverage agent found no uncited or missing keys but recommended adding method citations for MCAR, Holm correction, and humidity derivation. Metadata and context agents found no mandatory metadata fixes, but the context agent flagged humidity-specific ERA5 bias claims as not directly supported by the cited temperature/wind validation papers.
+- Added `rubin1976inference`, `holm1979simple`, and `bolton1980computation` to `paper/references.bib`.
+- Added local citations for AntAWS, ERA5, SAITS, iTransformer-style baseline, and BRITS in the data/protocol sections.
+- Rewrote the RH/ERA5 wording so it is a benchmark-specific observation rather than a claim sourced to Antarctic ERA5 temperature/wind validation papers. Softened exogenous-fusion preprint wording.
+- Added `agent/05-29-citation-truth-audit.md`.
+- Verification: 33 unique BibTeX keys, 33 unique cited keys, no uncited or missing references, 33 compiled `main.bbl` entries. `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced an 18-page PDF. Log scan found no undefined refs/cites, BibTeX warnings, overfull boxes, fatal errors, emergency stops, rerun warnings, or LaTeX warnings.
