@@ -496,3 +496,12 @@
 - Rendered and visually inspected PDF pages containing figures/tables. Fig. 4 and Fig. 5/6 legends do not overlap curves; no obvious table clipping or factual label mismatch remains.
 - Verification: final `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced an 18-page PDF. Log scan found no undefined refs/cites, BibTeX warnings, overfull boxes, fatal errors, emergency stops, or rerun warnings; only non-blocking underfull messages remain.
 - Added `agent/05-29-figure-table-audit.md`.
+
+### Prose and Narrative Audit
+- Used `planning-with-files` and `ml-paper-writing` guidance for a full manuscript prose pass focused on narrative drift, AI-like reviewer-response wording, and redundant architecture disclaimers.
+- Confirmed no active early ECAFT/surface-radiation/M2VIP framing remains in the manuscript. The only forecasting references are legitimate context for time-series transformer literature or the Introduction's imputation-vs-forecasting distinction.
+- Removed explicit revision-history wording from `paper/sections/experimental_protocol.tex`, including `present revision` and `The revision records`.
+- Tightened `paper/main.tex`, `paper/sections/introduction.tex`, `paper/sections/related_work.tex`, `paper/sections/experiments.tex`, `paper/sections/discussion.tex`, and `paper/sections/conclusion.tex` to reduce repeated defensive wording around gated-fusion non-dominance while preserving the conservative empirical claim.
+- Added `agent/05-29-prose-audit.md`.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 17-page PDF. Log scan found no undefined refs/cites, BibTeX warnings, overfull boxes, fatal errors, emergency stops, rerun warnings, or LaTeX warnings; remaining underfull messages are non-blocking IEEE layout artifacts.
+- Commit: subrepo `[paper] revise: tighten manuscript narrative`.

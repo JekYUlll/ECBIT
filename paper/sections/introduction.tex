@@ -13,5 +13,5 @@ The contributions are:
   \item an AntAWS-derived 3-hourly station benchmark with 32 selected stations, sparse observation masks, aligned ERA5 point time series, realistic block-missing simulation, and held-out station splits;
   \item quantitative evidence that ERA5 conditioning provides substantial incremental predictive value under contiguous outages, reducing block-trained MAE from 0.346 to 0.258, producing a relative benefit that grows from 13.8\% for 24-hour gaps to 26.4\% for 216-hour gaps, and relying most on temperature, wind speed, and specific-humidity channels;
   \item a failure-mode curriculum study showing that MCAR-trained ERA5 models transfer poorly to block tests, reaching 0.407 MAE, whereas block-trained ERA5 models reach 0.258;
-  \item fair ERA5-augmented baseline tests showing that SAITS+ERA5, iTransformer+ERA5, gated ECBIT, and concat ECBIT are statistically indistinguishable at the aggregate level, so the strongest conclusion is about failure-mode matching and ERA5 conditioning rather than architecture dominance.
+  \item fair ERA5-augmented baseline tests showing that SAITS+ERA5, iTransformer+ERA5, gated ECBIT, and concat ECBIT are close in aggregate performance, placing the main empirical emphasis on failure-mode matching and ERA5 conditioning rather than architecture dominance.
 \end{itemize}

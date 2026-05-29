@@ -51,6 +51,12 @@ Block-wise imputation is a better fit than forecasting for ERA5 conditioning:
 - Historical real-gap language now explicitly says the audit is not supervised accuracy evaluation because ground truth is unavailable inside natural gaps.
 - Post-review cleanup added paired tests between station-month calibrated ERA5 direct and ERA5-augmented neural variants. Results over the same 27 matched block-missing configurations: SAITS+ERA5 minus station-month ERA5 = -0.0249 MAE, 95% CI [-0.0497, -0.0002], Holm p=0.048; iTransformer+ERA5 = -0.0117, 95% CI [-0.0140, -0.0094], Holm p<1e-4; ECBIT concat = -0.0119, 95% CI [-0.0145, -0.0093], Holm p<1e-4; ECBIT gated = -0.0121, 95% CI [-0.0152, -0.0091], Holm p<1e-4. The correct interpretation is that station-month calibrated ERA5 is a strong operational baseline, while neural ERA5 conditioning provides a statistically supported but modest additional gain by using sparse AWS temporal/cross-variable context.
 
+## Prose/Narrative Audit (2026-05-29)
+
+- The current manuscript does not retain the archived ECAFT surface-radiation prediction framing. It consistently presents an Antarctic AWS block-missing imputation benchmark and ERA5-conditioning study.
+- The main remaining prose issue was redundancy: Results, Discussion, and Conclusion each repeated that gated ECBIT is not architecture-dominant. The revised text keeps this conservative claim but removes reviewer-response phrasing and redundant defensive transitions.
+- Explicit revision-history wording was removed from the Experimental Protocol. A Related Work phrase mentioning IMAU radiation-balance variables was neutralized to "additional surface-energy and surface-height variables" so it does not distract from the imputation scope.
+
 ## Metadata Check (2026-05-23)
 
 - Mount Sidley elevation in `data/station_meta_ecbit.csv` is 2123.0 m for the selected AWS installation (`station_id=mount_sidley`, POLENET, lat -77.13, lon -125.97). Manuscript wording should say "AWS installation elevation" or "station metadata elevation" to avoid confusion with the Mount Sidley summit elevation.

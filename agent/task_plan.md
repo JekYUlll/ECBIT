@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 12 — Figure/table audit
+Current Phase: Phase 13 — Narrative/prose audit
 Last Updated: 2026-05-29
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Latest re-review concerns, bibliography checks, experiment-gap review, and figure/table audit are addressed. A 2026-05-29 audit found and fixed several figure/table labeling and regeneration-source issues; no remaining factual figure/table mismatch is known.
+Active Follow-up: Latest re-review concerns, bibliography checks, experiment-gap review, figure/table audit, and prose/narrative audit are addressed. No known submission-blocking experiment, figure/table, citation, or narrative-coherence issue remains for an application-oriented polar/meteorological journal.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -126,6 +126,14 @@ Active Follow-up: Latest re-review concerns, bibliography checks, experiment-gap
 - [x] Fix factual or potentially misleading labels in Fig. 3, station metadata, raw-unit q errors, and generation-script captions
 - [x] Render and visually inspect the figure/table pages for overlaps, clipping, and legend placement
 - [x] Add `agent/05-29-figure-table-audit.md`
+
+## Phase 13 · Narrative/Prose Audit 05-29
+- [x] Scan the manuscript for residual early ECAFT/radiation/forecasting direction cues
+- [x] Remove explicit revision-response wording and reviewer-facing prose
+- [x] Compress repeated architecture-disclaimer passages while preserving the conservative claim
+- [x] Recompile and scan LaTeX logs
+- [x] Add `agent/05-29-prose-audit.md`
+- [x] Commit the atomic edit
 
 ## Blocked Issues
 | Issue | Status | Action |
