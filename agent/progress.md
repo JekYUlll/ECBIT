@@ -514,3 +514,12 @@
 - Rewrote the RH/ERA5 wording so it is a benchmark-specific observation rather than a claim sourced to Antarctic ERA5 temperature/wind validation papers. Softened exogenous-fusion preprint wording.
 - Added `agent/05-29-citation-truth-audit.md`.
 - Verification: 33 unique BibTeX keys, 33 unique cited keys, no uncited or missing references, 33 compiled `main.bbl` entries. `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced an 18-page PDF. Log scan found no undefined refs/cites, BibTeX warnings, overfull boxes, fatal errors, emergency stops, rerun warnings, or LaTeX warnings.
+
+## Session: 2026-06-01
+
+### Reference Follow-up from 06-01-01
+- Read `agent/06-01-01.md` and checked its actionable reference concerns against the current manuscript.
+- Verified arXiv metadata for `wang2024imputationsurvey` (`arXiv:2402.04059`). The current BibTeX author list is correct and includes Yang Yiyuan and Qian Linglong, so the report's proposed deletion was not applied.
+- Verified the Lee et al. auxiliary-fusion preprint metadata/abstract (`arXiv:2603.22372`) and corrected the related-work sentence from generic `constrained fusion adapters` to the paper's method name, `Controlled Fusion Adapter (CFA)`, in a time-series forecasting setting.
+- Searched the manuscript for the IMAU `154 station-years` risk flagged in the report; the active paper cites the archive as 19 locations from 1995--2022 and does not use the incorrect 154 station-year value.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed, `paper/main.pdf` remains 18 pages, and `paper/main.bbl` contains 33 references. Log scan found no undefined refs/cites, BibTeX warnings, overfull boxes, fatal errors, emergency stops, or rerun warnings.

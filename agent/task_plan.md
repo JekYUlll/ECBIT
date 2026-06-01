@@ -144,6 +144,13 @@ Active Follow-up: Second-pass citation truth/content audit is complete. Referenc
 - [x] Add `agent/05-29-citation-truth-audit.md`
 - [x] Commit the atomic edit
 
+## Phase 15 · Reference Follow-up 06-01
+- [x] Read `agent/06-01-01.md` and triage its confirmed errors, suspected issues, and no-change items
+- [x] Verify the disputed Wang et al. imputation-survey author list against arXiv metadata before editing BibTeX
+- [x] Correct the Lee et al. auxiliary-fusion citation context to use `Controlled Fusion Adapter (CFA)` and time-series forecasting wording
+- [x] Confirm the manuscript does not cite an incorrect `154 station-years` value for the IMAU AWS archive
+- [x] Recompile the manuscript and scan LaTeX/BibTeX logs
+
 ## Blocked Issues
 | Issue | Status | Action |
 |-------|--------|--------|
