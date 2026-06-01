@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 14 — Citation truth/content audit
-Last Updated: 2026-05-29
+Current Phase: Phase 16 — 06-01-02 review triage
+Last Updated: 2026-06-01
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: Second-pass citation truth/content audit is complete. References now compile to 33 entries, all cited in text, with no known fabricated, uncited, or context-mismatched citation.
+Active Follow-up: 06-01-02 review triage is complete. The next paper edit should be manuscript-only plus local aggregation: strengthen benchmark attrition, metric definitions, clipped-block diagnostics, humidity-mask clarification, held-out diagnostic caution, SAITS+ERA5 variance explanation, inference-time ERA5 downsampling wording, and limitations around probabilistic imputers/orography/compute cost. Do not launch new GPU training unless the user explicitly asks.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -150,6 +150,15 @@ Active Follow-up: Second-pass citation truth/content audit is complete. Referenc
 - [x] Correct the Lee et al. auxiliary-fusion citation context to use `Controlled Fusion Adapter (CFA)` and time-series forecasting wording
 - [x] Confirm the manuscript does not cite an incorrect `154 station-years` value for the IMAU AWS archive
 - [x] Recompile the manuscript and scan LaTeX/BibTeX logs
+
+## Phase 16 · Review Triage 06-01-02
+- [x] Read `agent/06-01-02-review.md` and compare the requested revisions with the current manuscript
+- [x] Decide which items require immediate manuscript edits versus optional experiments
+- [x] Confirm station-selection attrition counts from `data/station_meta_ecbit.csv`
+- [x] Confirm realized long-block clipped-length statistics from the existing diagnostics
+- [x] Confirm SAITS+ERA5 variance source from existing fair-baseline run tables
+- [ ] Apply the selected manuscript-only edits and local table/text updates
+- [ ] Recompile, scan logs, update progress, and commit
 
 ## Blocked Issues
 | Issue | Status | Action |

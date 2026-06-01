@@ -481,3 +481,10 @@ Important correction: an initial selection with only mean core completeness reta
 - `arXiv:2402.04059` currently lists Jun Wang, Wenjie Du, Yiyuan Yang, Linglong Qian, Wei Cao, Keli Zhang, Wenjia Wang, Yuxuan Liang, and Qingsong Wen. The existing `wang2024imputationsurvey` BibTeX entry is therefore retained unchanged.
 - `arXiv:2603.22372` proposes Controlled Fusion Adapter (CFA) for time-series forecasting with auxiliary modalities. The related-work citation now uses the correct method name and task scope.
 - The active manuscript does not contain the incorrect IMAU `154 station-years` figure.
+
+## Review Triage 2026-06-01
+
+- Station selection attrition from `data/station_meta_ecbit.csv`: 267 readable/matched station files; 150 fail the 10-year threshold, leaving 117; 79 more fail the 70% temperature-completeness threshold, leaving 38; 2 more fail the 50% core-mean threshold, leaving 36; 4 more fail the 20% per-core-variable threshold, leaving the final 32 stations. No eligible station is left unselected.
+- Existing realized block diagnostics are sufficient for the review's clipped-length concern. For long blocks, sampled intervals have median 155--156 steps, but clipped intervals have median 80 steps, p10 17, p90 139, and max 168 steps across rates; supervised label segments have median 5 steps because original AWS gaps split observed labels.
+- SAITS+ERA5 overall MAE variance is driven mainly by block regime and missing rate rather than seed instability: overall 0.2449 +/- 0.0621; pattern means short 0.200, medium 0.235, long 0.299; rate means 20% 0.192, 40% 0.253, 60% 0.289; average within-cell seed std is 0.0175.
+- ERA5 temporal downsampling in `scripts/evaluate_era5_robustness.py` is an inference-time perturbation of models trained with 3-hourly ERA5, not retraining with downsampled ERA5. The manuscript should state this to avoid overclaiming deployment robustness.
