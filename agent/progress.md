@@ -1,5 +1,13 @@
 # ECBIT Progress Log
 
+## Session: 2026-06-01
+
+### Phase 17 · Journal Selection
+- Re-read the active planning files and current manuscript framing.
+- Checked current official pages for Polar Science, Meteorological Applications, Theoretical and Applied Climatology, Earth Science Informatics, Environmental Data Science, Computers & Geosciences, Environmental Modelling & Software, and Journal of Applied Meteorology and Climatology.
+- Current recommendation: first submit to Polar Science; keep Meteorological Applications as the applied-operational backup; use Theoretical and Applied Climatology only if adding a compact seasonal/month-level analysis; keep Earth Science Informatics as a reproducibility/data-science backup.
+- Added `agent/06-01-03-journal-selection.md` with the venue ranking, risks, and minimal pre-submission edits.
+
 ## Session: 2026-05-18
 
 ### Phase 0 · Initialization

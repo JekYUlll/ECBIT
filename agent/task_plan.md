@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 16 — 06-01-02 manuscript revision
+Current Phase: Phase 17 — journal selection and submission targeting
 Last Updated: 2026-06-01
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: 06-01-02 manuscript revision is complete. The paper now incorporates the selected local/statistical clarifications without adding a defensive reviewer-response layer. No new GPU training was launched.
+Active Follow-up: 06-01-02 manuscript revision is complete. The paper now incorporates the selected local/statistical clarifications without adding a defensive reviewer-response layer. No new GPU training was launched. Current work is selecting a journal target and defining the smallest venue-specific submission edits.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -159,6 +159,13 @@ Active Follow-up: 06-01-02 manuscript revision is complete. The paper now incorp
 - [x] Confirm SAITS+ERA5 variance source from existing fair-baseline run tables
 - [x] Apply the selected manuscript-only edits and local table/text updates
 - [x] Recompile, scan logs, update progress, and commit
+
+## Phase 17 · Journal Selection 06-01
+- [x] Re-read planning context and current manuscript framing
+- [x] Check current official journal scopes and publishing models for leading candidates
+- [x] Rank target journals by fit to the current benchmark/application narrative
+- [x] Record venue-specific risks and required pre-submission edits in `agent/06-01-03-journal-selection.md`
+- [ ] Convert manuscript package to the selected journal format after target is confirmed
 
 ## Blocked Issues
 | Issue | Status | Action |
