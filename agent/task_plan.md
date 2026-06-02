@@ -1,7 +1,7 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
 Current Phase: Phase 17 — journal selection and submission targeting
-Last Updated: 2026-06-01
+Last Updated: 2026-06-02
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
 Active Follow-up: 06-01-02 manuscript revision is complete. The paper now incorporates the selected local/statistical clarifications without adding a defensive reviewer-response layer. No new GPU training was launched. Current work is selecting a journal target and defining the smallest venue-specific submission edits.
 
@@ -165,7 +165,9 @@ Active Follow-up: 06-01-02 manuscript revision is complete. The paper now incorp
 - [x] Check current official journal scopes and publishing models for leading candidates
 - [x] Rank target journals by fit to the current benchmark/application narrative
 - [x] Record venue-specific risks and required pre-submission edits in `agent/06-01-03-journal-selection.md`
-- [ ] Convert manuscript package to the selected journal format after target is confirmed
+- [x] Convert manuscript references to Polar Science author-year style with natbib and Elsevier Harvard bibliography style
+- [x] Recompile manuscript after citation-style conversion and verify no undefined citations or references remain
+- [ ] Convert full manuscript package to Elsevier/Polar Science submission format after citation style is verified
 
 ## Blocked Issues
 | Issue | Status | Action |

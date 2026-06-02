@@ -8,6 +8,14 @@
 - Current recommendation: first submit to Polar Science; keep Meteorological Applications as the applied-operational backup; use Theoretical and Applied Climatology only if adding a compact seasonal/month-level analysis; keep Earth Science Informatics as a reproducibility/data-science backup.
 - Added `agent/06-01-03-journal-selection.md` with the venue ranking, risks, and minimal pre-submission edits.
 
+## Session: 2026-06-02
+
+### Phase 17 · Polar Science Citation Style
+- Confirmed that Polar Science uses an author-year citation style through the official guide/search result and EndNote style metadata.
+- Updated `paper/main.tex` from IEEE numeric bibliography style to natbib author-year citations with `elsarticle-harv`.
+- Converted manuscript citations from raw `\cite{}` to `\citep{}` or `\citet{}` where needed to avoid duplicated author names in author-year prose.
+- Recompiled `paper/main.tex` after clearing stale IEEE-generated aux/bbl files. Final `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeds and produces an 18-page PDF with no undefined citations or references. Remaining BibTeX warnings are limited to four no-page-number conference entries (`liu2024itransformer`, `nie2023patchtst`, `vaswani2017attention`, `wu2023timesnet`).
+
 ## Session: 2026-05-18
 
 ### Phase 0 · Initialization
