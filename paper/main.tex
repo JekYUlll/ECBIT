@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{xcolor}
+\usepackage{url}
 \usepackage{lineno}
 \usepackage{setspace}
 \usepackage{tikz}
@@ -59,7 +60,7 @@ Acknowledgements will be added before submission.
 Funding information will be added before submission.
 
 \section*{Data and code availability}
-The benchmark is constructed from AntAWS station records and ERA5 reanalysis point time series. Processed station manifests, split indices, experiment configurations, generated figures, and aggregation scripts are maintained in the project repository. A public repository link and any access instructions for derived artifacts will be added before submission.
+The code, experiment configurations, summary result artifacts, generated figures, and table-generation scripts are available at \url{https://github.com/JekYUlll/ECBIT}. The repository does not redistribute raw AntAWS station files, downloaded ERA5 NetCDF point series, processed station-window arrays, or model checkpoints. AntAWS observations and ERA5 reanalysis data should be obtained from their original providers; the repository documents the expected local data layout and provides scripts for station selection, ERA5 point-series alignment, preprocessing, evaluation, aggregation, and figure generation.
 
 \bibliographystyle{elsarticle-harv}
 \bibliography{references}

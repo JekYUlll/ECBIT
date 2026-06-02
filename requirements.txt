@@ -1,0 +1,11 @@
+numpy>=2.2,<3
+pandas>=2.3
+scipy>=1.15
+torch>=2.6
+PyYAML>=6.0
+matplotlib>=3.10
+seaborn>=0.13
+xarray>=2024.0
+netCDF4>=1.6
+cdsapi>=0.7
+pytest>=8.0

@@ -233,6 +233,15 @@ data/imau/*
 experiments/results/metrics/**/*.pt
 experiments/results/metrics/**/.lock
 
+# Internal planning and local agent artifacts
+AGENTS.md
+CLAUDE.md
+PLAN.md
+agent/
+.agents/
+.codex/
+research-report-*.md
+
 # LaTeX build artifacts
 paper/*.aux
 paper/*.bbl
@@ -243,3 +252,6 @@ paper/*.log
 paper/*.out
 paper/*.pdf
 paper/*.spl
+paper/*.synctex.gz
+paper/raw.tex
+paper/output/

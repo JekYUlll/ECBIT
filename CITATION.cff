@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the accompanying paper and this code release."
+title: "ECBIT: ERA5-conditioned block imputation for Antarctic automatic weather station records"
+version: "0.1.0"
+date-released: 2026-06-02
+license: MIT
+repository-code: "https://github.com/JekYUlll/ECBIT"
+authors:
+  - family-names: Li
+    given-names: Yongzhe
+    email: yongzheli@seu.edu.cn
+    affiliation: "School of Mechanical Engineering, Southeast University"
+  - family-names: Zhang
+    given-names: Zhuyu
+    email: 220245154@seu.edu.cn
+    affiliation: "School of Mechanical Engineering, Southeast University"
+keywords:
+  - Antarctic automatic weather stations
+  - ERA5
+  - missing data imputation
+  - block missingness
+  - time series
+preferred-citation:
+  type: article
+  title: "Block-missing imputation of Antarctic automatic weather station records using ERA5 reanalysis conditioning"
+  authors:
+    - family-names: Li
+      given-names: Yongzhe
+    - family-names: Zhang
+      given-names: Zhuyu
+  journal: "Polar Science"
+  year: 2026
+  notes: "Manuscript in preparation/submission."
