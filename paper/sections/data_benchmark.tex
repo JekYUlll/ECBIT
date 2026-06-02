@@ -1,4 +1,4 @@
-\section{Data and Benchmark Construction}
+\section{Data and methods}
 
 \subsection{Station Selection}
 We construct the benchmark from the 3-hourly AntAWS station archive \citep{wang2023antaws}. The raw archive contains 267 station files after metadata matching and file-level screening. We retain stations only when they provide at least ten years of records, at least 70\% temperature completeness, at least 50\% mean completeness over the core variables, at least 20\% completeness for every core variable, and valid geographic metadata. Applied sequentially, these filters reduce the station pool from 267 to 117 after the record-length threshold, to 38 after the temperature-completeness threshold, to 36 after the core-mean threshold, and finally to 32 after the per-variable completeness threshold. The criteria remove stations that are long but effectively unusable for multivariate imputation, such as stations with nearly absent relative humidity records.

@@ -1,8 +1,9 @@
-\begin{table*}[p]
+\begin{table}[p]
   \centering
   \tiny
   \caption{Selected station metadata for the AntAWS-derived benchmark. Completeness columns report the fraction of observed 3-hourly values in the retained raw station record before sparse-window construction.}
   \label{tab:station-metadata-full}
+  \resizebox{\textwidth}{!}{%
   \begin{tabular}{lrrrrrrrrrrl}
     \toprule
     Station & Lat. & Lon. & Elev. & Start & End & T & RH & Wind & P & q & Split \\
@@ -41,5 +42,5 @@
     aws06 & -74.47 & -11.52 & 1160 & 1998 & 2009 & 76 & 86 & 87 & 92 & 71 & main \\
     aws11 & -71.17 & -6.80 & 690 & 2007 & 2019 & 81 & 50 & 77 & 89 & 44 & main \\
     \bottomrule
-  \end{tabular}
-\end{table*}
+  \end{tabular}}
+\end{table}

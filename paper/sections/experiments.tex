@@ -1,11 +1,11 @@
 \section{Results}
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.95\textwidth]{figures/fig_main_results.pdf}
   \caption{Main block-imputation comparison across core baselines, ECBIT variants, and fair ERA5-augmented baselines. Error bars show one standard deviation across the 27 block-regime, missing-rate, and seed configurations. ECBIT + ERA5 denotes gated injection; concat fusion, iTransformer+ERA5, and gated ECBIT are nearly tied, while SAITS+ERA5 has the lowest aggregate mean with larger cross-configuration variance.}
   \label{fig:main-results}
-\end{figure*}
+\end{figure}
 
 \subsection{How Strong Are Core Baselines and Calibrated ERA5?}
 We begin by separating three reference points: local temporal continuity, calibrated ERA5 alone, and learned imputation without ERA5.
@@ -20,12 +20,12 @@ Table~\ref{tab:era5-direct-calibration} audits the ERA5 direct baseline. The rep
 
 \input{tables/tab_station_month_vs_neural_tests}
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_imputation_case.pdf}
   \caption{Qualitative long-block imputation case for AWS temperature. The shaded region marks artificially hidden observations used for evaluation. Linear interpolation is constrained by endpoint continuity, whereas ERA5 provides a physically plausible background trajectory through the outage.}
   \label{fig:imputation-case}
-\end{figure*}
+\end{figure}
 
 Figure~\ref{fig:imputation-case} illustrates why long contiguous outages require external context. When observations are absent for multiple days, local interpolation becomes a low-frequency bridge between endpoints, while ERA5 retains synoptic-scale temperature evolution within the missing interval. The figure is a qualitative diagnostic; the model comparisons below use aggregate test metrics over all stations, missing rates, seeds, and block regimes.
 
@@ -33,12 +33,12 @@ We also audit naturally occurring historical gaps, where no AWS labels exist ins
 
 \input{tables/tab_real_gap_plausibility}
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_round1_baselines.pdf}
   \caption{Core baseline results over three block-missing regimes and three missing rates. Error bars show one standard deviation across seeds within each regime-rate setting. SAITS has the lowest mean MAE; iTransformer has the lowest mean RMSE with overlap to SAITS.}
   \label{fig:round1-baselines}
-\end{figure*}
+\end{figure}
 
 \input{tables/tab_round1_baselines}
 
@@ -55,7 +55,7 @@ Table~\ref{tab:fair-era5-baselines} gives the fair comparison requested by the b
 
 \input{tables/tab_non_overlap_sensitivity}
 
-Table~\ref{tab:non-overlap-sensitivity} reports a strict test-window sensitivity check for the retained iTransformer+ERA5 checkpoints. This check is limited to iTransformer+ERA5 because the Round 2 gated ECBIT checkpoint files were not retained in the result artifacts; it therefore audits the split/window-overlap concern for a strong ERA5-augmented neural baseline rather than introducing a new gated-ECBIT result. Restricting evaluation to the deterministic non-overlapping test subset changes the overall iTransformer+ERA5 MAE from 0.2581 to 0.2587, a paired shift of only +0.0006. This magnitude is negligible relative to the ERA5/no-ERA5 and block/MCAR curriculum effects, indicating that overlapping test windows are not driving the ERA5-augmented baseline conclusion.
+Table~\ref{tab:non-overlap-sensitivity} reports a strict test-window sensitivity check for the retained iTransformer with ERA5 checkpoints. This check is limited to that baseline because the Round 2 gated ECBIT checkpoint files were not retained in the result artifacts; it therefore audits the split/window-overlap concern for a strong ERA5-augmented neural baseline rather than introducing a new gated-ECBIT result. Restricting evaluation to the deterministic non-overlapping test subset changes the overall iTransformer with ERA5 MAE from 0.2581 to 0.2587, a paired shift of only +0.0006. This magnitude is negligible relative to the ERA5/no-ERA5 and block/MCAR curriculum effects, indicating that overlapping test windows are not driving the ERA5-augmented baseline conclusion.
 
 Taken together, the fair baselines shift the result from architecture ranking to information-source analysis. SAITS+ERA5 has the lowest aggregate mean MAE (0.245), but its paired difference from gated ECBIT is not significant after Holm correction. iTransformer+ERA5, concat ECBIT, and gated ECBIT are effectively tied near 0.258 MAE. SAITS+ERA5 also has larger cross-configuration spread: its mean MAE rises from 0.200 on short blocks to 0.299 on long blocks, and from 0.192 at 20\% missingness to 0.289 at 60\% missingness, while the average within-cell seed standard deviation is 0.018. The variance is therefore driven mainly by block regime and missing-rate difficulty rather than by seed noise alone. Table~\ref{tab:station-month-neural-tests} adds the comparison against station-month calibrated ERA5 direct substitution: the neural variants are significantly better in matched tests, but the variate-token margins are small. Calibrated ERA5 is therefore already a strong operational baseline; ERA5-augmented neural models add value by using the remaining AWS context.
 
@@ -64,12 +64,12 @@ Table~\ref{tab:round2-ablations} and Fig.~\ref{fig:round2-ablations} show the ma
 
 The effect is stable across missing rates. For the gated model, mean MAE remains near 0.259, 0.257, and 0.257 at 20\%, 40\%, and 60\% artificial missingness, respectively. The no-ERA5 model degrades from 0.331 to 0.345 and 0.362 over the same rates. Thus, ERA5 conditioning is not only a constant offset in average performance; it also dampens the error growth that occurs when more of the local station context is removed.
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/fig_round2_ablations.pdf}
   \caption{ERA5-conditioning ablation results over block-missing and MCAR masking regimes. Error bars show one standard deviation across seeds and missing rates. Removing ERA5 substantially degrades block-imputation accuracy, while gated injection is statistically tied with concat/no-cross fusion. The MCAR training setting is easier and is therefore reported separately rather than compared directly to block-missing results.}
   \label{fig:round2-ablations}
-\end{figure*}
+\end{figure}
 
 \input{tables/tab_round2_ablations}
 
@@ -92,12 +92,12 @@ The MCAR row in Table~\ref{tab:round2-ablations} is included only as a distribut
 \subsection{Does the ERA5 Benefit Increase for Longer Outages?}
 The block-length sensitivity analysis directly tests whether ERA5 is most useful when local station context is weakest. Unlike the main curriculum, which samples random lengths within the short, medium, and long ranges, this analysis fixes the maximum outage horizon to 24, 72, and 216 hours. These horizons correspond to representative short, medium, and long outage settings; the 216-hour setting is intentionally inside the long range of 72--240 hours rather than at its upper bound. At 40\% missingness, the ERA5/no-ERA5 MAE gap increases from 0.037 for 24-hour blocks to 0.070 for 72-hour blocks and 0.092 for 216-hour blocks. The relative improvement grows from 13.8\% to 26.4\%.
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.96\textwidth]{figures/fig_followup_analyses.pdf}
   \caption{Follow-up analyses explaining the ERA5 signal. (a) ERA5-conditioned imputation degrades more slowly than no-ERA5 imputation as outage length increases. (b) ERA5 value is concentrated in temperature, wind speed, and specific humidity. (c) Inference-time downsampling shows tolerance to 6-hour ERA5 inputs but not to daily inputs.}
   \label{fig:followup-analyses}
-\end{figure*}
+\end{figure}
 
 The variable-level block-length results show that the long-gap degradation is not uniform. For 216-hour blocks, no-ERA5 wind-speed MAE reaches 0.586 and RH MAE reaches 0.519, while ERA5-conditioned wind-speed and RH MAE are 0.426 and 0.436. Temperature also shows a large long-gap benefit, dropping from 0.258 without ERA5 to 0.159 with ERA5. Pressure remains comparatively easy because both AWS and ERA5 pressure are smooth at synoptic scales. These results suggest that ERA5 is most valuable when the missing variable has strong synoptic evolution and when local interpolation cannot infer that evolution from endpoints alone.
 

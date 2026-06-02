@@ -1,7 +1,8 @@
-\begin{table*}[t]
+\begin{table}[t]
   \centering
   \caption{Fair ERA5-augmented baseline comparison on the 27 matched block-missing configurations. SAITS+ERA5 uses simple channel concatenation of AWS, masks, time features, and ERA5 covariates; iTransformer+ERA5 uses the same variate-token backbone with ERA5 concatenated to the token features. Lower is better.}
   \label{tab:fair-era5-baselines}
+  \resizebox{\textwidth}{!}{%
   \begin{tabular}{lccccc}
     \toprule
     Method & Overall MAE & RMSE & Short MAE & Medium MAE & Long MAE \\
@@ -13,5 +14,5 @@
     ECBIT concat & 0.258 $\pm$ 0.006 & 0.371 $\pm$ 0.008 & 0.250 & 0.260 & 0.264 \\
     ECBIT gated & 0.258 $\pm$ 0.007 & 0.370 $\pm$ 0.010 & 0.249 & 0.259 & 0.266 \\
     \bottomrule
-  \end{tabular}
-\end{table*}
+  \end{tabular}}
+\end{table}

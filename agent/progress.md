@@ -16,6 +16,14 @@
 - Converted manuscript citations from raw `\cite{}` to `\citep{}` or `\citet{}` where needed to avoid duplicated author names in author-year prose.
 - Recompiled `paper/main.tex` after clearing stale IEEE-generated aux/bbl files. Final `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` succeeds and produces an 18-page PDF with no undefined citations or references. Remaining BibTeX warnings are limited to four no-page-number conference entries (`liu2024itransformer`, `nie2023patchtst`, `vaswani2017attention`, `wu2023timesnet`).
 
+### Phase 17 · Polar Science Template Conversion
+- Confirmed the local TeX installation provides `elsarticle.cls`, `lineno.sty`, and `setspace.sty`.
+- Converted `paper/main.tex` from IEEEtran to Elsevier `elsarticle` preprint format with 12 pt type, single-column layout, double spacing, line numbers, `frontmatter`, author-year bibliography options, `keyword` block, and `Polar Science` journal metadata.
+- Replaced the IEEE title/abstract/index-terms structure with a Polar Science-style title page, sub-200-word abstract, and five keywords.
+- Folded `Related Work` into the numbered Introduction hierarchy and merged data, methodology, and experimental protocol files under Section 2, `Data and methods`, while retaining Results, Interpretations and discussions, and Conclusions as top-level IMRAD sections.
+- Added placeholder declaration, acknowledgements, funding, and data/code availability sections before the reference list; these require final author-side information before submission.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 62-page Elsevier preprint PDF. Log scan found no undefined citations, undefined references, fatal errors, rerun warnings, or bibliography compatibility errors. BibTeX warnings remain limited to four no-page-number conference entries, and the remaining overfull boxes are four small text-line warnings under 8 pt.
+
 ## Session: 2026-05-18
 
 ### Phase 0 · Initialization

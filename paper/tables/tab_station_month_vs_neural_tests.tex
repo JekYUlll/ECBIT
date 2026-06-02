@@ -1,7 +1,8 @@
-\begin{table*}[t]
+\begin{table}[t]
   \centering
   \caption{Paired tests against station-month calibrated ERA5 direct substitution. Pairs are matched by block regime, missing rate, and random seed ($n=27$). Differences are neural model minus station-month ERA5 in normalized MAE; negative values favor the neural model. Holm-adjusted $p$ values correct this four-comparison family.}
   \label{tab:station-month-neural-tests}
+  \resizebox{\textwidth}{!}{%
   \begin{tabular}{lccccc}
     \toprule
     Comparison & Mean diff. & 95\% CI & $t$ & $d_z$ & Holm $p$ \\
@@ -11,5 +12,5 @@
     ECBIT concat -- ERA5 station-month & -0.0119 & [-0.0145, -0.0093] & -9.46 & -1.82 & $<10^{-4}$ \\
     ECBIT gated -- ERA5 station-month & -0.0121 & [-0.0152, -0.0091] & -8.19 & -1.58 & $<10^{-4}$ \\
     \bottomrule
-  \end{tabular}
-\end{table*}
+  \end{tabular}}
+\end{table}

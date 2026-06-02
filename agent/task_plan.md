@@ -167,7 +167,11 @@ Active Follow-up: 06-01-02 manuscript revision is complete. The paper now incorp
 - [x] Record venue-specific risks and required pre-submission edits in `agent/06-01-03-journal-selection.md`
 - [x] Convert manuscript references to Polar Science author-year style with natbib and Elsevier Harvard bibliography style
 - [x] Recompile manuscript after citation-style conversion and verify no undefined citations or references remain
-- [ ] Convert full manuscript package to Elsevier/Polar Science submission format after citation style is verified
+- [x] Convert LaTeX manuscript from IEEEtran two-column layout to Elsevier `elsarticle` single-column preprint format with 12 pt type, double spacing, line numbers, frontmatter abstract, and keywords
+- [x] Reorganize top-level section numbering toward Polar Science IMRAD style: Introduction, Data and methods, Results, Interpretations and discussions, Conclusions
+- [x] Recompile Elsevier-format manuscript and scan final logs for citation, reference, and fatal compile errors
+- [ ] Replace placeholder author, affiliation, corresponding-author, acknowledgements, funding, and data/code statements with final submission information
+- [ ] Compress display items and move dense statistical tables to appendix/supplementary material
 
 ## Blocked Issues
 | Issue | Status | Action |

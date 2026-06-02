@@ -1,7 +1,8 @@
-\begin{table*}[t]
+\begin{table}[t]
   \centering
   \caption{Held-out station detail at 40\% block missingness. Errors are normalized MAE averaged over the three block regimes and three seeds. ERA5 mismatch is the mean absolute AWS-minus-ERA5 difference on the held-out station's training-segment observed positions; it is a diagnostic only and is not used for model training.}
   \label{tab:heldout-station-detail}
+  \resizebox{\textwidth}{!}{%
   \begin{tabular}{lcccccccc}
     \toprule
     Station & MAE & RMSE & T & RH & Wind & P & q & ERA5 mismatch \\
@@ -12,5 +13,5 @@
     Zhongshan & 0.307 & 0.392 & 0.141 & 0.467 & 0.543 & 0.052 & 0.334 & 0.313 \\
     Mount Sidley & 0.350 & 0.479 & 0.272 & 0.607 & 0.520 & 0.084 & 0.267 & 0.475 \\
     \bottomrule
-  \end{tabular}
-\end{table*}
+  \end{tabular}}
+\end{table}

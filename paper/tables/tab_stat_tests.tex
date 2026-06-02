@@ -1,7 +1,8 @@
-\begin{table*}[t]
+\begin{table}[t]
   \centering
   \caption{Paired tests for Round 2 block-missing ECBIT ablations. Pairs are matched by block regime, missing rate, and random seed ($n=27$). Differences are first variant minus second variant in normalized MAE; negative values favor the first variant. Holm-adjusted $p$ values correct the three comparisons in this family.}
   \label{tab:stat-tests}
+  \resizebox{\textwidth}{!}{%
   \begin{tabular}{lccccc}
     \toprule
     Comparison & Mean diff. & 95\% CI & $t$ & $d_z$ & Holm $p$ \\
@@ -10,5 +11,5 @@
     Gated -- no ERA5 & -0.0880 & [-0.0957, -0.0803] & -23.55 & -4.53 & $<10^{-4}$ \\
     Concat -- no ERA5 & -0.0877 & [-0.0957, -0.0798] & -22.58 & -4.35 & $<10^{-4}$ \\
     \bottomrule
-  \end{tabular}
-\end{table*}
+  \end{tabular}}
+\end{table}

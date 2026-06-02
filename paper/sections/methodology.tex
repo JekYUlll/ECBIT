@@ -1,5 +1,3 @@
-\section{Methodology}
-
 \subsection{Problem Formulation}
 Let $X \in \mathbb{R}^{T \times C}$ be an AWS window with $T=168$ 3-hourly steps and $C=5$ variables: temperature, relative humidity, wind speed, pressure, and specific humidity. The window length corresponds to 21 days, long enough to contain multi-day sensor outages while still providing local temporal context on both sides of many gaps. Let $O \in \{0,1\}^{T \times C}$ denote the real observation mask, where $O_{t,c}=1$ means the station value is observed. ERA5 provides an aligned dense sequence $E \in \mathbb{R}^{T \times C}$ with the same variable ordering and timestamps.
 
@@ -36,12 +34,12 @@ where $T_{enc}$ denotes the shared time-feature matrix and $\mathrm{vec}(\cdot)$
 
 In the experiments, the projected token dimension is $d=128$. The AWS and ERA5 streams each use three transformer encoder layers, eight attention heads, a feed-forward width of 256, dropout of 0.1, residual connections, and layer normalization. Transformer encoders produce $Z^{aws}, Z^{era5} \in \mathbb{R}^{C \times d}$. Because $C=5$, attention is computationally small; the model's capacity is spent on representing each variable trajectory rather than on a long timestamp-token attention matrix.
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
   \resizebox{0.98\textwidth}{!}{\input{figures/fig_ecbit_arch}}
   \caption{ECBIT architecture. Sparse AWS observations and aligned ERA5 sequences are encoded as variate tokens in separate streams. ERA5 information enters through gated feature injection, while the missing-variable gate suppresses ERA5 influence for variables without missing positions.}
   \label{fig:ecbit-arch}
-\end{figure*}
+\end{figure}
 
 The final ECBIT variant uses gated feature injection. ERA5 tokens are first projected into the AWS embedding space, and a learned vector gate blends ERA5 information into each AWS token:
 \begin{equation}
