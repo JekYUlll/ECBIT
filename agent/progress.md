@@ -30,6 +30,14 @@
 - Updated the shared affiliation to `School of Mechanical Engineering, Southeast University, Nanjing, China`.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and the extracted PDF title page shows both authors, both email addresses, and the Southeast University affiliation.
 
+### Phase 18 · 06-02-02 Format Fine-Polish
+- Read `agent/06-02-02-format.md` and applied the requested detailed editing pass across the Abstract, Introduction, Related Work, Methods, Results, Discussion, Conclusions, table captions, unit labels, and figure-reference style.
+- Rewrote formulaic openers such as `This study shows`, `The results support`, `Recent work ... cautions`, and `Taken together` into evidence-first prose while preserving the paper's conservative Polar Science framing.
+- Converted the methods training-loop numbered list to prose, clarified the Eq. (1) combined input-mask semantics, renamed `Block Missing Simulation` to `Block-Missing Simulation`, and added the 216 h versus 240-step long-regime clarification.
+- Standardized temperature labels to `$^\circ$C`, changed RH boundary-jump units from `pp` to `p.p.` with a table note, clarified SAITS uses the same block-missing mask generator as ECBIT without ERA5, and refreshed the affected generator scripts.
+- Regenerated `tab_round1_baselines.tex`, `tab_round2_ablations.tex`, `tab_raw_unit_errors.tex`, `round2_raw_unit_variable_summary.csv`, and `fig_imputation_case.pdf/png`.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 62-page PDF. Log scan found no undefined citations, undefined references, fatal errors, rerun warnings, or bibliography compatibility errors. Remaining warnings are four known no-page-number conference BibTeX warnings and two small overfull boxes under 3 pt. Text scan found no residual `deg C`, ` pp`, old formulaic opener patterns, or `Figure~` in-text references. Visual check of the regenerated imputation case confirmed the `$^\circ$C` y-axis label and non-overlapping legend.
+
 ## Session: 2026-05-18
 
 ### Phase 0 · Initialization

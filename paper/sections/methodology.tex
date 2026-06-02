@@ -1,7 +1,7 @@
 \subsection{Problem Formulation}
 Let $X \in \mathbb{R}^{T \times C}$ be an AWS window with $T=168$ 3-hourly steps and $C=5$ variables: temperature, relative humidity, wind speed, pressure, and specific humidity. The window length corresponds to 21 days, long enough to contain multi-day sensor outages while still providing local temporal context on both sides of many gaps. Let $O \in \{0,1\}^{T \times C}$ denote the real observation mask, where $O_{t,c}=1$ means the station value is observed. ERA5 provides an aligned dense sequence $E \in \mathbb{R}^{T \times C}$ with the same variable ordering and timestamps.
 
-All AWS and ERA5 variables are standardized before modeling. Normalization statistics are computed from training windows only and then reused for validation, test, and held-out station evaluation. This prevents test leakage while putting AWS and ERA5 variables on comparable scales. For AWS inputs, unobserved values are replaced by normalized zeros after masking; the binary observation and missingness masks carry the information needed to distinguish a true standardized zero from a missing value. During training and evaluation, we sample an artificial missing mask $A$ only from positions where $O=1$. The model input mask is
+All AWS and ERA5 variables are standardized before modeling. Normalization statistics are computed from training windows only and then reused for validation, test, and held-out station evaluation. This prevents test leakage while putting AWS and ERA5 variables on comparable scales. For AWS inputs, unobserved values are replaced by normalized zeros after masking; the binary observation and missingness masks carry the information needed to distinguish a true standardized zero from a missing value. During training and evaluation, we sample an artificial missing mask $A$ only from positions where $O=1$. The combined model input mask, which marks all positions hidden from the model, is
 \begin{equation}
 M = (1 - O) \lor A,
 \end{equation}
@@ -11,7 +11,7 @@ and the supervised loss is computed only on $A$:
 \end{equation}
 This avoids treating real unobserved values as ground truth. The model reconstructs the full window, but metrics are reported only on artificially hidden observed positions. This distinction is important for sparse Antarctic AWS records: historical gaps can be used as missing context, but not as labels.
 
-\subsection{Block Missing Simulation}
+\subsection{Block-Missing Simulation}
 Real AntAWS missingness is block-structured. We therefore sample contiguous outage blocks with three regimes: short gaps of 6--24 steps, medium gaps of 24--72 steps, and long gaps of 72--240 steps. At 3-hour resolution these correspond to approximately 18--72 h, 3--9 d, and 9--30 d. Missing rates are set to 20\%, 40\%, and 60\%. Blocks are sampled variable-wise by default, reflecting common sensor-level failures in which wind, humidity, pressure, or temperature can disappear without all variables failing simultaneously. A point-wise Missing Completely At Random (MCAR) mask, following the standard missing-data terminology of \citet{rubin1976inference}, is used only for the no-blockmask ablation.
 
 For a given window, missing-rate target, and block-length regime, the simulator repeatedly samples a variable and a contiguous interval until the target number of artificially hidden observed positions is reached or no additional valid positions are available. Candidate labels are intersected with $O$ so that artificial labels never include truly missing raw observations. This procedure creates a controlled block-missing test set while preserving the original sparse context of each station window.
@@ -21,7 +21,7 @@ The implementation is deterministic given a seed and follows this procedure. Fir
 The curriculum used in the main experiments is not a temporal schedule over epochs; instead, each training configuration fixes a target block regime and missing rate, and the mask generator samples fresh block positions online for each batch. The model therefore sees many outage realizations under the same failure-mode distribution. Follow-up experiments vary the outage horizon directly, using 24 h, 72 h, and 216 h block settings to test whether ERA5 gains increase as the station-only context weakens.
 
 \subsection{ECBIT Architecture}
-ECBIT uses two variate-token encoders. Instead of treating each timestamp as a token, it treats each meteorological variable as a token whose feature vector contains the full temporal trajectory. This representation follows the motivation of inverted time-series transformers \citep{liu2024itransformer}: in multivariate station data, cross-variable attention is often more meaningful than attention across hundreds of individual time steps.
+ECBIT encodes each meteorological variable as a single token whose feature vector spans the full 168-step trajectory, following the inverted representation of \citet{liu2024itransformer}. In multivariate station data, cross-variable attention captures the physical couplings among temperature, pressure, humidity, and wind more directly than attention across individual timestamps.
 
 For each AWS variable $c$, the observation token is built from four components: the masked normalized AWS trajectory $\tilde{X}_{:,c}$, the real observation mask $O_{:,c}$, the model input missing mask $M_{:,c}$, and shared time encodings. The time encodings include calendar features for the 3-hourly timestamps and are shared across variables in the same window. The corresponding ERA5 token uses the aligned ERA5 trajectory $E_{:,c}$ and the same time encodings. Each token construction can be written schematically as
 \begin{equation}
@@ -53,15 +53,7 @@ Z_c = \mathrm{LayerNorm}(Z^{aws}_c + g_c\, s_c \odot \Delta^{era5}_c).
 The reconstruction head maps each variable token back to a length-$T$ sequence. If a variable has no missing positions, its output is independent of ERA5 after fusion. This is a deliberate bias-control mechanism: ERA5 is allowed to help where AWS evidence is absent, but observed variables are not forced to absorb reanalysis bias. A concat/no-cross fusion variant is retained as an ablation to test whether this gated injection mechanism is actually necessary.
 
 \subsection{Training and Evaluation Procedure}
-The full training loop is summarized as follows.
-\begin{enumerate}
-  \item Load sparse AWS windows, real observation masks, aligned ERA5 windows, and time encodings.
-  \item Sample artificial missing labels $A$ from observed positions according to the configured missingness regime.
-  \item Mask AWS inputs to form $\tilde{X}$ and encode AWS and ERA5 variate tokens.
-  \item Fuse ERA5 into AWS representations only for variables with missing positions.
-  \item Decode each variable token into a reconstructed length-$T$ trajectory.
-  \item Optimize mean squared error on $A$ only; select checkpoints by validation loss and report test MAE/RMSE on the same artificial-label support.
-\end{enumerate}
+At each training step, sparse AWS windows, real observation masks, aligned ERA5 windows, and time encodings are loaded from the benchmark. Artificial missing labels $A$ are sampled from observed positions under the configured block-missing regime. AWS inputs are masked to form $\tilde{X}$, and both AWS and ERA5 variate tokens are encoded. ERA5 representations are fused into AWS tokens only for variables that contain missing positions. Each variable token is decoded into a reconstructed length-$T$ trajectory, and mean squared error is minimized over $A$ only. Checkpoints are selected by validation loss, and test MAE/RMSE are reported on the same artificial-label support.
 All neural experiments use AdamW with learning rate $10^{-4}$, weight decay $10^{-4}$, batch size 32, and early stopping with patience 10. The evaluation code uses the same mask generator settings as the corresponding test configuration, making the reported differences attributable to model variant, ERA5 conditioning, and training-mask distribution rather than to changes in metric support.
 
 For a deployed imputed series, observed input values are copied back after decoding:

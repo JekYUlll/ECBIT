@@ -17,7 +17,7 @@ OUT_DIR = Path("experiments/results/tables")
 PAPER_TABLE = Path("paper/tables/tab_raw_unit_errors.tex")
 
 VAR_LABELS = {
-    "T": "Temperature (deg C)",
+    "T": "Temperature ($^\\circ$C)",
     "RH": "Relative humidity (\\%)",
     "wspd": "Wind speed (m s$^{-1}$)",
     "P": "Pressure (hPa)",

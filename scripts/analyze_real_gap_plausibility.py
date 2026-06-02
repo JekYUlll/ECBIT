@@ -22,7 +22,7 @@ OUT_DIR = Path("experiments/results/analysis/real_gap_plausibility")
 FIG_DIR = Path("paper/figures/real_gap_cases")
 
 VAR_LABELS = {
-    "T": "Temperature (deg C)",
+    "T": "Temperature ($^\\circ$C)",
     "RH": "Relative humidity (%)",
     "wspd": "Wind speed (m/s)",
     "P": "Pressure (hPa)",

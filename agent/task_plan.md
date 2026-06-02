@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 17 — journal selection and submission targeting
+Current Phase: Phase 18 — Polar Science format and prose fine-polish
 Last Updated: 2026-06-02
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: 06-01-02 manuscript revision is complete. The paper now incorporates the selected local/statistical clarifications without adding a defensive reviewer-response layer. No new GPU training was launched. Current work is selecting a journal target and defining the smallest venue-specific submission edits.
+Active Follow-up: 06-02-02 format/prose fine-polish is complete. The paper now uses Polar Science/Elsevier structure, author-year citations, real author metadata, tightened prose, consistent unit labels, and refreshed affected tables/figures. No new GPU training was launched.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -173,6 +173,16 @@ Active Follow-up: 06-01-02 manuscript revision is complete. The paper now incorp
 - [x] Replace placeholder author, affiliation, and corresponding-author information with final author-side metadata
 - [ ] Replace placeholder declaration, acknowledgements, funding, and data/code statements with final submission information
 - [ ] Compress display items and move dense statistical tables to appendix/supplementary material
+
+## Phase 18 · Format Fine-Polish 06-02-02
+- [x] Read `agent/06-02-02-format.md` and triage all suggested prose, format, unit, and precision patches
+- [x] Replace formulaic paragraph openers in Abstract, Introduction, Related Work, Results, Discussion, and Conclusions with evidence-first prose
+- [x] Tighten contribution bullets and convert the methods training-loop numbered list to prose
+- [x] Align Discussion subsection headings with the interrogative heading style used in Results
+- [x] Clarify mask semantics around Eq. (1), block-missing terminology, SAITS training conditions, 216 h versus 240-step block horizon, and inference-time ERA5 masking
+- [x] Standardize temperature units to `$^\circ$C`, RH boundary-jump units to `p.p.`, and in-text figure references to `Fig.`
+- [x] Refresh affected generated artifacts: Round 1 table, Round 2 ablation table, raw-unit table, and qualitative imputation case figure
+- [x] Recompile the Elsevier manuscript and scan logs/text for old wording, unit remnants, citation/reference errors, and fatal compile errors
 
 ## Blocked Issues
 | Issue | Status | Action |

@@ -47,7 +47,7 @@ def main() -> None:
     lines = [
         "\\begin{table}[t]",
         "  \\centering",
-        "  \\caption{Round 2 ERA5-conditioning ablation results. Block rows use block test masks; the MCAR row is an in-distribution MCAR-test reference and differs from Table~\\ref{tab:curriculum-era5-factorial}'s MCAR-on-block rows. Lower is better.}",
+        "  \\caption{Round 2 ERA5-conditioning ablation results. Block rows use block-missing test masks; the MCAR row is an in-distribution MCAR-test reference and differs from Table~\\ref{tab:curriculum-era5-factorial}'s MCAR-on-block rows. Lower is better.}",
         "  \\label{tab:round2-ablations}",
         "  \\begin{tabular}{lc}",
         "    \\toprule",

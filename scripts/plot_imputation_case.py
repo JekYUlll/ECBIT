@@ -185,7 +185,7 @@ def main() -> None:
     parser.add_argument("--manifest", type=Path, default=MANIFEST)
     parser.add_argument("--station-npz", type=Path, default=Path("data/antaws/processed/aws06_impute.npz"))
     parser.add_argument("--variable", choices=VARIABLES, default="T")
-    parser.add_argument("--ylabel", default="Temperature (deg C)")
+    parser.add_argument("--ylabel", default=r"Temperature ($^\circ$C)")
     parser.add_argument("--missing-rate", type=float, default=0.4)
     parser.add_argument("--min-block", type=int, default=72)
     parser.add_argument("--max-block", type=int, default=240)
