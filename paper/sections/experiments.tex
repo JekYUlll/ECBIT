@@ -46,7 +46,7 @@ Table~\ref{tab:round1-baselines} confirms the no-ERA5 baseline ranking. SAITS ha
 
 Per-variable baseline errors also show why a single aggregate number is insufficient. In the completed Round 1 matrix, relative humidity and wind speed are consistently harder than pressure and temperature. This matches the observed missingness structure: RH and wind have higher missing burden and longer outage blocks in the selected AntAWS stations. The task is therefore not merely temporal smoothing; it requires recovery of variables whose station-side records are both noisier and more frequently absent.
 
-\subsection{Do ERA5-Augmented Baselines Match ECBIT?}
+\subsection{How Do ERA5-Augmented Architectures Compare?}
 Table~\ref{tab:fair-era5-baselines} gives the fair comparison requested by the baseline analysis: SAITS and iTransformer are evaluated both with and without ERA5 on the same 27 block-missing configurations. Adding ERA5 improves both baselines substantially. SAITS drops from 0.334 to 0.245 MAE, and iTransformer drops from 0.360 to 0.258 MAE. The paired tests in Table~\ref{tab:fair-era5-tests} confirm that both gains are large and significant after Holm correction \citep{holm1979simple}.
 
 \input{tables/tab_fair_era5_baselines}
@@ -60,7 +60,7 @@ Table~\ref{tab:non-overlap-sensitivity} reports a strict test-window sensitivity
 The fair baselines reframe the comparison as an information-source question rather than an architecture ranking. SAITS+ERA5 achieves the lowest aggregate mean (0.245 MAE), but its advantage over gated ECBIT is not significant after Holm correction (Table~\ref{tab:fair-era5-tests}). iTransformer+ERA5, concat ECBIT, and gated ECBIT are statistically tied at 0.258 MAE. SAITS+ERA5 also shows larger cross-configuration spread: MAE rises from 0.200 on short blocks to 0.299 on long blocks and from 0.192 at 20\% missingness to 0.289 at 60\%, driven by block regime and missing-rate difficulty rather than seed noise (within-cell seed SD = 0.018). Against station-month calibrated ERA5 direct substitution (Table~\ref{tab:station-month-neural-tests}), all neural variants are significantly better in matched tests, but the margins are small (0.012--0.025 MAE). Calibrated ERA5 is therefore the simplest reliable operational baseline; ERA5-augmented neural models add value by incorporating the remaining sparse AWS context.
 
 \subsection{Does ERA5 Conditioning Improve Block Imputation?}
-Table~\ref{tab:round2-ablations} and Fig.~\ref{fig:round2-ablations} show the main ablation result. Removing ERA5 increases block-missing test MAE from 0.258 to 0.346, a 34\% relative degradation against gated injection. This is the largest effect in the study and supports ERA5 as the dominant source of improvement.
+Table~\ref{tab:round2-ablations} and Fig.~\ref{fig:round2-ablations} show the main ablation result. Removing ERA5 increases block-missing test MAE from 0.258 to 0.346, a 34\% relative degradation against gated injection. This is the largest measured effect in the study and supports ERA5 conditioning as the main source of improvement.
 
 The effect is stable across missing rates. For the gated model, mean MAE remains near 0.259, 0.257, and 0.257 at 20\%, 40\%, and 60\% artificial missingness, respectively. The no-ERA5 model degrades from 0.331 to 0.345 and 0.362 over the same rates. Thus, ERA5 conditioning is not only a constant offset in average performance; it also dampens the error growth that occurs when more of the local station context is removed.
 

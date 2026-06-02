@@ -8,10 +8,12 @@ For reproducibility, the study uses ECBIT, the ERA5-conditioned block imputation
 
 The current benchmark contains 32 selected AntAWS stations with at least 10 years of record and sufficient multi-variable completeness. Five geographically diverse stations are reserved for held-out generalization. ERA5 point time series are downloaded and aligned to the exact AntAWS 3-hourly timestamps, producing 41,388 sparse 168-step windows. The experimental matrix covers interpolation, last-observation-carried-forward, ERA5 direct substitution, SAITS \citep{du2023saits}, an iTransformer-style imputation baseline \citep{liu2024itransformer}, ERA5-augmented SAITS/iTransformer controls, and ECBIT ablations.
 
-The contributions are:
+This study introduces a block-missing imputation benchmark for Antarctic automatic weather station records by aligning selected 3-hourly AntAWS station windows with ERA5 point time series, sparse observation masks, realistic block-missing simulations, and held-out station splits. Its central contribution is the empirical demonstration that ERA5 conditioning and failure-mode-matched block masking are the dominant factors for recovering prolonged Antarctic AWS outages. Once ERA5 is aligned and the block-missing curriculum matches the operational failure mode, several architectures achieve similar accuracy.
+
+The paper reports this contribution through four elements:
 \begin{itemize}
-  \item an AntAWS-derived benchmark of 32 selected 3-hourly stations with aligned ERA5 point series, sparse observation masks, realistic block-missing simulation, and held-out station splits;
+  \item an AntAWS-derived benchmark of 32 selected 3-hourly stations with aligned ERA5 point series, sparse observation masks, block-missing simulation, and held-out station splits;
   \item quantitative evidence that ERA5 conditioning reduces block-trained MAE from 0.346 to 0.258, with a relative benefit that grows from 13.8\% at 24 h to 26.4\% at 216 h, concentrated in temperature, wind speed, and specific humidity;
   \item a failure-mode curriculum study showing that MCAR-trained ERA5 models transfer poorly to block tests, reaching 0.407 MAE, whereas block-trained ERA5 models reach 0.258;
-  \item fair ERA5-augmented baseline tests showing that augmented SAITS, augmented iTransformer, gated ECBIT, and concat ECBIT are statistically indistinguishable in aggregate MAE, placing the empirical emphasis on failure-mode matching and ERA5 conditioning rather than fusion architecture.
+  \item fair ERA5-augmented baseline tests showing that augmented SAITS, augmented iTransformer, gated ECBIT, and concat ECBIT are statistically indistinguishable in aggregate MAE, placing the empirical emphasis on failure-mode matching and ERA5 conditioning rather than a particular fusion block.
 \end{itemize}

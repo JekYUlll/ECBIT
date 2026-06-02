@@ -1,9 +1,9 @@
 # ECBIT Task Plan
 Goal: Prepare a journal-style SCI manuscript on ERA5-conditioned Antarctic AWS block imputation.
-Current Phase: Phase 18 — Polar Science format and prose fine-polish
+Current Phase: Phase 19 — contribution framing cleanup
 Last Updated: 2026-06-02
 Current Claim: ERA5-conditioned block-missing AWS imputation is strongly supported; the journal narrative should emphasize realistic outage modeling, ERA5 information value, block-curriculum interaction, and station generalization rather than a specific fusion-module novelty.
-Active Follow-up: 06-02-02 format/prose fine-polish is complete. The paper now uses Polar Science/Elsevier structure, author-year citations, real author metadata, tightened prose, consistent unit labels, and refreshed affected tables/figures. No new GPU training was launched.
+Active Follow-up: 06-02 contribution-framing cleanup is complete. The Introduction now states the benchmark-first contribution, the Results section uses architecture-neutral wording for ERA5-augmented comparisons, and the Conclusion explicitly says several architectures achieve similar accuracy once ERA5 alignment and block-missing curriculum are matched. No new GPU training was launched.
 
 ## Phase 0 · Initialization
 - [x] Add ECBIT as project submodule under archived ECAFT repository
@@ -183,6 +183,12 @@ Active Follow-up: 06-02-02 format/prose fine-polish is complete. The paper now u
 - [x] Standardize temperature units to `$^\circ$C`, RH boundary-jump units to `p.p.`, and in-text figure references to `Fig.`
 - [x] Refresh affected generated artifacts: Round 1 table, Round 2 ablation table, raw-unit table, and qualitative imputation case figure
 - [x] Recompile the Elsevier manuscript and scan logs/text for old wording, unit remnants, citation/reference errors, and fatal compile errors
+
+## Phase 19 · Contribution Framing Cleanup 06-02
+- [x] Replace architecture-centered contribution wording with a benchmark-first statement centered on AntAWS windows, ERA5 point series, sparse masks, block-missing simulation, and held-out station splits
+- [x] State that ERA5 conditioning and failure-mode-matched block masking are the dominant recoverability factors, while several architectures converge once those conditions are matched
+- [x] Rename the ERA5-augmented comparison subsection to avoid centering ECBIT as the target architecture
+- [x] Recompile the manuscript and scan logs/PDF text for overclaim residues such as novel-transformer or existing-model-outperformance claims
 
 ## Blocked Issues
 | Issue | Status | Action |

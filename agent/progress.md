@@ -573,3 +573,12 @@
 - Added station-selection attrition counts, normalized-error interpretation, realized long-block clipped-length diagnostics, q mask semantics, figure error-bar definitions, SAITS+ERA5 variance explanation, inference-time downsampling wording, and a practical operational interpretation of the station-month ERA5 vs neural margin.
 - Reworked held-out and limitation wording so the paper states the evidence boundary as part of the normal scientific narrative rather than as a defensive response.
 - Verification: `latexmk -g -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced an 18-page PDF with 33 references. Log scan found no undefined refs/cites, BibTeX warnings, overfull boxes, fatal errors, emergency stops, or rerun warnings; remaining underfull messages are non-blocking IEEE layout artifacts.
+
+## Session: 2026-06-02
+
+### Contribution Framing Cleanup
+- Re-read planning context and applied the user's safer innovation framing to the Polar Science manuscript.
+- Updated `paper/sections/introduction.tex` so the contribution is stated as a block-missing Antarctic AWS benchmark built from selected 3-hourly AntAWS windows, aligned ERA5 point series, sparse observation masks, realistic block-missing simulations, and held-out station splits.
+- Replaced architecture-centered wording with the claim that ERA5 conditioning and failure-mode-matched block masking are the dominant factors for prolonged AWS outage recovery; added the corresponding conclusion that several architectures achieve similar accuracy once ERA5 alignment and block curriculum are matched.
+- Renamed the Results subsection from an ECBIT-centered comparison to `How Do ERA5-Augmented Architectures Compare?` and adjusted the experimental-protocol wording so fair baselines separate ERA5 information value from the gated-injection design.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 62-page Elsevier preprint PDF. Log scan found no fatal errors, undefined citations, undefined references, or rerun warnings. Remaining non-blocking warnings are the known four BibTeX empty-page warnings and two small overfull boxes below 3 pt. Targeted wording scan found no `novel transformer`, `outperform existing`, `state-of-the-art`, or `specific fusion architecture` overclaims.
