@@ -170,7 +170,8 @@ Active Follow-up: 06-01-02 manuscript revision is complete. The paper now incorp
 - [x] Convert LaTeX manuscript from IEEEtran two-column layout to Elsevier `elsarticle` single-column preprint format with 12 pt type, double spacing, line numbers, frontmatter abstract, and keywords
 - [x] Reorganize top-level section numbering toward Polar Science IMRAD style: Introduction, Data and methods, Results, Interpretations and discussions, Conclusions
 - [x] Recompile Elsevier-format manuscript and scan final logs for citation, reference, and fatal compile errors
-- [ ] Replace placeholder author, affiliation, corresponding-author, acknowledgements, funding, and data/code statements with final submission information
+- [x] Replace placeholder author, affiliation, and corresponding-author information with final author-side metadata
+- [ ] Replace placeholder declaration, acknowledgements, funding, and data/code statements with final submission information
 - [ ] Compress display items and move dense statistical tables to appendix/supplementary material
 
 ## Blocked Issues

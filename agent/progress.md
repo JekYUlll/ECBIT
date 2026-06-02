@@ -24,6 +24,12 @@
 - Added placeholder declaration, acknowledgements, funding, and data/code availability sections before the reference list; these require final author-side information before submission.
 - Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and produced a 62-page Elsevier preprint PDF. Log scan found no undefined citations, undefined references, fatal errors, rerun warnings, or bibliography compatibility errors. BibTeX warnings remain limited to four no-page-number conference entries, and the remaining overfull boxes are four small text-line warnings under 8 pt.
 
+### Phase 17 · Author Metadata Update
+- Replaced the Elsevier frontmatter author placeholders with Yongzhe Li and Zhuyu Zhang.
+- Set Yongzhe Li as corresponding author with `yongzheli@seu.edu.cn`; added Zhuyu Zhang's email as `220245154@seu.edu.cn`.
+- Updated the shared affiliation to `School of Mechanical Engineering, Southeast University, Nanjing, China`.
+- Verification: `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` passed and the extracted PDF title page shows both authors, both email addresses, and the Southeast University affiliation.
+
 ## Session: 2026-05-18
 
 ### Phase 0 · Initialization
