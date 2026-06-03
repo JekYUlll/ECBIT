@@ -12,17 +12,19 @@ The first exploration focuses on Station-Adaptive Bias Correction (SABC):
 
 - diagnose held-out ERA5-AWS residual structure;
 - test simple station-adaptive calibration probes without neural training;
-- specify the minimal neural SABC layer that could be inserted between the ERA5 encoder and gated feature injection;
+- implement a minimal metadata-only neural SABC layer between the ERA5 encoder and gated feature injection;
 - define a go/no-go gate for remote GPU experiments.
 
-The module does not modify the submission manuscript or the main ECBIT model implementation.
+The module does not modify the submission manuscript. The trainable implementation is registered as a separate `ecbit_sabc` model name so the original `ecbit` path remains unchanged.
 
 ## Contents
 
 ```text
 experiment_plan.md                  Experiment design and decision gates
-sabc_layer_spec.md                  Proposed neural layer interface
+sabc_layer_spec.md                  Neural layer interface and implementation boundary
 scripts/analyze_sabc_feasibility.py Local stateless feasibility probe
+../../scripts/generate_sabc_configs.py
+                                    Repository-level generator for remote YAML configs
 results/                            Generated local analysis artifacts
 ```
 
@@ -52,3 +54,20 @@ The script compares ERA5-AWS normalized residual MAE on held-out station test pe
 - `target_state_linear`: target-station train ridge-linear residual model using ERA5 state and time features.
 
 These probes are not a final model result. They test whether station-specific residual structure is strong enough to justify a learned SABC layer.
+
+## Trainable SABC Path
+
+Implemented code paths:
+
+- `src/models/ecbit_sabc.py`: `StationAdaptiveBiasCorrection` and `ECBITSABC`;
+- `src/data/impute_dataset.py`: 9-dimensional station metadata features attached to every batch;
+- `src/train_impute.py` and `src/evaluate_impute.py`: conditional station-feature forwarding for models that declare `uses_station_features`;
+- `scripts/generate_sabc_configs.py`: isolated remote config generator.
+
+Generate the Stage 1 metadata-only remote matrix:
+
+```bash
+conda run -n darts python scripts/generate_sabc_configs.py
+```
+
+This writes 90 YAML files under `experiments/configs/exploration_sabc/`: matched gated ECBIT baselines and metadata-only SABC variants over five held-out stations, three block regimes, and three random seeds. Outputs are routed to `experiments/results/metrics/exploration_sabc/`.

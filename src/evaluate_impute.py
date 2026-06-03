@@ -41,6 +41,7 @@ def make_loader(config: dict[str, Any], split: str, force_num_workers: int | Non
         window_splits=[split],
         station_ids=station_ids_for_split(data_cfg, split),
         window_subset_csv=data_cfg.get(f"{split}_window_subset_csv", data_cfg.get("window_subset_csv")),
+        station_meta_csv=data_cfg.get("station_meta_csv"),
     )
     num_workers = int(config.get("eval", {}).get("num_workers", 2))
     if force_num_workers is not None:
@@ -75,7 +76,9 @@ def evaluate_neural(config: dict[str, Any], checkpoint: Path, split: str) -> dic
         artificial = artificial_mask_batch(obs_mask, missing_cfg, seed + step * 100_000).to(device)
         model_missing = torch.clamp((1.0 - obs_mask) + artificial, 0.0, 1.0)
         x_obs = apply_mask(x, model_missing)
-        if config["model"]["name"] in {"ecbit", "itransformer_era5"}:
+        if getattr(model, "uses_station_features", False):
+            pred = model(x_obs, model_missing, era5, time_enc, batch["station_features"].to(device))
+        elif config["model"]["name"] in {"ecbit", "itransformer_era5"}:
             pred = model(x_obs, model_missing, era5, time_enc)
         else:
             pred = model(x_obs, model_missing, time_enc)

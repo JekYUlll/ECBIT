@@ -4,6 +4,7 @@ import pandas as pd
 import yaml
 
 from scripts.generate_experiment_configs import generate_round1, generate_round2, generate_round2_gated, generate_round3
+from scripts.generate_sabc_configs import generate_sabc_configs
 
 
 def test_generate_experiment_config_counts(tmp_path) -> None:
@@ -39,3 +40,27 @@ def test_generate_experiment_config_counts(tmp_path) -> None:
     heldout = yaml.safe_load((out / "round3" / "ecbit_full_heldout_a_short_s42.yaml").read_text())
     assert heldout["data"]["test_station_ids"] == ["a"]
     assert "station_ids" not in heldout["data"]
+
+
+def test_generate_sabc_config_counts(tmp_path) -> None:
+    out = tmp_path / "sabc_configs"
+    meta = tmp_path / "station_meta.csv"
+    pd.DataFrame(
+        [
+            {"station_id": "a", "split": "heldout"},
+            {"station_id": "b", "split": "heldout"},
+        ]
+    ).to_csv(meta, index=False)
+
+    assert generate_sabc_configs(out, meta, include_baseline=True) == 36
+    assert len(list(out.glob("*.yaml"))) == 36
+
+    sample = yaml.safe_load((out / "sabc_metadata_heldout_a_medium_r40_s42.yaml").read_text())
+    assert sample["runner"] == "train"
+    assert sample["data"]["test_station_groups"] == ["heldout"]
+    assert sample["data"]["test_station_ids"] == ["a"]
+    assert sample["data"]["station_meta_csv"] == "data/station_meta_ecbit.csv"
+    assert sample["model"]["name"] == "ecbit_sabc"
+    assert sample["model"]["variant"] == "sabc_metadata"
+    assert sample["model"]["fusion_type"] == "gated"
+    assert sample["missing"]["pattern"] == "medium"

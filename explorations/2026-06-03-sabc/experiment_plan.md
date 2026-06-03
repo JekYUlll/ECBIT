@@ -65,15 +65,22 @@ Minimal implementation:
 - dropout 0.1;
 - residual scale initialized near zero.
 
+Current implementation status:
+
+- metadata-only SABC is implemented as `ecbit_sabc`;
+- the original `ecbit` model path is unchanged;
+- residual-summary inputs are not implemented in the first trainable pass.
+
 ## Stage 1 Remote Matrix
 
 Run only after Stage 0 is positive:
 
 | Model | Stations | Pattern | Rate | Seeds |
 |---|---|---|---|---|
-| ECBIT gated baseline reuse | held-out | short/medium/long | 40% | 42/43/44 |
+| ECBIT gated baseline | held-out | short/medium/long | 40% | 42/43/44 |
 | ECBIT + SABC metadata-only | held-out | short/medium/long | 40% | 42/43/44 |
-| ECBIT + SABC residual-summary | held-out | short/medium/long | 40% | 42/43/44 |
+
+The generated metadata-only matrix contains 90 YAML files: five held-out stations, three block regimes, three seeds, and two model variants (`gated_baseline`, `sabc_metadata`).
 
 Primary metric: held-out normalized MAE by station and variable.
 

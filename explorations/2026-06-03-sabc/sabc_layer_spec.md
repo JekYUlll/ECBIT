@@ -22,14 +22,19 @@ For each station `s` and variable token `c`:
 - `station_meta[s]`: normalized metadata vector;
 - optional `residual_summary[s, c]`: train-period ERA5-AWS residual features.
 
-Candidate metadata fields:
+Implemented metadata fields:
 
-- station elevation;
-- latitude and longitude;
-- institution/network indicator;
-- train-period ERA5-AWS mean residual by variable;
-- train-period ERA5-AWS residual standard deviation by variable;
-- optional ERA5 grid elevation minus station elevation if available later.
+- latitude scaled by 90 degrees;
+- longitude sine and cosine;
+- station metadata elevation z-score;
+- record-length z-score;
+- observed completeness for temperature, pressure, wind speed, and relative humidity.
+
+Not yet implemented:
+
+- institution/network embeddings;
+- train-period ERA5-AWS residual summaries;
+- ERA5 grid elevation minus station elevation.
 
 ## Minimal Form
 
@@ -49,15 +54,13 @@ Reason: the current ERA5-conditioned models already work. SABC should start as a
 
 ```yaml
 model:
-  name: ecbit
-  use_era5: true
+  name: ecbit_sabc
+  variant: sabc_metadata
   fusion_type: gated
+  n_station_features: 9
   sabc:
-    enabled: true
     hidden_dim: 64
     dropout: 0.1
-    use_station_meta: true
-    use_residual_summary: true
     residual_scale_init: 0.1
 ```
 
@@ -65,9 +68,13 @@ model:
 
 The first implementation should be isolated:
 
-- add a new model variant name, e.g. `ecbit_sabc`;
+- add a new model variant name, `ecbit_sabc`;
 - preserve the existing `ecbit` path unchanged;
 - generate a separate config directory, e.g. `experiments/configs/exploration_sabc/`;
 - write outputs to `experiments/results/metrics/exploration_sabc/`.
 
 This makes negative results easy to discard without affecting the submission-ready code path.
+
+## Current Implementation
+
+The metadata-only SABC path is implemented in `src/models/ecbit_sabc.py`. The final residual projection is zero-initialized, so the correction starts as an identity mapping and must earn any deviation during training. `ImputationWindowDataset` now attaches a `station_features` tensor to each batch; existing models ignore it, and `ecbit_sabc` consumes it through the `uses_station_features` dispatch in the training and evaluation entry points.

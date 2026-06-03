@@ -11,6 +11,77 @@ import torch
 from torch.utils.data import Dataset
 
 
+STATION_FEATURE_COLUMNS = (
+    "lat_scaled",
+    "lon_sin",
+    "lon_cos",
+    "elev_z",
+    "record_years_z",
+    "temperature_completeness",
+    "pressure_completeness",
+    "wind_speed_completeness",
+    "relative_humidity_completeness",
+)
+STATION_FEATURE_DIM = len(STATION_FEATURE_COLUMNS)
+
+
+def _zscore(series: pd.Series) -> pd.Series:
+    values = series.astype(float)
+    std = float(values.std(ddof=0))
+    if not np.isfinite(std) or std < 1.0e-6:
+        return values * 0.0
+    return (values - float(values.mean())) / std
+
+
+def _load_station_features(station_meta_csv: Path | None) -> dict[str, np.ndarray]:
+    if station_meta_csv is None:
+        station_meta_csv = Path("data/station_meta_ecbit.csv")
+    if not station_meta_csv.exists():
+        return {}
+
+    meta = pd.read_csv(station_meta_csv).copy()
+    required = {
+        "station_id",
+        "lat",
+        "lon",
+        "elev_m",
+        "record_years",
+        "temperature_completeness",
+        "pressure_completeness",
+        "wind_speed_completeness",
+        "relative_humidity_completeness",
+    }
+    missing = required.difference(meta.columns)
+    if missing:
+        raise ValueError(f"station metadata CSV is missing columns: {sorted(missing)}")
+
+    if "split" in meta.columns:
+        selected = meta["split"].isin(["main", "heldout"])
+        if selected.any():
+            meta = meta[selected].copy()
+
+    lon_rad = np.deg2rad(meta["lon"].astype(float))
+    features = pd.DataFrame(
+        {
+            "station_id": meta["station_id"].astype(str),
+            "lat_scaled": meta["lat"].astype(float) / 90.0,
+            "lon_sin": np.sin(lon_rad),
+            "lon_cos": np.cos(lon_rad),
+            "elev_z": _zscore(meta["elev_m"]),
+            "record_years_z": _zscore(meta["record_years"]),
+            "temperature_completeness": meta["temperature_completeness"].astype(float),
+            "pressure_completeness": meta["pressure_completeness"].astype(float),
+            "wind_speed_completeness": meta["wind_speed_completeness"].astype(float),
+            "relative_humidity_completeness": meta["relative_humidity_completeness"].astype(float),
+        }
+    )
+    features = features.fillna(0.0)
+    return {
+        str(row["station_id"]): row[list(STATION_FEATURE_COLUMNS)].to_numpy(dtype=np.float32)
+        for _, row in features.iterrows()
+    }
+
+
 class ImputationWindowDataset(Dataset):
     """Load preprocessed station NPZ windows filtered by station group and split."""
 
@@ -21,9 +92,11 @@ class ImputationWindowDataset(Dataset):
         window_splits: Iterable[str] = ("train",),
         station_ids: Iterable[str] | None = None,
         window_subset_csv: str | Path | None = None,
+        station_meta_csv: str | Path | None = None,
     ) -> None:
         self.manifest_csv = Path(manifest_csv)
         manifest = pd.read_csv(self.manifest_csv)
+        station_features = _load_station_features(Path(station_meta_csv) if station_meta_csv is not None else None)
         groups = set(station_groups)
         splits = set(window_splits)
         subset_by_station: dict[str, set[int]] | None = None
@@ -68,6 +141,10 @@ class ImputationWindowDataset(Dataset):
                 "E_3h": data["E_3h"][keep].astype(np.float32),
                 "T_enc": data["T_enc"][keep].astype(np.float32),
                 "month": month,
+                "station_features": station_features.get(
+                    str(row["station_id"]),
+                    np.zeros(STATION_FEATURE_DIM, dtype=np.float32),
+                ),
                 "station_id": str(row["station_id"]),
                 "station_group": str(row["station_group"]),
                 "window_split": window_split[keep],
@@ -95,6 +172,7 @@ class ImputationWindowDataset(Dataset):
             "era5": torch.from_numpy(item["E_3h"][local_idx]),
             "time_enc": torch.from_numpy(item["T_enc"][local_idx]),
             "month": torch.from_numpy(item["month"][local_idx].astype(np.int64)),
+            "station_features": torch.from_numpy(item["station_features"]),
             "station_id": item["station_id"],
             "station_group": item["station_group"],
             "window_split": str(item["window_split"][local_idx]),

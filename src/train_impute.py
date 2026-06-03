@@ -18,9 +18,10 @@ from torch.utils.data import DataLoader
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.baselines.itransformer_impute import ITransformerERA5Imputer, ITransformerImputer, masked_mse_loss
-from src.data.impute_dataset import ImputationWindowDataset
+from src.data.impute_dataset import STATION_FEATURE_DIM, ImputationWindowDataset
 from src.metrics import masked_mae_rmse
 from src.models.ecbit import ECBIT
+from src.models.ecbit_sabc import ECBITSABC
 from src.utils.block_missing import apply_mask, simulate_block_missing, simulate_mcar_missing
 
 
@@ -66,6 +67,16 @@ def build_model(config: dict[str, Any]) -> torch.nn.Module:
             use_cross=bool(model_cfg.get("use_cross", True)),
             fusion_type=model_cfg.get("fusion_type"),
         )
+    if name == "ecbit_sabc":
+        sabc_cfg = model_cfg.get("sabc", {})
+        return ECBITSABC(
+            **common,
+            fusion_type=model_cfg.get("fusion_type", "gated"),
+            n_station_features=int(model_cfg.get("n_station_features", sabc_cfg.get("n_station_features", STATION_FEATURE_DIM))),
+            sabc_hidden_dim=int(sabc_cfg.get("hidden_dim", 64)),
+            sabc_dropout=float(sabc_cfg.get("dropout", common["dropout"])),
+            sabc_residual_scale_init=float(sabc_cfg.get("residual_scale_init", 0.1)),
+        )
     if name == "itransformer":
         return ITransformerImputer(**common)
     if name == "itransformer_era5":
@@ -109,7 +120,9 @@ def forward_model(model: torch.nn.Module, batch: dict[str, Any], missing_cfg: di
     artificial = artificial_mask_batch(obs_mask, missing_cfg, seed=seed).to(device)
     model_missing = torch.clamp((1.0 - obs_mask) + artificial, 0.0, 1.0)
     x_obs = apply_mask(x, model_missing)
-    if isinstance(model, ECBIT):
+    if getattr(model, "uses_station_features", False):
+        pred = model(x_obs, model_missing, era5, time_enc, batch["station_features"].to(device))
+    elif isinstance(model, ECBIT):
         pred = model(x_obs, model_missing, era5, time_enc)
     elif isinstance(model, ITransformerERA5Imputer):
         pred = model(x_obs, model_missing, era5, time_enc)
@@ -141,6 +154,7 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
         window_splits=["train"],
         station_ids=station_ids_for_split(data_cfg, "train"),
         window_subset_csv=data_cfg.get("train_window_subset_csv", data_cfg.get("window_subset_csv")),
+        station_meta_csv=data_cfg.get("station_meta_csv"),
     )
     val_ds = ImputationWindowDataset(
         data_cfg.get("manifest_csv", "data/antaws_impute_manifest.csv"),
@@ -148,6 +162,7 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
         window_splits=["val"],
         station_ids=station_ids_for_split(data_cfg, "val"),
         window_subset_csv=data_cfg.get("val_window_subset_csv", data_cfg.get("window_subset_csv")),
+        station_meta_csv=data_cfg.get("station_meta_csv"),
     )
     test_ds = ImputationWindowDataset(
         data_cfg.get("manifest_csv", "data/antaws_impute_manifest.csv"),
@@ -155,6 +170,7 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
         window_splits=["test"],
         station_ids=station_ids_for_split(data_cfg, "test"),
         window_subset_csv=data_cfg.get("test_window_subset_csv", data_cfg.get("window_subset_csv")),
+        station_meta_csv=data_cfg.get("station_meta_csv"),
     )
     num_workers = min(int(config["training"].get("num_workers", 2)), 2)
     train_loader = DataLoader(

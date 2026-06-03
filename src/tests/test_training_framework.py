@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from src.data.impute_dataset import ImputationWindowDataset
+from src.data.impute_dataset import STATION_FEATURE_DIM, ImputationWindowDataset
 from src.metrics import masked_mae_rmse
 from src.train_impute import artificial_mask_batch, build_model, station_ids_for_split
 
@@ -53,6 +53,7 @@ def test_imputation_window_dataset_filters_split(tmp_path) -> None:
     assert item["x"].shape == (8, 3)
     assert item["era5"].shape == (8, 3)
     assert item["time_enc"].shape == (8, 4)
+    assert item["station_features"].shape == (STATION_FEATURE_DIM,)
 
 
 def test_imputation_window_dataset_filters_station_id_and_group(tmp_path) -> None:
@@ -123,6 +124,29 @@ def test_build_model_from_config() -> None:
         }
     )
     assert model.seq_len == 8
+
+
+def test_build_sabc_model_from_config() -> None:
+    model = build_model(
+        {
+            "model": {
+                "name": "ecbit_sabc",
+                "seq_len": 8,
+                "n_vars": 3,
+                "n_time": 4,
+                "d_model": 16,
+                "n_heads": 4,
+                "n_layers": 1,
+                "d_ff": 32,
+                "dropout": 0.0,
+                "n_station_features": STATION_FEATURE_DIM,
+                "fusion_type": "gated",
+                "sabc": {"hidden_dim": 8, "dropout": 0.0},
+            }
+        }
+    )
+    assert model.seq_len == 8
+    assert getattr(model, "uses_station_features", False)
 
 
 def test_station_ids_for_split_prefers_split_specific_ids() -> None:
