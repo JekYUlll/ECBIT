@@ -1,0 +1,151 @@
+station_id,station,mode,variable,mae,n_obs
+nico,Nico,none,T,0.263471394777298,10785
+nico,Nico,none,RH,0.5269671082496643,11533
+nico,Nico,none,wspd,0.3386624753475189,10823
+nico,Nico,none,P,0.008123221807181835,11541
+nico,Nico,none,q,0.03574196621775627,10779
+nico,Nico,none,mean,0.23554222285747528,55461
+nico,Nico,global_mean,T,0.2971327602863312,10785
+nico,Nico,global_mean,RH,0.7239591479301453,11533
+nico,Nico,global_mean,wspd,0.5535658597946167,10823
+nico,Nico,global_mean,P,0.05857633054256439,11541
+nico,Nico,global_mean,q,0.20342862606048584,10779
+nico,Nico,global_mean,mean,0.36807897686958313,55461
+nico,Nico,target_mean,T,0.2180427759885788,10785
+nico,Nico,target_mean,RH,0.3227725625038147,11533
+nico,Nico,target_mean,wspd,0.22255361080169678,10823
+nico,Nico,target_mean,P,0.024142282083630562,11541
+nico,Nico,target_mean,q,0.027640098705887794,10779
+nico,Nico,target_mean,mean,0.16334693133831024,55461
+nico,Nico,target_month,T,0.16632960736751556,10785
+nico,Nico,target_month,RH,0.31784602999687195,11533
+nico,Nico,target_month,wspd,0.20778751373291016,10823
+nico,Nico,target_month,P,0.024170394986867905,11541
+nico,Nico,target_month,q,0.026924898847937584,10779
+nico,Nico,target_month,mean,0.14925158023834229,55461
+nico,Nico,target_state_linear,T,0.1685006022453308,10785
+nico,Nico,target_state_linear,RH,0.3184524476528168,11533
+nico,Nico,target_state_linear,wspd,0.19386026263237,10823
+nico,Nico,target_state_linear,P,0.024162063375115395,11541
+nico,Nico,target_state_linear,q,0.026886558160185814,10779
+nico,Nico,target_state_linear,mean,0.14707282185554504,55461
+sabrina,Sabrina,none,T,0.17071537673473358,6204
+sabrina,Sabrina,none,RH,0.5671855211257935,1692
+sabrina,Sabrina,none,wspd,0.3277876079082489,5797
+sabrina,Sabrina,none,P,0.015104214660823345,7548
+sabrina,Sabrina,none,q,0.19602394104003906,1421
+sabrina,Sabrina,none,mean,0.1902540624141693,22662
+sabrina,Sabrina,global_mean,T,0.19475214183330536,6204
+sabrina,Sabrina,global_mean,RH,0.5217894911766052,1692
+sabrina,Sabrina,global_mean,wspd,0.3504261076450348,5797
+sabrina,Sabrina,global_mean,P,0.06475500762462616,7548
+sabrina,Sabrina,global_mean,q,0.24010871350765228,1421
+sabrina,Sabrina,global_mean,mean,0.21853744983673096,22662
+sabrina,Sabrina,target_mean,T,0.15899024903774261,6204
+sabrina,Sabrina,target_mean,RH,0.546700119972229,1692
+sabrina,Sabrina,target_mean,wspd,0.3231227993965149,5797
+sabrina,Sabrina,target_mean,P,0.009340668097138405,7548
+sabrina,Sabrina,target_mean,q,0.21652816236019135,1421
+sabrina,Sabrina,target_mean,mean,0.18368743360042572,22662
+sabrina,Sabrina,target_month,T,0.1525823026895523,6204
+sabrina,Sabrina,target_month,RH,0.5302213430404663,1692
+sabrina,Sabrina,target_month,wspd,0.32561784982681274,5797
+sabrina,Sabrina,target_month,P,0.008934475481510162,7548
+sabrina,Sabrina,target_month,q,0.2208172082901001,1421
+sabrina,Sabrina,target_month,mean,0.1814747154712677,22662
+sabrina,Sabrina,target_state_linear,T,0.15362988412380219,6204
+sabrina,Sabrina,target_state_linear,RH,0.3926268517971039,1692
+sabrina,Sabrina,target_state_linear,wspd,0.32405760884284973,5797
+sabrina,Sabrina,target_state_linear,P,0.008477004244923592,7548
+sabrina,Sabrina,target_state_linear,q,0.22024410963058472,1421
+sabrina,Sabrina,target_state_linear,mean,0.17090098559856415,22662
+zhongshan,Zhongshan,none,T,0.10920803248882294,16832
+zhongshan,Zhongshan,none,RH,0.5165397524833679,18566
+zhongshan,Zhongshan,none,wspd,0.40859195590019226,13738
+zhongshan,Zhongshan,none,P,0.07539024204015732,18594
+zhongshan,Zhongshan,none,q,0.28624895215034485,16796
+zhongshan,Zhongshan,none,mean,0.27507683634757996,84526
+zhongshan,Zhongshan,global_mean,T,0.10931413620710373,16832
+zhongshan,Zhongshan,global_mean,RH,0.6105844974517822,18566
+zhongshan,Zhongshan,global_mean,wspd,0.4650464951992035,13738
+zhongshan,Zhongshan,global_mean,P,0.1266954243183136,18594
+zhongshan,Zhongshan,global_mean,q,0.34967315196990967,16796
+zhongshan,Zhongshan,global_mean,mean,0.32881930470466614,84526
+zhongshan,Zhongshan,target_mean,T,0.10685323923826218,16832
+zhongshan,Zhongshan,target_mean,RH,0.5048864483833313,18566
+zhongshan,Zhongshan,target_mean,wspd,0.4206104874610901,13738
+zhongshan,Zhongshan,target_mean,P,0.011948585510253906,18594
+zhongshan,Zhongshan,target_mean,q,0.28948110342025757,16796
+zhongshan,Zhongshan,target_mean,mean,0.26068803668022156,84526
+zhongshan,Zhongshan,target_month,T,0.09823822975158691,16832
+zhongshan,Zhongshan,target_month,RH,0.5063185691833496,18566
+zhongshan,Zhongshan,target_month,wspd,0.4093916714191437,13738
+zhongshan,Zhongshan,target_month,P,0.0119682801887393,18594
+zhongshan,Zhongshan,target_month,q,0.2912502586841583,16796
+zhongshan,Zhongshan,target_month,mean,0.2578195631504059,84526
+zhongshan,Zhongshan,target_state_linear,T,0.09652109444141388,16832
+zhongshan,Zhongshan,target_state_linear,RH,0.5040143728256226,18566
+zhongshan,Zhongshan,target_state_linear,wspd,0.4060819447040558,13738
+zhongshan,Zhongshan,target_state_linear,P,0.011958329938352108,18594
+zhongshan,Zhongshan,target_state_linear,q,0.28558772802352905,16796
+zhongshan,Zhongshan,target_state_linear,mean,0.255306214094162,84526
+butcher_ridge,Butcher Ridge,none,T,0.3531256914138794,6028
+butcher_ridge,Butcher Ridge,none,RH,0.5649694800376892,7565
+butcher_ridge,Butcher Ridge,none,wspd,0.5848851203918457,4213
+butcher_ridge,Butcher Ridge,none,P,0.17987646162509918,7565
+butcher_ridge,Butcher Ridge,none,q,0.17509107291698456,6028
+butcher_ridge,Butcher Ridge,none,mean,0.35934174060821533,31399
+butcher_ridge,Butcher Ridge,global_mean,T,0.31516537070274353,6028
+butcher_ridge,Butcher Ridge,global_mean,RH,0.49937722086906433,7565
+butcher_ridge,Butcher Ridge,global_mean,wspd,0.59409099817276,4213
+butcher_ridge,Butcher Ridge,global_mean,P,0.1285712718963623,7565
+butcher_ridge,Butcher Ridge,global_mean,q,0.11963452398777008,6028
+butcher_ridge,Butcher Ridge,global_mean,mean,0.31447848677635193,31399
+butcher_ridge,Butcher Ridge,target_mean,T,0.22081004083156586,6028
+butcher_ridge,Butcher Ridge,target_mean,RH,0.4788491725921631,7565
+butcher_ridge,Butcher Ridge,target_mean,wspd,0.5840575098991394,4213
+butcher_ridge,Butcher Ridge,target_mean,P,0.029146315529942513,7565
+butcher_ridge,Butcher Ridge,target_mean,q,0.12553347647190094,6028
+butcher_ridge,Butcher Ridge,target_mean,mean,0.2672498822212219,31399
+butcher_ridge,Butcher Ridge,target_month,T,0.22095610201358795,6028
+butcher_ridge,Butcher Ridge,target_month,RH,0.3714851140975952,7565
+butcher_ridge,Butcher Ridge,target_month,wspd,0.5889233946800232,4213
+butcher_ridge,Butcher Ridge,target_month,P,0.029066884890198708,7565
+butcher_ridge,Butcher Ridge,target_month,q,0.1161888837814331,6028
+butcher_ridge,Butcher Ridge,target_month,mean,0.24025031924247742,31399
+butcher_ridge,Butcher Ridge,target_state_linear,T,0.21730273962020874,6028
+butcher_ridge,Butcher Ridge,target_state_linear,RH,0.3591994345188141,7565
+butcher_ridge,Butcher Ridge,target_state_linear,wspd,0.4570067226886749,4213
+butcher_ridge,Butcher Ridge,target_state_linear,P,0.029101010411977768,7565
+butcher_ridge,Butcher Ridge,target_state_linear,q,0.11294286698102951,6028
+butcher_ridge,Butcher Ridge,target_state_linear,mean,0.21827389299869537,31399
+mount_sidley,Mount Sidley,none,T,0.6034720540046692,4764
+mount_sidley,Mount Sidley,none,RH,0.8476558923721313,5726
+mount_sidley,Mount Sidley,none,wspd,0.48854339122772217,3897
+mount_sidley,Mount Sidley,none,P,0.04839177429676056,5726
+mount_sidley,Mount Sidley,none,q,0.3747967481613159,4764
+mount_sidley,Mount Sidley,none,mean,0.4701167643070221,24877
+mount_sidley,Mount Sidley,global_mean,T,0.552548885345459,4764
+mount_sidley,Mount Sidley,global_mean,RH,1.025293231010437,5726
+mount_sidley,Mount Sidley,global_mean,wspd,0.5169738531112671,3897
+mount_sidley,Mount Sidley,global_mean,P,0.01459866389632225,5726
+mount_sidley,Mount Sidley,global_mean,q,0.2505395710468292,4764
+mount_sidley,Mount Sidley,global_mean,mean,0.47413191199302673,24877
+mount_sidley,Mount Sidley,target_mean,T,0.24844229221343994,4764
+mount_sidley,Mount Sidley,target_mean,RH,0.5673953890800476,5726
+mount_sidley,Mount Sidley,target_mean,wspd,0.5229337811470032,3897
+mount_sidley,Mount Sidley,target_mean,P,0.01390841044485569,5726
+mount_sidley,Mount Sidley,target_mean,q,0.23248998820781708,4764
+mount_sidley,Mount Sidley,target_mean,mean,0.307817667722702,24877
+mount_sidley,Mount Sidley,target_month,T,0.2031688094139099,4764
+mount_sidley,Mount Sidley,target_month,RH,0.544550359249115,5726
+mount_sidley,Mount Sidley,target_month,wspd,0.5191237926483154,3897
+mount_sidley,Mount Sidley,target_month,P,0.01290486752986908,5726
+mount_sidley,Mount Sidley,target_month,q,0.23019970953464508,4764
+mount_sidley,Mount Sidley,target_month,mean,0.29262295365333557,24877
+mount_sidley,Mount Sidley,target_state_linear,T,0.20587101578712463,4764
+mount_sidley,Mount Sidley,target_state_linear,RH,0.5355218648910522,5726
+mount_sidley,Mount Sidley,target_state_linear,wspd,0.497516393661499,3897
+mount_sidley,Mount Sidley,target_state_linear,P,0.012847689911723137,5726
+mount_sidley,Mount Sidley,target_state_linear,q,0.22048132121562958,4764
+mount_sidley,Mount Sidley,target_state_linear,mean,0.28580325841903687,24877

@@ -1,0 +1,55 @@
+description: >
+  Proposed remote GPU matrix for the first neural SABC experiment.
+  Do not launch until the local Stage 0 probe has been reviewed.
+
+base_data:
+  manifest_csv: data/antaws_impute_manifest.csv
+  train_station_groups: [main]
+  val_station_groups: [main]
+  test_station_groups: [heldout]
+
+models:
+  - name: ecbit
+    variant: gated_baseline_reuse
+    note: Existing submission baseline for comparison.
+  - name: ecbit_sabc
+    variant: metadata_only
+    sabc:
+      enabled: true
+      hidden_dim: 64
+      dropout: 0.1
+      use_station_meta: true
+      use_residual_summary: false
+      residual_scale_init: 0.1
+  - name: ecbit_sabc
+    variant: metadata_residual_summary
+    sabc:
+      enabled: true
+      hidden_dim: 64
+      dropout: 0.1
+      use_station_meta: true
+      use_residual_summary: true
+      residual_scale_init: 0.1
+
+evaluation:
+  stations: [butcher_ridge, mount_sidley, nico, sabrina, zhongshan]
+  patterns: [short, medium, long]
+  rate: 0.4
+  seeds: [42, 43, 44]
+  primary_metric: normalized_mae_mean
+  secondary_metrics:
+    - normalized_mae_by_station
+    - normalized_mae_by_variable
+    - mount_sidley_mae
+    - zhongshan_mae
+    - nico_regression_guard
+
+go_gate:
+  heldout_mean_mae_improvement: ">= 0.015"
+  hard_station_mae_improvement: ">= 0.030 for Mount Sidley or Zhongshan"
+  nico_max_allowed_degradation: "<= 0.010"
+
+notes:
+  - This matrix requires a new model path and config generator; it is not runnable until ecbit_sabc is implemented.
+  - Keep outputs under experiments/results/metrics/exploration_sabc/ to avoid mixing with submission results.
+  - Treat all results as exploratory until additional held-out splits are available.

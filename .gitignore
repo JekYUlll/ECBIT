@@ -241,6 +241,7 @@ agent/
 .agents/
 .codex/
 research-report-*.md
+backups/
 
 # LaTeX build artifacts
 paper/*.aux
