@@ -1,0 +1,93 @@
+{
+  "best": {
+    "mae_T": 0.1577107459306717,
+    "rmse_T": 0.20913128554821014,
+    "mae_RH": 0.4329921305179596,
+    "rmse_RH": 0.5722506046295166,
+    "mae_wspd": 0.40534764528274536,
+    "rmse_wspd": 0.6183368563652039,
+    "mae_P": 0.05008539929986,
+    "rmse_P": 0.06354738026857376,
+    "mae_q": 0.2047259658575058,
+    "rmse_q": 0.2991452217102051,
+    "mae_mean": 0.2501724064350128,
+    "rmse_mean": 0.35248225927352905,
+    "train_loss": 0.14861029468330683,
+    "epoch": 45
+  },
+  "test": {
+    "mae_T": 0.1774197220802307,
+    "rmse_T": 0.2353556603193283,
+    "mae_RH": 0.28745704889297485,
+    "rmse_RH": 0.36969295144081116,
+    "mae_wspd": 0.390039324760437,
+    "rmse_wspd": 0.5138400793075562,
+    "mae_P": 0.04730425402522087,
+    "rmse_P": 0.06085270270705223,
+    "mae_q": 0.22769033908843994,
+    "rmse_q": 0.3154175579547882,
+    "mae_mean": 0.22598214447498322,
+    "rmse_mean": 0.2990317940711975
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "station_meta_csv": "data/station_meta_ecbit.csv",
+      "test_station_ids": [
+        "sabrina"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_sabc/sabc_metadata_heldout_sabrina_medium_r40_s43",
+    "runner": "train",
+    "model": {
+      "name": "ecbit_sabc",
+      "variant": "sabc_metadata",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "fusion_type": "gated",
+      "n_station_features": 9,
+      "sabc": {
+        "hidden_dim": 64,
+        "dropout": 0.1,
+        "residual_scale_init": 0.1
+      }
+    },
+    "missing": {
+      "pattern": "medium",
+      "rate": 0.4,
+      "min_block": 24,
+      "max_block": 72,
+      "variable_wise": true
+    },
+    "run_name": "sabc_metadata_heldout_sabrina_medium_r40_s43"
+  }
+}
