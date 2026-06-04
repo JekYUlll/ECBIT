@@ -1,0 +1,85 @@
+{
+  "best": {
+    "mae_T": 0.15365725755691528,
+    "rmse_T": 0.20296180248260498,
+    "mae_RH": 0.42000848054885864,
+    "rmse_RH": 0.5560055375099182,
+    "mae_wspd": 0.40252986550331116,
+    "rmse_wspd": 0.6270030736923218,
+    "mae_P": 0.05052417516708374,
+    "rmse_P": 0.06600363552570343,
+    "mae_q": 0.2000959813594818,
+    "rmse_q": 0.29017576575279236,
+    "mae_mean": 0.24536314606666565,
+    "rmse_mean": 0.34842997789382935,
+    "train_loss": 0.1428078877867437,
+    "epoch": 46
+  },
+  "test": {
+    "mae_T": 0.1520414799451828,
+    "rmse_T": 0.20253178477287292,
+    "mae_RH": 0.41406115889549255,
+    "rmse_RH": 0.5538941621780396,
+    "mae_wspd": 0.41236934065818787,
+    "rmse_wspd": 0.6463532447814941,
+    "mae_P": 0.050783414393663406,
+    "rmse_P": 0.0671752467751503,
+    "mae_q": 0.20870313048362732,
+    "rmse_q": 0.30385661125183105,
+    "mae_mean": 0.24759170413017273,
+    "rmse_mean": 0.3547622263431549
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_pcr/gated_baseline_short_r40_s43",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "gated_baseline",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true,
+      "fusion_type": "gated"
+    },
+    "missing": {
+      "pattern": "short",
+      "rate": 0.4,
+      "min_block": 6,
+      "max_block": 24,
+      "variable_wise": true
+    },
+    "run_name": "gated_baseline_short_r40_s43"
+  }
+}
