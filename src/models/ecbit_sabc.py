@@ -16,6 +16,7 @@ class StationAdaptiveBiasCorrection(nn.Module):
         d_model: int,
         n_vars: int,
         n_station_features: int,
+        n_residual_features: int = 0,
         hidden_dim: int = 64,
         dropout: float = 0.1,
         residual_scale_init: float = 0.1,
@@ -24,15 +25,25 @@ class StationAdaptiveBiasCorrection(nn.Module):
         self.d_model = d_model
         self.n_vars = n_vars
         self.n_station_features = n_station_features
+        self.n_residual_features = n_residual_features
         self.station_proj = nn.Sequential(
             nn.Linear(n_station_features, hidden_dim),
             nn.GELU(),
             nn.Dropout(dropout),
             nn.Linear(hidden_dim, d_model),
         )
+        self.residual_proj: nn.Module | None = None
+        if n_residual_features > 0:
+            self.residual_proj = nn.Sequential(
+                nn.Linear(n_residual_features, hidden_dim),
+                nn.GELU(),
+                nn.Dropout(dropout),
+                nn.Linear(hidden_dim, d_model),
+            )
         self.variable_emb = nn.Parameter(torch.randn(1, n_vars, d_model) * 0.02)
+        n_delta_tokens = 4 if self.residual_proj is not None else 3
         self.delta = nn.Sequential(
-            nn.Linear(d_model * 3, hidden_dim),
+            nn.Linear(d_model * n_delta_tokens, hidden_dim),
             nn.GELU(),
             nn.Dropout(dropout),
             nn.Linear(hidden_dim, d_model),
@@ -41,7 +52,12 @@ class StationAdaptiveBiasCorrection(nn.Module):
         nn.init.zeros_(self.delta[-1].bias)
         self.residual_scale = nn.Parameter(torch.tensor(float(residual_scale_init)))
 
-    def forward(self, z_era5: torch.Tensor, station_features: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        z_era5: torch.Tensor,
+        station_features: torch.Tensor,
+        residual_features: torch.Tensor | None = None,
+    ) -> torch.Tensor:
         if z_era5.ndim != 3:
             raise ValueError(f"z_era5 must be (B, C, D), got {tuple(z_era5.shape)}")
         bsz, n_vars, d_model = z_era5.shape
@@ -54,11 +70,21 @@ class StationAdaptiveBiasCorrection(nn.Module):
                 "station_features must be "
                 f"(B, {self.n_station_features}), got {tuple(station_features.shape)}"
             )
+        if self.residual_proj is not None:
+            expected = (bsz, n_vars, self.n_residual_features)
+            if residual_features is None or residual_features.shape != expected:
+                got = None if residual_features is None else tuple(residual_features.shape)
+                raise ValueError(f"residual_features must be {expected}, got {got}")
 
         station_token = self.station_proj(station_features.to(dtype=z_era5.dtype)).unsqueeze(1)
         station_token = station_token.expand(-1, n_vars, -1)
         variable_token = self.variable_emb.expand(bsz, -1, -1)
-        delta = self.delta(torch.cat([z_era5, station_token, variable_token], dim=-1))
+        tokens = [z_era5, station_token, variable_token]
+        if self.residual_proj is not None:
+            assert residual_features is not None
+            residual_token = self.residual_proj(residual_features.to(dtype=z_era5.dtype))
+            tokens.append(residual_token)
+        delta = self.delta(torch.cat(tokens, dim=-1))
         scale = torch.tanh(self.residual_scale)
         return z_era5 + scale * delta
 
@@ -80,6 +106,7 @@ class ECBITSABC(ECBIT):
         dropout: float = 0.1,
         fusion_type: str = "gated",
         n_station_features: int = 9,
+        n_residual_features: int = 0,
         sabc_hidden_dim: int = 64,
         sabc_dropout: float | None = None,
         sabc_residual_scale_init: float = 0.1,
@@ -101,10 +128,12 @@ class ECBITSABC(ECBIT):
             d_model=d_model,
             n_vars=n_vars,
             n_station_features=n_station_features,
+            n_residual_features=n_residual_features,
             hidden_dim=sabc_hidden_dim,
             dropout=dropout if sabc_dropout is None else sabc_dropout,
             residual_scale_init=sabc_residual_scale_init,
         )
+        self.uses_residual_features = n_residual_features > 0
 
     def forward(
         self,
@@ -113,13 +142,14 @@ class ECBITSABC(ECBIT):
         era5: torch.Tensor | None,
         time_enc: torch.Tensor,
         station_features: torch.Tensor,
+        residual_features: torch.Tensor | None = None,
     ) -> torch.Tensor:
         self._check_inputs(x_obs, missing_mask, era5, time_enc)
         z_obs = self.obs_encoder(self._obs_tokens(x_obs, missing_mask, time_enc))
 
         assert era5 is not None
         z_era5 = self.era5_encoder(self._era5_tokens(era5, time_enc))
-        z_era5 = self.sabc(z_era5, station_features)
+        z_era5 = self.sabc(z_era5, station_features, residual_features)
         missing_vars = (missing_mask.bool().sum(dim=1) > 0).float()
         if self.fusion_type == "cross_attn":
             z = self.cond_attn(z_obs, z_era5, missing_vars)

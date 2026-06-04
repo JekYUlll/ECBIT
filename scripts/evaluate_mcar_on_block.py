@@ -34,6 +34,9 @@ def make_loader(config: dict[str, Any], split: str, batch_size: int, num_workers
         station_groups=data_cfg.get(f"{split}_station_groups", ["main"]),
         window_splits=[split],
         station_ids=station_ids_for_split(data_cfg, split),
+        window_subset_csv=data_cfg.get(f"{split}_window_subset_csv", data_cfg.get("window_subset_csv")),
+        station_meta_csv=data_cfg.get("station_meta_csv"),
+        residual_feature_csv=data_cfg.get("residual_feature_csv"),
     )
     return DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
@@ -68,7 +71,21 @@ def evaluate_block(
         artificial = artificial_mask_batch(obs_mask, missing_cfg, seed + 9_000_000_000 + step * 100_000).to(device)
         model_missing = torch.clamp((1.0 - obs_mask) + artificial, 0.0, 1.0)
         x_obs = apply_mask(x, model_missing)
-        preds.append(model(x_obs, model_missing, era5, time_enc).cpu())
+        if getattr(model, "uses_station_features", False):
+            if getattr(model, "uses_residual_features", False):
+                pred = model(
+                    x_obs,
+                    model_missing,
+                    era5,
+                    time_enc,
+                    batch["station_features"].to(device),
+                    batch["residual_features"].to(device),
+                )
+            else:
+                pred = model(x_obs, model_missing, era5, time_enc, batch["station_features"].to(device))
+        else:
+            pred = model(x_obs, model_missing, era5, time_enc)
+        preds.append(pred.cpu())
         targets.append(x.cpu())
         masks.append(artificial.cpu())
 

@@ -69,7 +69,17 @@ def evaluate_one(config_path: Path, split: str, device: torch.device, max_batche
         model_missing = torch.clamp((1.0 - obs_mask) + artificial, 0.0, 1.0)
         x_obs = apply_mask(x, model_missing)
         if getattr(model, "uses_station_features", False):
-            pred = model(x_obs, model_missing, era5, time_enc, batch["station_features"].to(device))
+            if getattr(model, "uses_residual_features", False):
+                pred = model(
+                    x_obs,
+                    model_missing,
+                    era5,
+                    time_enc,
+                    batch["station_features"].to(device),
+                    batch["residual_features"].to(device),
+                )
+            else:
+                pred = model(x_obs, model_missing, era5, time_enc, batch["station_features"].to(device))
         elif cfg["model"]["name"] in {"ecbit", "itransformer_era5"}:
             pred = model(x_obs, model_missing, era5, time_enc)
         else:

@@ -24,6 +24,18 @@ STATION_FEATURE_COLUMNS = (
 )
 STATION_FEATURE_DIM = len(STATION_FEATURE_COLUMNS)
 
+RESIDUAL_FEATURE_COLUMNS = (
+    "station_bias",
+    "station_std",
+    "station_mae",
+    "station_log_count",
+    "station_month_bias",
+    "station_month_std",
+    "station_month_mae",
+    "station_month_log_count",
+)
+RESIDUAL_FEATURE_DIM = len(RESIDUAL_FEATURE_COLUMNS)
+
 
 def _zscore(series: pd.Series) -> pd.Series:
     values = series.astype(float)
@@ -82,6 +94,31 @@ def _load_station_features(station_meta_csv: Path | None) -> dict[str, np.ndarra
     }
 
 
+def _load_residual_features(residual_feature_csv: Path | None) -> dict[str, np.ndarray]:
+    if residual_feature_csv is None:
+        return {}
+    if not residual_feature_csv.exists():
+        raise FileNotFoundError(f"residual feature CSV not found: {residual_feature_csv}")
+
+    table = pd.read_csv(residual_feature_csv).copy()
+    required = {"station_id", "month", "variable_index", *RESIDUAL_FEATURE_COLUMNS}
+    missing = required.difference(table.columns)
+    if missing:
+        raise ValueError(f"residual feature CSV is missing columns: {sorted(missing)}")
+
+    features: dict[str, np.ndarray] = {}
+    for station_id, group in table.groupby("station_id"):
+        n_vars = int(group["variable_index"].max()) + 1
+        grid = np.zeros((12, n_vars, RESIDUAL_FEATURE_DIM), dtype=np.float32)
+        for _, row in group.iterrows():
+            month_idx = int(row["month"]) - 1
+            var_idx = int(row["variable_index"])
+            if 0 <= month_idx < 12 and 0 <= var_idx < n_vars:
+                grid[month_idx, var_idx] = row[list(RESIDUAL_FEATURE_COLUMNS)].to_numpy(dtype=np.float32)
+        features[str(station_id)] = grid
+    return features
+
+
 class ImputationWindowDataset(Dataset):
     """Load preprocessed station NPZ windows filtered by station group and split."""
 
@@ -93,10 +130,14 @@ class ImputationWindowDataset(Dataset):
         station_ids: Iterable[str] | None = None,
         window_subset_csv: str | Path | None = None,
         station_meta_csv: str | Path | None = None,
+        residual_feature_csv: str | Path | None = None,
     ) -> None:
         self.manifest_csv = Path(manifest_csv)
         manifest = pd.read_csv(self.manifest_csv)
         station_features = _load_station_features(Path(station_meta_csv) if station_meta_csv is not None else None)
+        residual_features = _load_residual_features(
+            Path(residual_feature_csv) if residual_feature_csv is not None else None
+        )
         groups = set(station_groups)
         splits = set(window_splits)
         subset_by_station: dict[str, set[int]] | None = None
@@ -150,6 +191,10 @@ class ImputationWindowDataset(Dataset):
                     str(row["station_id"]),
                     np.zeros(STATION_FEATURE_DIM, dtype=np.float32),
                 ),
+                "residual_features_by_month": residual_features.get(
+                    str(row["station_id"]),
+                    np.zeros((12, n_vars, RESIDUAL_FEATURE_DIM), dtype=np.float32),
+                ),
                 "station_id": str(row["station_id"]),
                 "station_group": str(row["station_group"]),
                 "window_split": window_split[keep],
@@ -171,6 +216,9 @@ class ImputationWindowDataset(Dataset):
     def __getitem__(self, idx: int) -> dict[str, torch.Tensor | str]:
         array_idx, local_idx = self.index_rows[idx]
         item = self.arrays[array_idx]
+        month = item["month"][local_idx].astype(np.int64)
+        month_index = np.clip(month, 1, 12) - 1
+        residual_features = item["residual_features_by_month"][month_index].mean(axis=0)
         return {
             "x": torch.from_numpy(item["X"][local_idx]),
             "obs_mask": torch.from_numpy(item["obs_mask"][local_idx]),
@@ -178,8 +226,9 @@ class ImputationWindowDataset(Dataset):
             "time_enc": torch.from_numpy(item["T_enc"][local_idx]),
             "norm_mean": torch.from_numpy(item["normalization_mean"]),
             "norm_std": torch.from_numpy(item["normalization_std"]),
-            "month": torch.from_numpy(item["month"][local_idx].astype(np.int64)),
+            "month": torch.from_numpy(month),
             "station_features": torch.from_numpy(item["station_features"]),
+            "residual_features": torch.from_numpy(residual_features.astype(np.float32)),
             "station_id": item["station_id"],
             "station_group": item["station_group"],
             "window_split": str(item["window_split"][local_idx]),

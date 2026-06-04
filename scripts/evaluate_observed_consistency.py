@@ -75,7 +75,19 @@ def audit_config(config_path: Path, device: torch.device, allow_missing: bool = 
         model_missing = torch.clamp((1.0 - obs_mask) + artificial, 0.0, 1.0)
         visible = (1.0 - model_missing).bool()
         x_obs = apply_mask(x, model_missing)
-        if config["model"]["name"] == "ecbit":
+        if getattr(model, "uses_station_features", False):
+            if getattr(model, "uses_residual_features", False):
+                pred = model(
+                    x_obs,
+                    model_missing,
+                    era5,
+                    time_enc,
+                    batch["station_features"].to(device),
+                    batch["residual_features"].to(device),
+                )
+            else:
+                pred = model(x_obs, model_missing, era5, time_enc, batch["station_features"].to(device))
+        elif config["model"]["name"] == "ecbit":
             pred = model(x_obs, model_missing, era5, time_enc)
         else:
             pred = model(x_obs, model_missing, time_enc)

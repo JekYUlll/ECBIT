@@ -2,6 +2,45 @@
 
 This file records algorithm and experiment-path changes after the submission-ready ECBIT manuscript snapshot. It is intended to keep exploratory changes distinguishable from the Polar Science submission version.
 
+## 2026-06-04 - Residual-Aware SABC v2
+
+Status: implemented and locally unit-tested; remote pilot pending.
+
+Motivation:
+
+- Metadata-only SABC v1 failed its gate, suggesting static station metadata alone is not enough to correct held-out ERA5-AWS mismatch.
+- The earlier residual probe was positive, so SABC v2 adds train-period residual summary features rather than repeating metadata-only adaptation.
+
+Algorithm changes:
+
+- `scripts/generate_sabc_residual_features.py`: generates train-period ERA5-AWS residual summaries by station, month, and variable.
+- `ImputationWindowDataset`: optionally loads `residual_feature_csv` and returns `residual_features` with shape `(n_vars, 8)` for each window.
+- `StationAdaptiveBiasCorrection`: optionally projects per-variable residual features and combines them with ERA5 tokens, station metadata tokens, and variable embeddings.
+- `ECBITSABC`: remains backward-compatible for metadata-only SABC, while configs with `n_residual_features > 0` declare `uses_residual_features`.
+- Training/evaluation dispatch now passes residual features only to models that require them.
+
+Residual features:
+
+- station-level AWS-minus-ERA5 bias, standard deviation, MAE, and scaled log-count;
+- station-month AWS-minus-ERA5 bias, standard deviation, MAE, and scaled log-count;
+- features are estimated from chronological train windows only.
+
+Experiment path:
+
+- `scripts/generate_sabc_v2_configs.py` writes 27 pilot configs under `experiments/configs/exploration_sabc_v2/`.
+- Pilot scope: Mount Sidley, Nico, Zhongshan x short/medium/long block regimes x seeds 42/43/44 at 40% missingness.
+- `scripts/analyze_sabc_v2_results.py` compares SABC v2 results against the completed matched gated-baseline rows from `experiments/results/metrics/exploration_sabc/`.
+
+Boundary:
+
+- For held-out stations, residual summaries use target-station chronological train history. This is a target-station historical calibration setting, not strict zero-shot station generalization.
+- No SABC v2 training or evaluation result exists yet. Per the current project rule, all training and evaluation must run on the server.
+
+Verification:
+
+- `python -m py_compile` passed for the changed code and new scripts.
+- `conda run -n darts python -m pytest -q src/tests` passed with 54 tests.
+
 ## 2026-06-04 - Operational Hybrid Baseline
 
 Status: exploratory, closed as negative for endpoint anchoring.

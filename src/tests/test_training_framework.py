@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from src.data.impute_dataset import STATION_FEATURE_DIM, ImputationWindowDataset
+from src.data.impute_dataset import RESIDUAL_FEATURE_COLUMNS, RESIDUAL_FEATURE_DIM, STATION_FEATURE_DIM, ImputationWindowDataset
 from src.metrics import masked_mae_rmse
 from src.train_impute import artificial_mask_batch, build_model, station_ids_for_split
 
@@ -54,6 +54,35 @@ def test_imputation_window_dataset_filters_split(tmp_path) -> None:
     assert item["era5"].shape == (8, 3)
     assert item["time_enc"].shape == (8, 4)
     assert item["station_features"].shape == (STATION_FEATURE_DIM,)
+    assert item["residual_features"].shape == (3, RESIDUAL_FEATURE_DIM)
+
+
+def test_imputation_window_dataset_loads_residual_features(tmp_path) -> None:
+    manifest = make_tiny_dataset(tmp_path)
+    residual_csv = tmp_path / "residual_features.csv"
+    rows = []
+    for month in range(1, 13):
+        for variable_index in range(3):
+            row = {
+                "station_id": "tiny",
+                "month": month,
+                "variable_index": variable_index,
+                "variable": f"v{variable_index}",
+            }
+            row.update({col: float(month + variable_index) for col in RESIDUAL_FEATURE_COLUMNS})
+            rows.append(row)
+    pd.DataFrame(rows).to_csv(residual_csv, index=False)
+
+    ds = ImputationWindowDataset(
+        manifest,
+        station_groups=["main"],
+        window_splits=["train"],
+        residual_feature_csv=residual_csv,
+    )
+
+    item = ds[0]
+    assert item["residual_features"].shape == (3, RESIDUAL_FEATURE_DIM)
+    assert torch.allclose(item["residual_features"][2], torch.full((RESIDUAL_FEATURE_DIM,), 3.0))
 
 
 def test_imputation_window_dataset_filters_station_id_and_group(tmp_path) -> None:
@@ -147,6 +176,30 @@ def test_build_sabc_model_from_config() -> None:
     )
     assert model.seq_len == 8
     assert getattr(model, "uses_station_features", False)
+
+
+def test_build_sabc_residual_model_from_config() -> None:
+    model = build_model(
+        {
+            "model": {
+                "name": "ecbit_sabc",
+                "seq_len": 8,
+                "n_vars": 3,
+                "n_time": 4,
+                "d_model": 16,
+                "n_heads": 4,
+                "n_layers": 1,
+                "d_ff": 32,
+                "dropout": 0.0,
+                "n_station_features": STATION_FEATURE_DIM,
+                "n_residual_features": RESIDUAL_FEATURE_DIM,
+                "fusion_type": "gated",
+                "sabc": {"hidden_dim": 8, "dropout": 0.0},
+            }
+        }
+    )
+    assert getattr(model, "uses_station_features", False)
+    assert getattr(model, "uses_residual_features", False)
 
 
 def test_station_ids_for_split_prefers_split_specific_ids() -> None:

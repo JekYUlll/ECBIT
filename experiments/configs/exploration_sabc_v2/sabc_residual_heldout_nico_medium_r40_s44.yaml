@@ -1,0 +1,51 @@
+seed: 44
+device: cuda
+data:
+  manifest_csv: data/antaws_impute_manifest.csv
+  train_station_groups:
+  - main
+  val_station_groups:
+  - main
+  test_station_groups:
+  - heldout
+  station_meta_csv: data/station_meta_ecbit.csv
+  residual_feature_csv: experiments/results/exploration_sabc_v2/sabc_residual_features.csv
+  test_station_ids:
+  - nico
+training:
+  epochs: 50
+  batch_size: 32
+  num_workers: 4
+  lr: 0.0001
+  weight_decay: 0.0001
+  patience: 10
+eval:
+  batch_size: 64
+  num_workers: 4
+output_dir: experiments/results/metrics/exploration_sabc_v2/sabc_residual_heldout_nico_medium_r40_s44
+runner: train
+model:
+  name: ecbit_sabc
+  variant: sabc_residual
+  seq_len: 168
+  n_vars: 5
+  n_time: 4
+  d_model: 128
+  n_heads: 8
+  n_layers: 3
+  d_ff: 256
+  dropout: 0.1
+  fusion_type: gated
+  n_station_features: 9
+  n_residual_features: 8
+  sabc:
+    hidden_dim: 64
+    dropout: 0.1
+    residual_scale_init: 0.1
+missing:
+  pattern: medium
+  rate: 0.4
+  min_block: 24
+  max_block: 72
+  variable_wise: true
+run_name: sabc_residual_heldout_nico_medium_r40_s44
