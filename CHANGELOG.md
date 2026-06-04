@@ -26,7 +26,8 @@ PCR changes:
 - Added `scripts/generate_pcr_configs.py`, producing 18 configs under `experiments/configs/exploration_pcr/`.
 - Added `scripts/analyze_pcr_results.py` for paired MAE aggregation after remote results complete.
 - The 18-run PCR matrix has been launched remotely on GPUs 0, 1, 3, 4, and 5.
-- A partial sync at 13/18 PCR runs gives 4 matched pairs with mean improvement `0.0007` normalized MAE, 95% CI `[-0.0004, 0.0017]`. This passes only the non-degradation gate and is not yet evidence of a useful improvement.
+- A partial sync at 15/18 PCR runs gives 6 matched pairs with mean improvement `0.0006` normalized MAE, 95% CI `[-0.0001, 0.0012]`. This passes only the non-degradation gate and is not yet evidence of a useful improvement.
+- Added `scripts/evaluate_physical_consistency.py` for checkpoint-based thermodynamic diagnostics. A one-batch local smoke check found lower q-consistency residual for PCR than the baseline, but this is only a functional check until the full matrix completes.
 - A bounded remote GPU conformal run over the 9 retained r40 iTransformer+ERA5 configs with `--max-batches 10` produced pooled coverage `0.8892` for nominal 90% intervals. RH coverage is lower (`0.8650`), so uncertainty needs variable-aware calibration before it can support a manuscript claim.
 
 ## 2026-06-04 - SABC Final Remote Evidence
