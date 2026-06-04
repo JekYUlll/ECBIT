@@ -1,0 +1,92 @@
+{
+  "best": {
+    "mae_T": 0.15294784307479858,
+    "rmse_T": 0.2030440717935562,
+    "mae_RH": 0.420410692691803,
+    "rmse_RH": 0.5579806566238403,
+    "mae_wspd": 0.40039071440696716,
+    "rmse_wspd": 0.6236425638198853,
+    "mae_P": 0.04918268695473671,
+    "rmse_P": 0.0638367086648941,
+    "mae_q": 0.19872459769248962,
+    "rmse_q": 0.29157787561416626,
+    "mae_mean": 0.24433131515979767,
+    "rmse_mean": 0.3480163514614105,
+    "train_loss": 0.14319711554478975,
+    "epoch": 48
+  },
+  "test": {
+    "mae_T": 0.15026405453681946,
+    "rmse_T": 0.20156694948673248,
+    "mae_RH": 0.4155978560447693,
+    "rmse_RH": 0.5558938980102539,
+    "mae_wspd": 0.40931883454322815,
+    "rmse_wspd": 0.6475067138671875,
+    "mae_P": 0.04918702319264412,
+    "rmse_P": 0.06480026990175247,
+    "mae_q": 0.20552554726600647,
+    "rmse_q": 0.30088311433792114,
+    "mae_mean": 0.24597866833209991,
+    "rmse_mean": 0.35413017868995667
+  },
+  "config": {
+    "seed": 44,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "main"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_pcr/pcr_w005_short_r40_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "pcr_w005",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true,
+      "fusion_type": "gated"
+    },
+    "missing": {
+      "pattern": "short",
+      "rate": 0.4,
+      "min_block": 6,
+      "max_block": 24,
+      "variable_wise": true
+    },
+    "run_name": "pcr_w005_short_r40_s44",
+    "loss": {
+      "physical_consistency": {
+        "enabled": true,
+        "weight": 0.05,
+        "delta": 1.0
+      }
+    }
+  }
+}
