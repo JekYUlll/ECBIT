@@ -1,0 +1,89 @@
+{
+  "best": {
+    "mae_T": 0.15382355451583862,
+    "rmse_T": 0.20336593687534332,
+    "mae_RH": 0.4173785150051117,
+    "rmse_RH": 0.5525892376899719,
+    "mae_wspd": 0.4049071967601776,
+    "rmse_wspd": 0.6315137147903442,
+    "mae_P": 0.05097779631614685,
+    "rmse_P": 0.06788665801286697,
+    "mae_q": 0.20155943930149078,
+    "rmse_q": 0.29212233424186707,
+    "mae_mean": 0.24572929739952087,
+    "rmse_mean": 0.3494955897331238,
+    "train_loss": 0.14414526979907666,
+    "epoch": 47
+  },
+  "test": {
+    "mae_T": 0.12885409593582153,
+    "rmse_T": 0.17421984672546387,
+    "mae_RH": 0.41858941316604614,
+    "rmse_RH": 0.5187348127365112,
+    "mae_wspd": 0.4283573627471924,
+    "rmse_wspd": 0.554337739944458,
+    "mae_P": 0.049051862210035324,
+    "rmse_P": 0.061593785881996155,
+    "mae_q": 0.31192314624786377,
+    "rmse_q": 0.40571239590644836,
+    "mae_mean": 0.26735517382621765,
+    "rmse_mean": 0.3429197072982788
+  },
+  "config": {
+    "seed": 42,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "station_meta_csv": "data/station_meta_ecbit.csv",
+      "test_station_ids": [
+        "zhongshan"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_sabc/gated_baseline_heldout_zhongshan_short_r40_s42",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "gated_baseline",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true,
+      "fusion_type": "gated"
+    },
+    "missing": {
+      "pattern": "short",
+      "rate": 0.4,
+      "min_block": 6,
+      "max_block": 24,
+      "variable_wise": true
+    },
+    "run_name": "gated_baseline_heldout_zhongshan_short_r40_s42"
+  }
+}

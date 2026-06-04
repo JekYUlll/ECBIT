@@ -1,0 +1,89 @@
+{
+  "best": {
+    "mae_T": 0.1533997654914856,
+    "rmse_T": 0.20315708220005035,
+    "mae_RH": 0.4186458885669708,
+    "rmse_RH": 0.5547480583190918,
+    "mae_wspd": 0.4013601243495941,
+    "rmse_wspd": 0.6292056441307068,
+    "mae_P": 0.04975556209683418,
+    "rmse_P": 0.06429468095302582,
+    "mae_q": 0.1995835304260254,
+    "rmse_q": 0.2925449013710022,
+    "mae_mean": 0.2445489913225174,
+    "rmse_mean": 0.34879010915756226,
+    "train_loss": 0.1422846590868788,
+    "epoch": 48
+  },
+  "test": {
+    "mae_T": 0.18055695295333862,
+    "rmse_T": 0.24133916199207306,
+    "mae_RH": 0.3015352785587311,
+    "rmse_RH": 0.37884920835494995,
+    "mae_wspd": 0.4036904275417328,
+    "rmse_wspd": 0.533134937286377,
+    "mae_P": 0.048668522387742996,
+    "rmse_P": 0.061933793127536774,
+    "mae_q": 0.2140042930841446,
+    "rmse_q": 0.2974349856376648,
+    "mae_mean": 0.22969110310077667,
+    "rmse_mean": 0.3025383949279785
+  },
+  "config": {
+    "seed": 44,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "station_meta_csv": "data/station_meta_ecbit.csv",
+      "test_station_ids": [
+        "sabrina"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_sabc/gated_baseline_heldout_sabrina_short_r40_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "gated_baseline",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true,
+      "fusion_type": "gated"
+    },
+    "missing": {
+      "pattern": "short",
+      "rate": 0.4,
+      "min_block": 6,
+      "max_block": 24,
+      "variable_wise": true
+    },
+    "run_name": "gated_baseline_heldout_sabrina_short_r40_s44"
+  }
+}

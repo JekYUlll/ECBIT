@@ -1,0 +1,93 @@
+{
+  "best": {
+    "mae_T": 0.1517641693353653,
+    "rmse_T": 0.20058217644691467,
+    "mae_RH": 0.41579386591911316,
+    "rmse_RH": 0.5522458553314209,
+    "mae_wspd": 0.40238329768180847,
+    "rmse_wspd": 0.6231629848480225,
+    "mae_P": 0.0507810041308403,
+    "rmse_P": 0.06778562068939209,
+    "mae_q": 0.1991664618253708,
+    "rmse_q": 0.29075750708580017,
+    "mae_mean": 0.24397775530815125,
+    "rmse_mean": 0.346906840801239,
+    "train_loss": 0.13932495867115222,
+    "epoch": 47
+  },
+  "test": {
+    "mae_T": 0.2563762068748474,
+    "rmse_T": 0.33408668637275696,
+    "mae_RH": 0.3511415719985962,
+    "rmse_RH": 0.46119824051856995,
+    "mae_wspd": 0.5500007271766663,
+    "rmse_wspd": 0.6959672570228577,
+    "mae_P": 0.06594947725534439,
+    "rmse_P": 0.08338466286659241,
+    "mae_q": 0.1256781965494156,
+    "rmse_q": 0.16555316746234894,
+    "mae_mean": 0.2698292136192322,
+    "rmse_mean": 0.348037987947464
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "station_meta_csv": "data/station_meta_ecbit.csv",
+      "test_station_ids": [
+        "butcher_ridge"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_sabc/sabc_metadata_heldout_butcher_ridge_short_r40_s43",
+    "runner": "train",
+    "model": {
+      "name": "ecbit_sabc",
+      "variant": "sabc_metadata",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "fusion_type": "gated",
+      "n_station_features": 9,
+      "sabc": {
+        "hidden_dim": 64,
+        "dropout": 0.1,
+        "residual_scale_init": 0.1
+      }
+    },
+    "missing": {
+      "pattern": "short",
+      "rate": 0.4,
+      "min_block": 6,
+      "max_block": 24,
+      "variable_wise": true
+    },
+    "run_name": "sabc_metadata_heldout_butcher_ridge_short_r40_s43"
+  }
+}

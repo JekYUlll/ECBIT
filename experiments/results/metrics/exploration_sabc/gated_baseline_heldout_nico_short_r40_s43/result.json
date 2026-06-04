@@ -1,0 +1,89 @@
+{
+  "best": {
+    "mae_T": 0.15365725755691528,
+    "rmse_T": 0.20296180248260498,
+    "mae_RH": 0.42000848054885864,
+    "rmse_RH": 0.5560055375099182,
+    "mae_wspd": 0.40252986550331116,
+    "rmse_wspd": 0.6270030736923218,
+    "mae_P": 0.05052417516708374,
+    "rmse_P": 0.06600363552570343,
+    "mae_q": 0.2000959813594818,
+    "rmse_q": 0.29017576575279236,
+    "mae_mean": 0.24536314606666565,
+    "rmse_mean": 0.34842997789382935,
+    "train_loss": 0.1428078877867437,
+    "epoch": 46
+  },
+  "test": {
+    "mae_T": 0.16961507499217987,
+    "rmse_T": 0.2246447205543518,
+    "mae_RH": 0.14182433485984802,
+    "rmse_RH": 0.18051595985889435,
+    "mae_wspd": 0.1958829164505005,
+    "rmse_wspd": 0.2523019313812256,
+    "mae_P": 0.07626751810312271,
+    "rmse_P": 0.0956345647573471,
+    "mae_q": 0.06333064287900925,
+    "rmse_q": 0.08033546060323715,
+    "mae_mean": 0.1293841004371643,
+    "rmse_mean": 0.1666865348815918
+  },
+  "config": {
+    "seed": 43,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "station_meta_csv": "data/station_meta_ecbit.csv",
+      "test_station_ids": [
+        "nico"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_sabc/gated_baseline_heldout_nico_short_r40_s43",
+    "runner": "train",
+    "model": {
+      "name": "ecbit",
+      "variant": "gated_baseline",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "use_era5": true,
+      "use_cross": true,
+      "fusion_type": "gated"
+    },
+    "missing": {
+      "pattern": "short",
+      "rate": 0.4,
+      "min_block": 6,
+      "max_block": 24,
+      "variable_wise": true
+    },
+    "run_name": "gated_baseline_heldout_nico_short_r40_s43"
+  }
+}
