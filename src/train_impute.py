@@ -22,6 +22,7 @@ from src.data.impute_dataset import STATION_FEATURE_DIM, ImputationWindowDataset
 from src.metrics import masked_mae_rmse
 from src.models.ecbit import ECBIT
 from src.models.ecbit_sabc import ECBITSABC
+from src.physical import physical_consistency_loss
 from src.utils.block_missing import apply_mask, simulate_block_missing, simulate_mcar_missing
 
 
@@ -224,6 +225,16 @@ def train(config: dict[str, Any]) -> dict[str, Any]:
         for step, batch in enumerate(train_loader):
             pred, target, label_mask = forward_model(model, batch, missing_cfg, device, seed + epoch * 1_000_000 + step * 10_000)
             loss = masked_mse_loss(pred, target, label_mask)
+            phys_cfg = config.get("loss", {}).get("physical_consistency", {})
+            if bool(phys_cfg.get("enabled", False)):
+                phys_loss = physical_consistency_loss(
+                    pred,
+                    label_mask,
+                    batch["norm_mean"].to(device),
+                    batch["norm_std"].to(device),
+                    delta=float(phys_cfg.get("delta", 1.0)),
+                )
+                loss = loss + float(phys_cfg.get("weight", 0.05)) * phys_loss
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
             optimizer.step()

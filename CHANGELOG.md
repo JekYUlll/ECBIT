@@ -2,6 +2,50 @@
 
 This file records algorithm and experiment-path changes after the submission-ready ECBIT manuscript snapshot. It is intended to keep exploratory changes distinguishable from the Polar Science submission version.
 
+## 2026-06-04 - Parallel Exploration Tracks
+
+Status: exploratory, not manuscript-ready.
+
+Two lower-risk tracks are now separated from the submission snapshot:
+
+- `explorations/2026-06-04-uncertainty/`: inference-only split-conformal residual intervals for retained checkpoints.
+- `explorations/2026-06-04-pcr/`: physical-consistency regularization for thermodynamic q consistency.
+
+Uncertainty changes:
+
+- Added `scripts/analyze_conformal_uncertainty.py`.
+- The script uses validation residuals to compute finite-sample absolute-residual quantiles and checks test coverage by variable.
+- A one-config/one-batch CPU smoke run completed successfully with pooled 90% interval coverage of `0.9055`.
+- Full CPU inference is too slow locally; full analysis should run on remote GPU or with an explicit sample limit.
+
+PCR changes:
+
+- Added `src/physical.py` with differentiable specific-humidity and physical-consistency helpers.
+- `ImputationWindowDataset` now returns `norm_mean` and `norm_std` in each batch so losses can safely unnormalize meteorological variables.
+- `train_impute.py` applies PCR only when `loss.physical_consistency.enabled` is true; existing configs remain behaviorally unchanged.
+- Added `scripts/generate_pcr_configs.py`, producing 18 configs under `experiments/configs/exploration_pcr/`.
+- Added `scripts/analyze_pcr_results.py` for paired MAE aggregation after remote results complete.
+- The 18-run PCR matrix has been launched remotely on GPUs 0, 1, 3, 4, and 5.
+
+## 2026-06-04 - SABC Final Remote Evidence
+
+Status: exploratory, not manuscript-ready.
+
+The metadata-only SABC Stage 1 matrix completed 90/90 remote runs, producing 45 matched gated-baseline/SABC pairs.
+
+Final paired result:
+
+- Overall SABC improvement over matched gated ECBIT: `-0.0039` normalized MAE.
+- 95% CI: `[-0.0086, 0.0007]`.
+- Current gate decision: do not pass.
+- Mount Sidley, Nico, and Zhongshan do not improve under metadata-only SABC.
+
+Interpretation:
+
+- Metadata-only station features are insufficient for a useful SABC claim.
+- SABC should not be added to the current manuscript.
+- A future SABC v2 would need target-station residual summaries, station-month calibration features, or terrain/grid-elevation mismatch inputs rather than only static metadata.
+
 ## 2026-06-04 - SABC Partial Remote Evidence
 
 Status: exploratory, not manuscript-ready.

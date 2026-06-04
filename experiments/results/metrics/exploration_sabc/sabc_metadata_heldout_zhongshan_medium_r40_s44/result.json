@@ -1,0 +1,93 @@
+{
+  "best": {
+    "mae_T": 0.15656155347824097,
+    "rmse_T": 0.20711952447891235,
+    "mae_RH": 0.43427860736846924,
+    "rmse_RH": 0.574628472328186,
+    "mae_wspd": 0.4078788161277771,
+    "rmse_wspd": 0.6259041428565979,
+    "mae_P": 0.04898007959127426,
+    "rmse_P": 0.06260315328836441,
+    "mae_q": 0.20825818181037903,
+    "rmse_q": 0.30485063791275024,
+    "mae_mean": 0.2511914372444153,
+    "rmse_mean": 0.3550211787223816,
+    "train_loss": 0.14891702195787743,
+    "epoch": 44
+  },
+  "test": {
+    "mae_T": 0.1425265073776245,
+    "rmse_T": 0.19556155800819397,
+    "mae_RH": 0.4656897783279419,
+    "rmse_RH": 0.5645205974578857,
+    "mae_wspd": 0.45774176716804504,
+    "rmse_wspd": 0.5677972435951233,
+    "mae_P": 0.050402212888002396,
+    "rmse_P": 0.06466570496559143,
+    "mae_q": 0.3559664189815521,
+    "rmse_q": 0.44303834438323975,
+    "mae_mean": 0.2944653332233429,
+    "rmse_mean": 0.36711665987968445
+  },
+  "config": {
+    "seed": 44,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "station_meta_csv": "data/station_meta_ecbit.csv",
+      "test_station_ids": [
+        "zhongshan"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_sabc/sabc_metadata_heldout_zhongshan_medium_r40_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit_sabc",
+      "variant": "sabc_metadata",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "fusion_type": "gated",
+      "n_station_features": 9,
+      "sabc": {
+        "hidden_dim": 64,
+        "dropout": 0.1,
+        "residual_scale_init": 0.1
+      }
+    },
+    "missing": {
+      "pattern": "medium",
+      "rate": 0.4,
+      "min_block": 24,
+      "max_block": 72,
+      "variable_wise": true
+    },
+    "run_name": "sabc_metadata_heldout_zhongshan_medium_r40_s44"
+  }
+}

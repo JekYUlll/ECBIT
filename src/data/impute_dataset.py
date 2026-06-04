@@ -135,11 +135,16 @@ class ImputationWindowDataset(Dataset):
                 month = data["timestamps"][keep].astype("datetime64[M]").astype(int) % 12 + 1
             else:
                 month = np.ones(data["X"][keep].shape[:2], dtype=np.int64)
+            n_vars = int(data["X"].shape[-1])
+            norm_mean = data["normalization_mean"].astype(np.float32) if "normalization_mean" in data.files else np.zeros(n_vars, dtype=np.float32)
+            norm_std = data["normalization_std"].astype(np.float32) if "normalization_std" in data.files else np.ones(n_vars, dtype=np.float32)
             item = {
                 "X": data["X"][keep].astype(np.float32),
                 "obs_mask": data["obs_mask"][keep].astype(np.float32),
                 "E_3h": data["E_3h"][keep].astype(np.float32),
                 "T_enc": data["T_enc"][keep].astype(np.float32),
+                "normalization_mean": norm_mean,
+                "normalization_std": norm_std,
                 "month": month,
                 "station_features": station_features.get(
                     str(row["station_id"]),
@@ -171,6 +176,8 @@ class ImputationWindowDataset(Dataset):
             "obs_mask": torch.from_numpy(item["obs_mask"][local_idx]),
             "era5": torch.from_numpy(item["E_3h"][local_idx]),
             "time_enc": torch.from_numpy(item["T_enc"][local_idx]),
+            "norm_mean": torch.from_numpy(item["normalization_mean"]),
+            "norm_std": torch.from_numpy(item["normalization_std"]),
             "month": torch.from_numpy(item["month"][local_idx].astype(np.int64)),
             "station_features": torch.from_numpy(item["station_features"]),
             "station_id": item["station_id"],
