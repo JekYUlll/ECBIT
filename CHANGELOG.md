@@ -4,7 +4,7 @@ This file records algorithm and experiment-path changes after the submission-rea
 
 ## 2026-06-04 - Residual-Aware SABC v2
 
-Status: implemented and locally unit-tested; remote pilot pending.
+Status: implemented, locally and remotely unit-tested; remote pilot running with no completed result yet.
 
 Motivation:
 
@@ -34,6 +34,8 @@ Experiment path:
 Boundary:
 
 - For held-out stations, residual summaries use target-station chronological train history. This is a target-station historical calibration setting, not strict zero-shot station generalization.
+- The 27-run remote pilot was launched on GPUs 0, 1, 3, 4, and 5, avoiding GPU2 because another job was active there.
+- Initial run logs reached epoch 0 and beyond with finite validation metrics and no import/path/OOM failures.
 - No SABC v2 training or evaluation result exists yet. Per the current project rule, all training and evaluation must run on the server.
 
 Verification:
