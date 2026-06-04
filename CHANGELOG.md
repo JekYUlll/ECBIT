@@ -2,6 +2,29 @@
 
 This file records algorithm and experiment-path changes after the submission-ready ECBIT manuscript snapshot. It is intended to keep exploratory changes distinguishable from the Polar Science submission version.
 
+## 2026-06-04 - Operational Hybrid Baseline
+
+Status: exploratory, closed as negative for endpoint anchoring.
+
+Added a local-code, server-evaluated operational hybrid baseline:
+
+- `src/baselines/era5_hybrid.py`: endpoint residual anchoring for calibrated ERA5 trajectories.
+- `scripts/evaluate_operational_hybrid_baseline.py`: evaluates station-month ERA5 direct substitution versus station-month ERA5 plus endpoint anchoring under the same 27 Round 1 block-missing configurations.
+- `src/tests/test_era5_hybrid.py`: unit tests for endpoint residual interpolation, single-endpoint fallback, no-endpoint fallback, and shape validation.
+
+Final server-side result:
+
+- Station-month calibrated ERA5 direct: `0.2699` normalized MAE.
+- Endpoint-anchored station-month ERA5: `0.3000` normalized MAE.
+- Endpoint anchoring helps short blocks (`0.2567` vs `0.2702`) but substantially worsens medium (`0.3037` vs `0.2699`) and long blocks (`0.3396` vs `0.2694`).
+- Compared with neural ERA5 variants, endpoint anchoring is clearly behind: SAITS+ERA5 is better by `0.0551` MAE, and ECBIT/iTransformer ERA5 variants are better by about `0.042` MAE.
+
+Interpretation:
+
+- Endpoint anchoring over-constrains long Antarctic AWS outages. A residual estimated at the visible boundary is not a reliable correction across multi-day gaps.
+- The strongest simple operational baseline remains station-month calibrated ERA5 direct substitution.
+- This result supports the current neural sparse-context interpretation: the neural ERA5-conditioned models are not merely reproducing endpoint continuity.
+
 ## 2026-06-04 - Parallel Exploration Tracks
 
 Status: exploratory, not manuscript-ready.
