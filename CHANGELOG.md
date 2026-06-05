@@ -4,7 +4,7 @@ This file records algorithm and experiment-path changes after the submission-rea
 
 ## 2026-06-04 - Residual-Aware SABC v2
 
-Status: implemented, locally and remotely unit-tested; remote pilot running with no completed result yet.
+Status: exploratory; completed remotely, but not manuscript-ready under the no-harm gate.
 
 Motivation:
 
@@ -34,9 +34,16 @@ Experiment path:
 Boundary:
 
 - For held-out stations, residual summaries use target-station chronological train history. This is a target-station historical calibration setting, not strict zero-shot station generalization.
-- The 27-run remote pilot was launched on GPUs 0, 1, 3, 4, and 5, avoiding GPU2 because another job was active there.
-- Initial run logs reached epoch 0 and beyond with finite validation metrics and no import/path/OOM failures.
-- No SABC v2 training or evaluation result exists yet. Per the current project rule, all training and evaluation must run on the server.
+- The 27-run remote pilot completed on GPUs 0, 1, 3, 4, and 5, avoiding GPU2 because another job was active there.
+- All five workers finished with `fail=0`; no import/path/OOM failures were found in the logs.
+- The overall paired improvement over the matched gated baseline is `+0.0102` normalized MAE over 27 pairs, with 95% CI `[0.0026, 0.0178]` and p=`0.0104`.
+- The effect is heterogeneous: Mount Sidley improves by `+0.0228`, Zhongshan by `+0.0184`, but Nico degrades by `-0.0105`.
+- Long blocks benefit most (`+0.0210`), while medium (`+0.0062`) and short (`+0.0035`) effects are weaker.
+- Variable-level checks show gains for temperature, wind speed, and q, but pressure degrades overall (`-0.0094`), with Nico showing RH and pressure degradation.
+
+Decision:
+
+- SABC v2 is promising for hard long-block cases but fails the no-harm criterion. It should not be added to the manuscript without a constrained follow-up that protects station/variable channels from degradation.
 
 Verification:
 

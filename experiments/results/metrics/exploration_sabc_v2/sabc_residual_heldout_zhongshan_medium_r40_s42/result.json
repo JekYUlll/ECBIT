@@ -1,0 +1,95 @@
+{
+  "best": {
+    "mae_T": 0.15583549439907074,
+    "rmse_T": 0.20675012469291687,
+    "mae_RH": 0.4363804757595062,
+    "rmse_RH": 0.5724490880966187,
+    "mae_wspd": 0.4044044017791748,
+    "rmse_wspd": 0.6148716807365417,
+    "mae_P": 0.046581316739320755,
+    "rmse_P": 0.05973999574780464,
+    "mae_q": 0.20145826041698456,
+    "rmse_q": 0.2975699305534363,
+    "mae_mean": 0.24893197417259216,
+    "rmse_mean": 0.3502761721611023,
+    "train_loss": 0.14545110595576904,
+    "epoch": 48
+  },
+  "test": {
+    "mae_T": 0.13950011134147644,
+    "rmse_T": 0.18899570405483246,
+    "mae_RH": 0.4309605658054352,
+    "rmse_RH": 0.5397571921348572,
+    "mae_wspd": 0.42800331115722656,
+    "rmse_wspd": 0.5470375418663025,
+    "mae_P": 0.044001247733831406,
+    "rmse_P": 0.055940307676792145,
+    "mae_q": 0.3182663917541504,
+    "rmse_q": 0.4295429289340973,
+    "mae_mean": 0.2721463143825531,
+    "rmse_mean": 0.3522547483444214
+  },
+  "config": {
+    "seed": 42,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "station_meta_csv": "data/station_meta_ecbit.csv",
+      "residual_feature_csv": "experiments/results/exploration_sabc_v2/sabc_residual_features.csv",
+      "test_station_ids": [
+        "zhongshan"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_sabc_v2/sabc_residual_heldout_zhongshan_medium_r40_s42",
+    "runner": "train",
+    "model": {
+      "name": "ecbit_sabc",
+      "variant": "sabc_residual",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "fusion_type": "gated",
+      "n_station_features": 9,
+      "n_residual_features": 8,
+      "sabc": {
+        "hidden_dim": 64,
+        "dropout": 0.1,
+        "residual_scale_init": 0.1
+      }
+    },
+    "missing": {
+      "pattern": "medium",
+      "rate": 0.4,
+      "min_block": 24,
+      "max_block": 72,
+      "variable_wise": true
+    },
+    "run_name": "sabc_residual_heldout_zhongshan_medium_r40_s42"
+  }
+}

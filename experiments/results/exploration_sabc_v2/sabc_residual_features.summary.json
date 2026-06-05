@@ -1,0 +1,22 @@
+{
+  "rows": 1920,
+  "stations": 32,
+  "variables": 5,
+  "feature_columns": [
+    "station_bias",
+    "station_std",
+    "station_mae",
+    "station_log_count",
+    "station_month_bias",
+    "station_month_std",
+    "station_month_mae",
+    "station_month_log_count"
+  ],
+  "manifest_csv": "data/antaws_impute_manifest.csv",
+  "station_groups": [
+    "heldout",
+    "main"
+  ],
+  "split": "train",
+  "min_month_samples": 128
+}

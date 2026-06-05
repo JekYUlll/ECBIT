@@ -1,0 +1,95 @@
+{
+  "best": {
+    "mae_T": 0.16173355281352997,
+    "rmse_T": 0.21193791925907135,
+    "mae_RH": 0.44314804673194885,
+    "rmse_RH": 0.5818332433700562,
+    "mae_wspd": 0.40629976987838745,
+    "rmse_wspd": 0.6193727254867554,
+    "mae_P": 0.0461697056889534,
+    "rmse_P": 0.05945486202836037,
+    "mae_q": 0.2055855244398117,
+    "rmse_q": 0.30080103874206543,
+    "mae_mean": 0.25258731842041016,
+    "rmse_mean": 0.35467997193336487,
+    "train_loss": 0.147298905000188,
+    "epoch": 45
+  },
+  "test": {
+    "mae_T": 0.20046685636043549,
+    "rmse_T": 0.25606071949005127,
+    "mae_RH": 0.5614631175994873,
+    "rmse_RH": 0.6861850619316101,
+    "mae_wspd": 0.48483985662460327,
+    "rmse_wspd": 0.7683179378509521,
+    "mae_P": 0.07423502206802368,
+    "rmse_P": 0.09451412409543991,
+    "mae_q": 0.2136014699935913,
+    "rmse_q": 0.29489490389823914,
+    "mae_mean": 0.30692124366760254,
+    "rmse_mean": 0.4199945330619812
+  },
+  "config": {
+    "seed": 44,
+    "device": "cuda",
+    "data": {
+      "manifest_csv": "data/antaws_impute_manifest.csv",
+      "train_station_groups": [
+        "main"
+      ],
+      "val_station_groups": [
+        "main"
+      ],
+      "test_station_groups": [
+        "heldout"
+      ],
+      "station_meta_csv": "data/station_meta_ecbit.csv",
+      "residual_feature_csv": "experiments/results/exploration_sabc_v2/sabc_residual_features.csv",
+      "test_station_ids": [
+        "mount_sidley"
+      ]
+    },
+    "training": {
+      "epochs": 50,
+      "batch_size": 32,
+      "num_workers": 4,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "patience": 10
+    },
+    "eval": {
+      "batch_size": 64,
+      "num_workers": 4
+    },
+    "output_dir": "experiments/results/metrics/exploration_sabc_v2/sabc_residual_heldout_mount_sidley_long_r40_s44",
+    "runner": "train",
+    "model": {
+      "name": "ecbit_sabc",
+      "variant": "sabc_residual",
+      "seq_len": 168,
+      "n_vars": 5,
+      "n_time": 4,
+      "d_model": 128,
+      "n_heads": 8,
+      "n_layers": 3,
+      "d_ff": 256,
+      "dropout": 0.1,
+      "fusion_type": "gated",
+      "n_station_features": 9,
+      "n_residual_features": 8,
+      "sabc": {
+        "hidden_dim": 64,
+        "dropout": 0.1,
+        "residual_scale_init": 0.1
+      }
+    },
+    "missing": {
+      "pattern": "long",
+      "rate": 0.4,
+      "min_block": 72,
+      "max_block": 240,
+      "variable_wise": true
+    },
+    "run_name": "sabc_residual_heldout_mount_sidley_long_r40_s44"
+  }
+}
