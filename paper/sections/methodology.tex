@@ -33,7 +33,7 @@ The implementation is deterministic given a seed and follows this procedure. Fir
 The curriculum used in the main experiments is not a temporal schedule over epochs; instead, each training configuration fixes a target block regime and missing rate, and the mask generator samples fresh block positions online for each batch. The model therefore sees many outage realizations under the same failure-mode distribution. Follow-up experiments vary the outage horizon directly, using 24 h, 72 h, and 216 h block settings to test whether ERA5 gains increase as the station-only context weakens.
 
 \subsection{Conditional Restoration Instantiation}
-ECBIT is the gated neural instantiation of the restoration operator in Eq.~\ref{eq:mmcr}. It encodes each meteorological variable as a single token whose feature vector spans the full 168-step trajectory, following the inverted representation of \citet{liu2024itransformer}. In multivariate station data, cross-variable attention captures the physical couplings among temperature, pressure, humidity, and wind more directly than attention across individual timestamps.
+ECBIT is the gated neural model used for the restoration operator in Eq.~\ref{eq:mmcr}. It encodes each meteorological variable as a single token whose feature vector spans the full 168-step trajectory, following the inverted representation of \citet{liu2024itransformer}. In multivariate station data, cross-variable attention captures the physical couplings among temperature, pressure, humidity, and wind more directly than attention across individual timestamps.
 
 For each AWS variable $c$, the observation token is built from four components: the masked normalized AWS trajectory $\tilde{X}_{:,c}$, the real observation mask $O_{:,c}$, the model input missing mask $M_{:,c}$, and shared time encodings. The time encodings include calendar features for the 3-hourly timestamps and are shared across variables in the same window. The corresponding ERA5 token uses the aligned ERA5 trajectory $E_{:,c}$ and the same time encodings. Each token construction can be written schematically as
 \begin{equation}
@@ -49,7 +49,7 @@ In the experiments, the projected token dimension is $d=128$. The AWS and ERA5 s
 \begin{figure}[t]
   \centering
   \resizebox{0.98\textwidth}{!}{\input{figures/fig_ecbit_arch}}
-  \caption{Reanalysis-conditioned macro--micro restoration framework. Sparse AWS observations and aligned ERA5 sequences are encoded as variate tokens in separate streams. In the gated ECBIT instantiation, ERA5 information enters through feature injection, while the missing-variable gate suppresses ERA5 influence for variables without missing positions.}
+  \caption{Reanalysis-conditioned block-imputation model. Sparse AWS observations and aligned ERA5 sequences are encoded as variate tokens in separate streams. In the gated ECBIT variant, ERA5 information enters through feature injection, while the missing-variable gate suppresses ERA5 influence for variables without missing positions.}
   \label{fig:ecbit-arch}
 \end{figure}
 
