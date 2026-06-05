@@ -15,6 +15,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from paper_plot_style import apply_paper_style, save_figure, style_axis
 from src.baselines.era5_direct import ERA5DirectImputer
 from src.baselines.linear_interp import linear_interpolate
 from src.utils.block_missing import apply_mask, simulate_block_missing
@@ -129,14 +130,7 @@ def plot_case(args: argparse.Namespace) -> None:
     observed_y = np.where(observed_after_hide.numpy()[0, :, var_idx] > 0.5, true, np.nan)
     hidden_y = np.where(artificial[:, var_idx].numpy() > 0.5, true, np.nan)
 
-    plt.rcParams.update(
-        {
-            "font.size": 7,
-            "axes.spines.top": False,
-            "axes.spines.right": False,
-            "axes.titleweight": "bold",
-        }
-    )
+    apply_paper_style(font_size=9.0)
     fig, ax = plt.subplots(figsize=(7.35, 2.65), constrained_layout=False)
     real_observed = obs_mask.numpy()[0, :, var_idx] > 0.5
     true_observed_line = np.where(real_observed, true, np.nan)
@@ -144,8 +138,8 @@ def plot_case(args: argparse.Namespace) -> None:
     ax.plot(timestamps, era5_raw, color="#3182BD", linewidth=1.0, alpha=0.75, label="ERA5")
     ax.plot(timestamps, linear_y, color="#E6550D", linewidth=1.0, linestyle="--", label="Linear fill")
     ax.plot(timestamps, era5_y, color="#31A354", linewidth=1.0, linestyle="-.", label="ERA5 direct fill")
-    ax.scatter(timestamps, observed_y, s=8, color="#222222", alpha=0.65, label="Observed")
-    ax.scatter(timestamps, hidden_y, s=10, color="#D62728", alpha=0.8, label="Artificially hidden")
+    ax.scatter(timestamps, observed_y, s=8, color="#222222", alpha=0.65, label="Observed", zorder=3)
+    ax.scatter(timestamps, hidden_y, s=10, color="#D62728", alpha=0.8, label="Artificially hidden", zorder=4)
 
     mask = artificial[:, var_idx].numpy().astype(bool)
     start = None
@@ -160,7 +154,7 @@ def plot_case(args: argparse.Namespace) -> None:
     ax.set_ylabel(args.ylabel)
     ax.set_xlabel("Time")
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
-    ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.85)
+    style_axis(ax, grid_axis="y")
     ax.legend(
         ncol=3,
         frameon=False,
@@ -172,9 +166,7 @@ def plot_case(args: argparse.Namespace) -> None:
     )
     fig.subplots_adjust(top=0.80, bottom=0.20, left=0.08, right=0.99)
 
-    args.out_pdf.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(args.out_pdf, bbox_inches="tight")
-    fig.savefig(args.out_png, dpi=300, bbox_inches="tight")
+    save_figure(fig, args.out_pdf, args.out_png)
     print(f"Selected window index {idx}")
     print(f"Wrote {args.out_pdf}")
     print(f"Wrote {args.out_png}")

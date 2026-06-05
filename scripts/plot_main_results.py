@@ -9,6 +9,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from paper_plot_style import apply_paper_style, save_figure, style_axis
+
 
 ROUND1_RUNS = Path("experiments/results/tables/round1_core_runs.csv")
 FAIR_RUNS = Path("experiments/results/tables/fair_era5_baselines_runs.csv")
@@ -65,34 +67,24 @@ def plot(round1_runs: Path, fair_runs: Path, round2_runs: Path, out_pdf: Path, o
         "#BEAED4",
     ]
 
-    plt.rcParams.update(
-        {
-            "font.size": 8,
-            "axes.spines.top": False,
-            "axes.spines.right": False,
-            "axes.titleweight": "bold",
-        }
-    )
+    apply_paper_style(font_size=9.0)
     fig, ax = plt.subplots(figsize=(7.35, 3.0), constrained_layout=True)
     x = range(len(data))
     ax.bar(x, data["mean"], yerr=data["std"], capsize=2.5, color=colors, edgecolor="#333333", linewidth=0.4)
     for idx, row in data.iterrows():
-        ax.text(idx, row["mean"] + row["std"] + 0.01, f"{row['mean']:.3f}", ha="center", va="bottom", fontsize=7)
+        ax.text(idx, row["mean"] + row["std"] + 0.01, f"{row['mean']:.3f}", ha="center", va="bottom", fontsize=8.0)
 
     ax.axvline(4.5, color="#666666", linestyle="--", linewidth=0.8, alpha=0.8)
     ax.axvline(7.5, color="#666666", linestyle="--", linewidth=0.8, alpha=0.8)
-    ax.text(2.0, 0.535, "Core baselines", ha="center", va="center", fontsize=8, color="#444444")
-    ax.text(6.0, 0.535, "ECBIT variants", ha="center", va="center", fontsize=8, color="#444444")
-    ax.text(8.5, 0.535, "Fair ERA5", ha="center", va="center", fontsize=8, color="#444444")
+    ax.text(2.0, 0.535, "Core baselines", ha="center", va="center", fontsize=9.0, color="#444444")
+    ax.text(6.0, 0.535, "ECBIT variants", ha="center", va="center", fontsize=9.0, color="#444444")
+    ax.text(8.5, 0.535, "Fair ERA5", ha="center", va="center", fontsize=9.0, color="#444444")
     ax.set_xticks(list(x), data["label"], rotation=22, ha="right")
     ax.set_ylabel("Mean test MAE (normalized)")
     ax.set_ylim(0.22, 0.56)
-    ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.85)
-    ax.set_axisbelow(True)
+    style_axis(ax, grid_axis="y")
 
-    out_pdf.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out_pdf, bbox_inches="tight")
-    fig.savefig(out_png, dpi=300, bbox_inches="tight")
+    save_figure(fig, out_pdf, out_png)
     print(f"Wrote {out_pdf}")
     print(f"Wrote {out_png}")
 

@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from paper_plot_style import apply_paper_style, save_figure, style_axis
+
 
 BLOCKLEN_CSV = Path("experiments/results/tables/followup_blocklen_final_summary.csv")
 ROBUSTNESS_CSV = Path("experiments/results/analysis/era5_robustness/era5_robustness_summary.csv")
@@ -21,7 +23,6 @@ COLORS = {
     "no_era5": "#D55E00",
     "bar": "#009E73",
     "down": "#CC79A7",
-    "grid": "#DDDDDD",
 }
 
 
@@ -55,15 +56,15 @@ def plot_block_length(ax: plt.Axes, summary: pd.DataFrame) -> None:
                 xytext=(8 if is_left_edge else 0, 7),
                 textcoords="offset points",
                 ha="left" if is_left_edge else "center",
-                fontsize=7,
+                fontsize=8.0,
                 color="#444444",
             )
 
-    ax.set_title("(a) Outage length", fontsize=8.2, pad=4)
+    ax.set_title("(a) Outage length", pad=4)
     ax.set_xlabel("Maximum block length (hours)")
     ax.set_ylabel("MAE")
     ax.set_xticks([24, 72, 216])
-    ax.grid(axis="y", color=COLORS["grid"], linewidth=0.6, alpha=0.9)
+    style_axis(ax, grid_axis="y")
 
 
 def plot_variable_importance(ax: plt.Axes, robust: pd.DataFrame) -> None:
@@ -73,12 +74,12 @@ def plot_variable_importance(ax: plt.Axes, robust: pd.DataFrame) -> None:
 
     ax.barh(variables["label"], variables["delta_mae"], color=COLORS["bar"], alpha=0.9)
     for y, value in enumerate(variables["delta_mae"]):
-        ax.text(value + 0.001, y, f"{value:.3f}", va="center", fontsize=7)
+        ax.text(value + 0.001, y, f"{value:.3f}", va="center", fontsize=8.0)
 
-    ax.set_title("(b) ERA5 channel importance", fontsize=8.2, pad=4)
+    ax.set_title("(b) ERA5 channel importance", pad=4)
     ax.set_xlabel("MAE increase when masked")
     ax.set_xlim(0, max(variables["delta_mae"].max() * 1.22, 0.065))
-    ax.grid(axis="x", color=COLORS["grid"], linewidth=0.6, alpha=0.9)
+    style_axis(ax, grid_axis="x")
 
 
 def plot_temporal_robustness(ax: plt.Axes, robust: pd.DataFrame) -> None:
@@ -93,28 +94,21 @@ def plot_temporal_robustness(ax: plt.Axes, robust: pd.DataFrame) -> None:
 
     ax.bar(x, deltas, color=COLORS["down"], alpha=0.9, width=0.58)
     for idx, (label, mean, delta) in enumerate(rows):
-        ax.text(idx, delta + 0.001, f"+{delta:.3f}\nMAE {mean:.3f}", ha="center", va="bottom", fontsize=6.8)
+        ax.text(idx, delta + 0.001, f"+{delta:.3f}\nMAE {mean:.3f}", ha="center", va="bottom", fontsize=7.8)
 
-    ax.set_title("(c) ERA5 temporal robustness", fontsize=8.2, pad=4)
+    ax.set_title("(c) ERA5 temporal robustness", pad=4)
     ax.set_xlabel("ERA5 downsampling")
     ax.set_ylabel("MAE increase")
     ax.set_xticks(x, labels)
     ax.set_ylim(0, max(deltas) * 1.32)
-    ax.grid(axis="y", color=COLORS["grid"], linewidth=0.6, alpha=0.9)
+    style_axis(ax, grid_axis="y")
 
 
 def plot(blocklen_csv: Path, robustness_csv: Path, out_pdf: Path, out_png: Path) -> None:
     blocklen = pd.read_csv(blocklen_csv)
     robust = pd.read_csv(robustness_csv)
 
-    plt.rcParams.update(
-        {
-            "font.size": 7.6,
-            "axes.spines.top": False,
-            "axes.spines.right": False,
-            "axes.titleweight": "bold",
-        }
-    )
+    apply_paper_style(font_size=9.0)
     fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.45), constrained_layout=False)
     plot_block_length(axes[0], blocklen)
     plot_variable_importance(axes[1], robust)
@@ -124,7 +118,7 @@ def plot(blocklen_csv: Path, robustness_csv: Path, out_pdf: Path, out_png: Path)
         handles,
         labels,
         frameon=False,
-        fontsize=6.8,
+        fontsize=8.2,
         loc="upper left",
         bbox_to_anchor=(0.07, 0.99),
         ncol=2,
@@ -134,9 +128,7 @@ def plot(blocklen_csv: Path, robustness_csv: Path, out_pdf: Path, out_png: Path)
     )
     fig.subplots_adjust(top=0.78, bottom=0.20, left=0.07, right=0.99, wspace=0.35)
 
-    out_pdf.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out_pdf, bbox_inches="tight")
-    fig.savefig(out_png, dpi=300, bbox_inches="tight")
+    save_figure(fig, out_pdf, out_png)
     print(f"Wrote {out_pdf}")
     print(f"Wrote {out_png}")
 

@@ -9,6 +9,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from paper_plot_style import apply_paper_style, save_figure, style_axis
+
 
 RUNS_CSV = Path("experiments/results/tables/round2_gated_final_runs.csv")
 OUT_PDF = Path("paper/figures/fig_round2_ablations.pdf")
@@ -57,10 +59,9 @@ def plot_block_ablations(ax: plt.Axes, runs: pd.DataFrame, pattern: str) -> None
             label=VARIANT_LABELS[variant],
         )
     ax.set_title(pattern.capitalize())
-    ax.set_xlabel("Missing rate (%)")
+    ax.set_xlabel(r"Missing rate (\%)")
     ax.set_xticks([20, 40, 60])
-    ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.85)
-    ax.set_axisbelow(True)
+    style_axis(ax, grid_axis="y")
 
 
 def plot_mcar(ax: plt.Axes, runs: pd.DataFrame) -> None:
@@ -85,13 +86,13 @@ def plot_mcar(ax: plt.Axes, runs: pd.DataFrame) -> None:
             label="MCAR training",
         )
     ax.set_title("MCAR")
-    ax.set_xlabel("Missing rate (%)")
+    ax.set_xlabel(r"Missing rate (\%)")
     ax.set_xticks([20, 40, 60])
-    ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.85)
-    ax.set_axisbelow(True)
+    style_axis(ax, grid_axis="y")
 
 
 def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
+    apply_paper_style(font_size=9.0)
     runs = pd.read_csv(runs_csv)
     runs = runs.copy()
     runs["rate_pct"] = (runs["rate"].astype(float) * 100).astype(int)
@@ -115,27 +116,23 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
     for ax in axes[1:3]:
         ax.tick_params(labelleft=False)
     plot_mcar(axes[3], runs)
-    axes[3].tick_params(axis="y", labelsize=6.6, pad=1)
+    axes[3].tick_params(axis="y", labelsize=8.0, pad=1)
     block_handles, block_labels = axes[0].get_legend_handles_labels()
     mcar_handles, mcar_labels = axes[3].get_legend_handles_labels()
     fig.legend(
         block_handles + mcar_handles,
         block_labels + mcar_labels,
         frameon=False,
-        fontsize=7,
+        fontsize=8.2,
         loc="upper center",
         bbox_to_anchor=(0.5, 0.99),
         ncol=4,
         columnspacing=1.0,
         handlelength=1.8,
     )
-    for ax in axes:
-        ax.tick_params(axis="both", labelsize=6.8)
     fig.subplots_adjust(top=0.78, bottom=0.20, left=0.07, right=0.99, wspace=0.28)
 
-    out_pdf.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out_pdf, bbox_inches="tight")
-    fig.savefig(out_png, dpi=300, bbox_inches="tight")
+    save_figure(fig, out_pdf, out_png)
     print(f"Wrote {out_pdf}")
     print(f"Wrote {out_png}")
 

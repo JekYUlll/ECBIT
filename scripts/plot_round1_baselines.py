@@ -9,6 +9,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from paper_plot_style import apply_paper_style, save_figure, style_axis
+
 
 RUNS_CSV = Path("experiments/results/tables/round1_core_runs.csv")
 OUT_PDF = Path("paper/figures/fig_round1_baselines.pdf")
@@ -39,6 +41,7 @@ MARKERS = {
 
 
 def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
+    apply_paper_style(font_size=9.0)
     runs = pd.read_csv(runs_csv)
     runs = runs[runs["model"].isin(MODEL_ORDER)].copy()
     runs["rate_pct"] = (runs["rate"].astype(float) * 100).astype(int)
@@ -64,17 +67,16 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
                 label=MODEL_LABELS[model],
             )
         ax.set_title(pattern.capitalize())
-        ax.set_xlabel("Missing rate (%)")
+        ax.set_xlabel(r"Missing rate (\%)")
         ax.set_xticks([20, 40, 60])
-        ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.85)
-        ax.set_axisbelow(True)
+        style_axis(ax, grid_axis="y")
     axes[0].set_ylabel("MAE (normalized)")
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(
         handles,
         labels,
         frameon=False,
-        fontsize=7,
+        fontsize=8.4,
         loc="upper center",
         bbox_to_anchor=(0.5, 0.99),
         ncol=5,
@@ -83,9 +85,7 @@ def plot(runs_csv: Path, out_pdf: Path, out_png: Path) -> None:
     )
     fig.subplots_adjust(top=0.78, bottom=0.20, left=0.08, right=0.99, wspace=0.08)
 
-    out_pdf.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out_pdf, bbox_inches="tight")
-    fig.savefig(out_png, dpi=300, bbox_inches="tight")
+    save_figure(fig, out_pdf, out_png)
     print(f"Wrote {out_pdf}")
     print(f"Wrote {out_png}")
 

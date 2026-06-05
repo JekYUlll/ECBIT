@@ -9,15 +9,17 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from paper_plot_style import apply_paper_style, save_figure, style_axis
+
 
 STATS_CSV = Path("results/missing_analysis/pattern_stats.csv")
 OUT_PDF = Path("paper/figures/fig_missing_patterns.pdf")
 OUT_PNG = Path("paper/figures/fig_missing_patterns.png")
 VAR_ORDER = ["T", "RH", "wspd", "P"]
-COLORS = {"T": "#0072B2", "RH": "#009E73", "wspd": "#D55E00", "P": "#CC79A7"}
 
 
 def plot(stats_csv: Path, out_pdf: Path, out_png: Path) -> None:
+    apply_paper_style(font_size=9.0)
     stats = pd.read_csv(stats_csv)
     stats = stats[stats["variable"].isin(VAR_ORDER)].copy()
     summary = (
@@ -53,15 +55,12 @@ def plot(stats_csv: Path, out_pdf: Path, out_png: Path) -> None:
             )
         ax.set_xticks(list(x), VAR_ORDER)
         ax.set_ylabel(ylabel)
-        ax.grid(axis="y", color="#DDDDDD", linewidth=0.6, alpha=0.8)
-        ax.set_axisbelow(True)
+        style_axis(ax, grid_axis="y")
     axes[0].set_ylim(bottom=0)
     axes[1].set_ylim(bottom=0)
     axes[0].legend(frameon=False, loc="upper left")
 
-    out_pdf.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out_pdf, bbox_inches="tight")
-    fig.savefig(out_png, dpi=300, bbox_inches="tight")
+    save_figure(fig, out_pdf, out_png)
     print(f"Wrote {out_pdf}")
     print(f"Wrote {out_png}")
 

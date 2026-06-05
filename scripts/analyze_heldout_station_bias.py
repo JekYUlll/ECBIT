@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from paper_plot_style import apply_paper_style, save_figure, style_axis
+
 
 MANIFEST_CSV = Path("data/antaws_impute_manifest.csv")
 RUNS_CSV = Path("experiments/results/tables/round3_final_runs.csv")
@@ -60,10 +62,11 @@ def mismatch_summary(manifest_csv: Path) -> pd.DataFrame:
 
 def write_detail_table(detail: pd.DataFrame, out_tex: Path) -> None:
     lines = [
-        "\\begin{table*}[t]",
+        "\\begin{table}[t]",
         "  \\centering",
         "  \\caption{Held-out station detail at 40\\% block missingness. Errors are normalized MAE averaged over the three block regimes and three seeds. ERA5 mismatch is the mean absolute AWS-minus-ERA5 difference on the held-out station's training-segment observed positions; it is a diagnostic only and is not used for model training.}",
         "  \\label{tab:heldout-station-detail}",
+        "  \\resizebox{\\textwidth}{!}{%",
         "  \\begin{tabular}{lcccccccc}",
         "    \\toprule",
         "    Station & MAE & RMSE & T & RH & Wind & P & q & ERA5 mismatch \\\\",
@@ -75,23 +78,36 @@ def write_detail_table(detail: pd.DataFrame, out_tex: Path) -> None:
             f"{row.mae_T:.3f} & {row.mae_RH:.3f} & {row.mae_wspd:.3f} & "
             f"{row.mae_P:.3f} & {row.mae_q:.3f} & {row.era5_mismatch_mean:.3f} \\\\"
         )
-    lines.extend(["    \\bottomrule", "  \\end{tabular}", "\\end{table*}", ""])
+    lines.extend(["    \\bottomrule", "  \\end{tabular}}", "\\end{table}", ""])
     out_tex.parent.mkdir(parents=True, exist_ok=True)
     out_tex.write_text("\n".join(lines), encoding="utf-8")
 
 
 def plot_bias(detail: pd.DataFrame, out_fig: Path, out_png: Path) -> None:
-    plt.rcParams.update({"font.size": 8, "axes.spines.top": False, "axes.spines.right": False})
-    fig, ax = plt.subplots(figsize=(3.4, 2.6), constrained_layout=True)
-    ax.scatter(detail["era5_mismatch_mean"], detail["mae_mean"], s=42, color="#2C7FB8", edgecolor="#222222", linewidth=0.5)
+    apply_paper_style(font_size=9.0)
+    fig, ax = plt.subplots(figsize=(4.4, 1.95), constrained_layout=True)
+    ax.scatter(
+        detail["era5_mismatch_mean"],
+        detail["mae_mean"],
+        s=42,
+        color="#2C7FB8",
+        edgecolor="#222222",
+        linewidth=0.5,
+        zorder=3,
+    )
     for row in detail.itertuples(index=False):
-        ax.annotate(station_title(row.station_id), (row.era5_mismatch_mean, row.mae_mean), xytext=(4, 2), textcoords="offset points", fontsize=7)
+        ax.annotate(
+            station_title(row.station_id),
+            (row.era5_mismatch_mean, row.mae_mean),
+            xytext=(4, 2),
+            textcoords="offset points",
+            fontsize=7,
+            zorder=4,
+        )
     ax.set_xlabel("Held-out ERA5-AWS mismatch")
     ax.set_ylabel("Held-out imputation MAE")
-    ax.grid(color="#DDDDDD", linewidth=0.6, alpha=0.85)
-    out_fig.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out_fig, bbox_inches="tight")
-    fig.savefig(out_png, dpi=300, bbox_inches="tight")
+    style_axis(ax, grid_axis="both")
+    save_figure(fig, out_fig, out_png)
 
 
 def main() -> None:
