@@ -14,7 +14,7 @@ For each selected station, we download an ERA5 single-level point time series \c
 
 We treat the returned CDS point series as the station-location ERA5 series and do not apply an additional local interpolation among neighboring grid cells. Any point-extraction interpolation is therefore determined by the CDS service rather than by a separate local gridded interpolation step. The hourly ERA5 series is linearly interpolated to the exact AntAWS 3-hourly timestamps. All ERA5 files are validated to have finite values and the same temporal length as the corresponding station record before preprocessing. ERA5 and AWS channels are normalized with the same variable-wise statistics computed from main-station chronological training segments only. Held-out stations are excluded from those normalization statistics and from all model training.
 
-The resulting benchmark uses ERA5 as a dense external background field, not as ground truth. Station observations remain the target whenever they are available. ERA5 is therefore most relevant when a station variable is artificially hidden or truly missing in the input window.
+The resulting benchmark uses ERA5 as a dense external background field, not as ground truth. Station observations remain the target whenever they are available. ERA5 is therefore most relevant when a station variable is artificially hidden or truly missing in the input window. This alignment step provides the macro-scale background layer used by the restoration framework.
 
 Specific humidity is not an independent AntAWS column in the selected 3-hourly station files. It is derived during preprocessing from AWS temperature, relative humidity, and pressure using the same saturation-vapor-pressure formula and is stored in g kg$^{-1}$. Its observation mask inherits the conjunction of the source variables: if any required source value is missing or non-finite, the derived $q$ value is treated as missing. Artificial masks are sampled after this derivation on the five-channel benchmark representation, so $q$ behaves as an observed derived channel when its source variables were originally present and as a target channel when $q$ itself is selected for hiding. The ERA5 $q$ channel is aligned and normalized with the same train-window statistics as the AWS-derived $q$ target.
 
@@ -28,7 +28,7 @@ Table~\ref{tab:split-overlap-audit} audits the chronological split boundaries an
 \input{tables/tab_split_overlap_audit}
 
 \subsection{Observed Missingness}
-Missingness in the selected records is strongly structured rather than random. Wind speed and relative humidity carry the largest missing burden, with 90th-percentile gap lengths exceeding two days (Fig.~\ref{fig:missing-patterns}). Point-wise MCAR masks are therefore an inadequate proxy for the icing, power interruptions, and maintenance gaps that cause Antarctic station failures.
+Missingness in the selected records is strongly structured rather than random. Wind speed and relative humidity carry the largest missing burden, with 90th-percentile gap lengths exceeding two days (Fig.~\ref{fig:missing-patterns}). Point-wise MCAR masks are therefore an inadequate proxy for the icing, power interruptions, and maintenance gaps that cause Antarctic station failures. This observed mask is the micro-scale constraint layer: it tells the imputation model which AWS values remain available and which gaps can only be used as context rather than labels.
 
 \begin{figure}[t]
   \centering
